@@ -6,6 +6,7 @@ $object
   field_labels => [qw(user_name organisation first_name last_name)] &>
 
 <div>
-  <& /view/collection.mhtml, object => $object, collection_name => 'pipeprojects' &>
+  <& /view/collection.mhtml, object => $object, collection_title => 'Projects',
+    collection_name => 'pipeprojects' &>
 </div>
   
