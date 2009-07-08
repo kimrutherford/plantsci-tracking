@@ -5,7 +5,7 @@ $type
 
 <& /view/object/object_top.mhtml, object => $object, 
   field_labels => [qw(name description pipeproject genotype protocol molecule_type
-                   treatment_type fractionation_type tissue)] &>
+                   treatment_type fractionation_type tissue processing_requirement)] &>
 
 <div>
   <& /view/list.mhtml, type => 'organism', rs => $organisms_rs,

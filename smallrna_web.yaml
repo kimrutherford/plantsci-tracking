@@ -87,6 +87,10 @@ class_info:
         values_constraint: 'cv->name = "tracking fractionation types"'
       - field_label: tissue
         editable: 1
+      - field_label: processing requirement
+        field_conf: processing_requirement
+        values_constraint: 'cv->name = "tracking sample processing requirements"'
+        editable: 1
   ecotype:
     display_field: long_description
   genotype:
