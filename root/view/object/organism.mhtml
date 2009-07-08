@@ -16,7 +16,7 @@ $object
 </div>
 
 <%init>
-my $samples_rs = $object->ecotypes()->search_related('samples');
+my $samples_rs = $object->ecotypes()->search_related('sample_ecotypes')->search_related('sample');
 my $samples_count = $samples_rs->count();
 my $sample_plu = $samples_count !=  1 ? 's' : '';
 my $ecotypes_count = $object->ecotypes()->count();
