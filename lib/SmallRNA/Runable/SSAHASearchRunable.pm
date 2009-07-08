@@ -115,11 +115,11 @@ sub run
         croak "can't find organism configuration for ", $sample->name(), "\n";
       }
 
-      if (!defined $org_config->{database_files}{$versus}) {
-        die "can't find versus: $versus\n";
+      if (!defined $org_config->{database_files}{$component}) {
+        die "can't find configuration for component: $component\n";
       }
 
-      my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$versus};
+      my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$component};
 
       my $ssaha_path = $c->{path};
 
