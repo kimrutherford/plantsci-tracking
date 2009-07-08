@@ -10,13 +10,16 @@
             <a href="<% $c->uri_for('/view/list/person') %>">People</a>
           </li>
           <li>
+            <a href="<% $c->uri_for('/view/list/organisation') %>">Organisations</a>
+          </li>
+          <li>
+            <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
+          </li>
+          <li>
             <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
           </li>
           <li>
             <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
           </li>
           <li>
             <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
