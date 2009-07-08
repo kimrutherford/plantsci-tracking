@@ -53,8 +53,8 @@ img {
 }
 
 .page_description {
-    background-color: #449;
-    color: white;
+    background-color: #ddd;
+    color: #227;
     font-size: 110%;
     font-weight: bold;
     padding: 2px 5px 1px 5px;
@@ -96,6 +96,7 @@ table.list tr td {
 
 .rs_list {
     padding: 8px 0px 8px 0px;
+    font-size: 90%
 }
 
 .rs_list table.list {
@@ -103,8 +104,8 @@ table.list tr td {
 }
 
 .rs_list .title {
-    background-color: #449;
-    color: white;
+    background-color: #ddd;
+    color: #227;
     font-size: 110%;
     font-weight: bold;
     margin-bottom: 10px;
