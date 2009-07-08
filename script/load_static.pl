@@ -182,7 +182,7 @@ $schema->txn_do(sub {
 
       my $obj = $rs->create({name => $cvterm_name,
                              definition => $definition,
-                             cv_id => $cv});
+                             cv => $cv});
 
       $cvterm_objs{$cvterm_name} = $obj;
     }
