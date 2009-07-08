@@ -67,7 +67,7 @@ sub set_template : Private {
   } elsif ($type eq 'ecotype') {
     $c->stash()->{title} = 'Details for ecotype ' . $object->long_description();
   } elsif ($type eq 'organisation') {
-    $c->stash()->{title} = 'Details for ' . $object->description();
+    $c->stash()->{title} = 'Organisation details';
   }
 }
 

@@ -10,6 +10,19 @@ $object
 </div>
 <div>
   <& /view/collection.mhtml, object => $object, 
-    collection_title => 'Sequencings runs from this organisation',
+    collection_title => 'Sequencings runs by this organisation',
     collection_name => 'sequencingruns' &>
 </div>
+<div>
+  <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
+    list_title => "The sequencing run$seqruns_plu ordered by people from this organisation" &></td>
+</div>
+
+
+<%init>
+my $seqruns_rs = $object->people()->search_related('pipeprojects')->search_related('samples')
+  ->search_related('coded_samples')->search_related('sequencing_sample')
+  ->search_related('sequencingruns');
+my $seqruns_count = $seqruns_rs->count();
+my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
+</%init>
