@@ -90,13 +90,12 @@ sub resolve
 
   my $current_value = shift;
 
+  if (!defined $current_value) {
+    croak 'undefined object passed to resolve()';
+  }
+
   for my $bit ($self->bits()) {
-    if ($current_value->has_column($bit . '_id')) {
-      my $bit_with_id = $bit . '_id';
-      $current_value = $current_value->$bit_with_id();
-    } else {
-      $current_value = $current_value->$bit();
-    }
+    $current_value = $current_value->$bit();
   }
 
   return $current_value;
