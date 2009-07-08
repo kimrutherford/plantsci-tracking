@@ -12,7 +12,7 @@ $type
   list_title => 'Input data' &></td>
 </div>
 <div>
-  <& /view/collection.mhtml, type => $type, object => $object, collection_name => 'pipedatas',
+  <& /view/collection.mhtml, object => $object, collection_name => 'pipedatas',
     collection_title => 'Output data' &></td>
 </div>
 

@@ -8,5 +8,5 @@ $type
   [qw(name description type owner funder)] &>
 </div>
 <div>
-  <& /view/collection.mhtml, type => $type, object => $object, collection_name => 'samples' &></td>
+  <& /view/collection.mhtml, object => $object, collection_name => 'samples' &></td>
 </div>

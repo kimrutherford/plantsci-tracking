@@ -11,7 +11,7 @@ $object
     list_title => "The sample$sample_plu for this organism" &></td>
 </div>
 <div>
-  <& /view/collection.mhtml, type => 'ecotype', object => $object, collection_name => 'ecotypes',
+  <& /view/collection.mhtml, object => $object, collection_name => 'ecotypes',
     collection_title => "The ecotype$ecotype_plu for this organism" &></td>
 </div>
 

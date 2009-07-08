@@ -1,5 +1,4 @@
 <%args>
-$type
 $object
 $collection_name
 $collection_title => undef
@@ -15,6 +14,8 @@ $collection_title => undef
 my $error;
 my $collection_table_name;
 my $rs;
+
+my $type = $object->table();
 
 eval {
   my $collection_type = 
