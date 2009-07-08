@@ -14,8 +14,9 @@ $message => undef
   <body>
     <div id="heading">
       <a href="<% $c->uri_for('/') %>"><img src="<% $c->uri_for('/static/images/header.png') %>" border="0" id="logo"/>
-        <span id="heading_text"> <% $c->config->{long_name} %> </span> </a>
+        <div id="heading_text"> <% $c->config->{long_name} %> </div> </a>
     </div>
+
 
 % if (0) {
 % if ($c->user_exists()) {
@@ -65,6 +66,10 @@ $message => undef
         </div>
 % $m->call_next;
       </div>
+    </div>
+    <div id="footer">
+      <a href="http://www.cam.ac.uk"><img src="<% $c->uri_for('/static/images/uni_of_cam.png') %>" border="0" class="sponsor"/></a>
+      <a href="http://www.plantsci.cam.ac.uk"><img src="<% $c->uri_for('/static/images/plantsci.png') %>" border="0" class="sponsor"/></a>
     </div>
   </body>
 </html>

@@ -22,16 +22,22 @@ img {
     color: white;
     font-size: 150%;
     font-weight: bold;
-    padding-bottom: 5px;
 }
 
 #logo {
-    width: 64px;
     height: 32px;
     float: left;
 }
+div#footer {
+    padding-top: 40px;
+}
+div#footer .sponsor {
+    float: right;
+    padding-right: 5px;
+    padding-left: 45px;
+}
 #heading_text {
-    margin: 10px;
+    padding: 5px;
 }
 
 .errors {
@@ -39,6 +45,7 @@ img {
     margin: 0px;
     border: 2px solid red;
     background-color: #fff;
+    clear: both;
 }
 
 .message {
@@ -46,10 +53,13 @@ img {
     margin: 0px;
     border: 2px solid green;
     background-color: #fff;
+    clear: both;
 }
 
 .content {
-    margin: 10px;
+    margin: 5px;
+    margin-top: 20px;
+    clear: both;
 }
 
 .page_description {
