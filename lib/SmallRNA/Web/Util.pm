@@ -46,7 +46,7 @@ use SmallRNA::DB;
  Usage   : my ($field_value, $field_type, $ref_display_key) =
              SmallRNA::Web::Util::get_field_value($c, $object, $field_label);
  Function: Get the real value of a field, for display.  The value may be
-           straight from the database column, or may be create with Perl code
+           straight from the database column, or may be created with Perl code
            in the field_conf key of the configuration.
  Args    : $c - the Catalyst context
            $object - the object
