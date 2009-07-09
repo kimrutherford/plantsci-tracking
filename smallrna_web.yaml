@@ -101,7 +101,23 @@ class_info:
   tissue:
     display_field: description
   pipeproject:
+    editable: 1
     display_field: name
+    field_info_list:
+      - field_label: name
+        default_value: |
+           use SmallRNA::DBLayer::Loader;
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Pipeproject', 'name', 'PROJ');
+        editable: 1
+      - field_label: description
+        editable: 1
+      - field_label: type
+        editable: 1
+        values_constraint: 'cv->name = "tracking project types"'
+      - field_label: owner
+        editable: 1
+      - field_label: funder
+        editable: 1
   process_conf:
     display_field: long_description
   pipeprocess:
