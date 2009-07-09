@@ -38,6 +38,7 @@ under the same terms as Perl itself.
 =cut
 
 use strict;
+use Carp;
 
 use base 'Catalyst::Controller::HTML::FormFu';
 
@@ -107,6 +108,16 @@ sub _initialise_form
   my $form = shift;
 
   my @elements = ();
+
+  my $class_info_ref = $c->config()->{class_info}->{$type};
+  if (!defined $class_info_ref) {
+    croak "can't find configuration for editing $type objects\n";
+  }
+
+  my $field_infos_ref = $class_info_ref->{field_info_list};
+  if (!defined $field_infos_ref) {
+    croak "can't find any field_info configuration for editing $type objects\n";
+  }
 
   my @field_infos = @{$c->config()->{class_info}->{$type}->{field_info_list}};
 
