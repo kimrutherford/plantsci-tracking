@@ -94,6 +94,7 @@ sub _get_field_values
   return @res;
 }
 
+# the names of buttons in the form so we can skip them later
 my @INPUT_BUTTON_NAMES = qw(submit cancel);
 
 # Initialise the form using the list of field_infos in the config file.
@@ -207,7 +208,6 @@ sub _create_object {
       # as a 0
       $value = undef;
     }
-
 
     if ($value =~ /^\s*$/) {
       # if the user doesn't enter anything, use undef
