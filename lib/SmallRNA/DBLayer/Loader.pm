@@ -322,7 +322,7 @@ sub get_unique_identifier
 
   my $rs = $schema->resultset($type)->search_like({$field_name, "$prefix%"});
 
-  my $max = -1;
+  my $max = 0;
 
   while (defined (my $obj = $rs->next())) {
     if ($obj->$field_name() =~ /^$prefix(\d+)/) {
