@@ -12,7 +12,9 @@ $list_title
   </div>
 % }
 % if (@field_labels == 0) {
-  No results
+  <div>
+    [none]
+  </div>
 % } else {
 
 </p>
