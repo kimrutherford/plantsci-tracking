@@ -9,7 +9,7 @@ $type
 </div>
 
 <div>
-  <a href="<% $c->uri_for('/new/object/sample', { 'pipeproject.name' => $object->name() }) %>">
+  <a href="<% $c->uri_for('/new/object/sample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
     Create a sample for this project
   </a>
 </div>

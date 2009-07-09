@@ -162,6 +162,8 @@ sub _initialise_form
       my $current_value = undef;
       if (defined $object && defined $object->$field_db_column()) {
         $current_value = $object->$field_db_column()->$table_id_column();
+      } else {
+        $current_value = $c->req->param("$referenced_table.id");
       }
 
       $elem->{options} = [_get_field_values($c, $referenced_table,
