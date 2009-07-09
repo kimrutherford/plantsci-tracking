@@ -50,7 +50,12 @@
               <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample to the database</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">Add a sample to a sequencing sample</a>
+              <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Create a sequencing run</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">
+                Add a sample to an existing sequencing run
+              </a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/person') %>">Add a person</a>
