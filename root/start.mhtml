@@ -25,6 +25,9 @@
             <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
           </li>
           <li>
+            <a href="<% $c->uri_for('/view/list/coded_sample') %>">Coded samples</a>
+          </li>
+          <li>
             <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
           </li>
           <li>
