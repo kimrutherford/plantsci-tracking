@@ -63,6 +63,7 @@ class_info:
     display_field: name
     field_info_list:
       - field_label: name
+        default_value: "SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Sample', 'name', 'SL');"
         editable: 1
       - field_label: description
         editable: 1

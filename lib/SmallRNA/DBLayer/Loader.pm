@@ -299,6 +299,27 @@ sub create_with_prefix
 
   my $schema = $self->{schema};
 
+  my $new_identifier = get_unique_identifier($schema, $type, $field_name, $prefix);
+
+  return $self->_create($type, { $field_name, $new_identifier, %$args });
+}
+
+=head2 get_unique_identifier
+
+ Usage   : my $new_identifier = get_unique_identifier($schema, 'Sample',
+                                                      'name', 'SL')
+ Function: Find a new identifier for an object.  Given a $prefix (eg. "SL"),
+           query the database and return an identifier that isn't currently
+           used.  $type and $field_name specify the field to look in.
+
+=cut
+sub get_unique_identifier
+{
+  my $schema = shift;
+  my $type = shift;
+  my $field_name = shift;
+  my $prefix = shift;
+
   my $rs = $schema->resultset($type)->search_like({$field_name, "$prefix%"});
 
   my $max = -1;
@@ -311,9 +332,8 @@ sub create_with_prefix
     }
   }
 
-  return $self->_create($type, { $field_name, $prefix . ($max + 1), %$args });
+  return $prefix . ($max + 1);
 }
-
 
 sub _create
 {
