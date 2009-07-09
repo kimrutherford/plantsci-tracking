@@ -109,12 +109,27 @@ class_info:
   pipedata:
     display_field: file_name
   sequencingrun:
+    editable: 1
     display_field: identifier
+    field_info_list:
+      - field_label: identifier
+        editable: 1
+      - field_label: Sequencing centre
+        field_conf: sequencing_centre
+        editable: 1
+      - field_label: Sequencing type 
+        field_conf: sequencing_type
+        values_constraint: 'cv->name = "tracking sequencing method"'
+        editable: 1
+      - field_label: Sequencing sample
+        field_conf: sequencing_sample
+        editable: 1
   sequencing_sample:
     display_field: name
   coded_sample:
     editable: 1
     display_field: description
+    post_hook: 'SmallRNA::Web::'
     field_info_list:
       - field_label: description
         editable: 1
@@ -126,8 +141,8 @@ class_info:
         editable: 1
       - field_label: barcode
         editable: 1
-      - field_label: sequencing run
-        field_conf: sequencingrun
+      - field_label: sequencing sample
+        field_conf: sequencing_sample
         editable: 1
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
