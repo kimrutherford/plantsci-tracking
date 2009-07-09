@@ -34,7 +34,7 @@ authentication:
 #        - if set, and the value does not match /^\w[\w\d]+$/, evaluate as
 #          perl code for each object / row to be displayed.  During evaluation,
 #          $object will be set to the current row.  Any HTML characters will be
-#          passed through to the user
+#          passed through to the user.  These fields cannot be edited 
 #        - if not set, the field_label is used to choose the database
 #          column that holds the value for this field
 class_info:
