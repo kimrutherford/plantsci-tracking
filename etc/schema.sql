@@ -54,7 +54,7 @@ CREATE TABLE cvterm (
     cv_id integer NOT NULL,
     name character varying(1024) NOT NULL,
     definition text,
-    dbxref_id integer,
+--    dbxref_id integer,
     is_obsolete integer DEFAULT 0 NOT NULL,
     is_relationshiptype integer DEFAULT 0 NOT NULL
 );
