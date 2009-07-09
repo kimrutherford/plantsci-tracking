@@ -108,11 +108,7 @@ CREATE TABLE genotype (
        genotype_id serial CONSTRAINT genotype_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        organism integer REFERENCES organism(organism_id) NOT NULL,
-       type integer REFERENCES cvterm(cvterm_id) NOT NULL,
-       description text
-       -- use description only when there is no type cvterm or vice versa:
-       CHECK (description IS NULL AND type IS NOT NULL OR
-              description IS NOT NULL AND type IS NULL)
+       description text NOT NULL
 );
 CREATE TABLE tissue (
        tissue_id SERIAL CONSTRAINT tissue_id_pk PRIMARY KEY,
