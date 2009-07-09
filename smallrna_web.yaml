@@ -48,7 +48,7 @@ class_info:
     display_field: full_name
   person:
     editable: 1
-    display_field: user_name
+    display_field: full_name
     field_info_list:
       - field_label: user_name
         editable: 1
