@@ -64,7 +64,9 @@ sub new
 =head2 add_organism
 
  Usage   : my $organism_object = $loader->add_organism(genus => "Arabidopsis",
-                                                       species => "thaliana");
+                                                       species => "thaliana",
+                                                       abbreviation => "arath",
+                                                       common_name => "thale cress");
  Function: Create and return a new organism object
  Args    : genus and species
 
@@ -72,15 +74,20 @@ sub new
 sub add_organism
 {
   my $self = shift;
-  my %params = validate(@_, { genus => 1, species => 1 });
+  my %params = validate(@_, { genus => 1, species => 1, abbreviation => 1,
+                              common_name => 1 });
 
   my $genus = $params{genus};
   my $species = $params{species};
+  my $abbreviation = $params{abbreviation};
+  my $common_name = $params{common_name};
 
   my $rs = $self->{schema}->resultset('Organism');
   my $new_org = $rs->create({
                              genus  => $genus,
-                             species => $species
+                             species => $species,
+                             abbreviation => $abbreviation,
+                             common_name => $common_name
                             });
   return $new_org;
 }

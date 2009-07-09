@@ -3,8 +3,8 @@
 # script to populate the barcode table
 
 use strict;
-
 use warnings;
+use Carp;
 
 use SmallRNA::DB;
 use SmallRNA::DBLayer::Loader;
@@ -208,20 +208,34 @@ $schema->txn_do(sub {
                     $schema->create_with_type('Organisation', $org);
                   }
                 });
-my @organisms = ({ genus => "Arabidopsis", species => "thaliana" },
-                 { genus => "Chlamydomonas", species => "reinhardtii" },
-                 { genus => "Cardamine", species => "hirsuta" },
-                 { genus => "Caenorhabditis", species => "elegans" },
-                 { genus => "Dictyostelium", species => "discoideum" },
-                 { genus => "Homo", species => "sapiens" },
-                 { genus => "Lycopersicon", species => "esculentum" },
-                 { genus => "Zea", species => "mays" },
-                 { genus => "Oryza", species => "sativa" },
-                 { genus => "Nicotiana", species => "benthamiana" },
-                 { genus => "Schizosaccharomyces", species => "pombe" },
-                 { genus => "Carmovirus", species => "turnip crinkle virus" },
-                 { genus => "Benyvirus", species => "rice stripe virus" },
-                 { genus => "Unknown", species => "unknown" },
+my @organisms = ({ genus => "Arabidopsis", species => "thaliana",
+                   abbreviation => "arath", common_name => "thale cress" },
+                 { genus => "Chlamydomonas", species => "reinhardtii",
+                   abbreviation => "chlre", common_name => "chlamy"},
+                 { genus => "Cardamine", species => "hirsuta",
+                   abbreviation => "", common_name => "Hairy bittercress" },
+                 { genus => "Caenorhabditis", species => "elegans",
+                   abbreviation => "caeel", common_name => "worm" },
+                 { genus => "Dictyostelium", species => "discoideum",
+                   abbreviation => "dicdi", common_name => "Slime mold" },
+                 { genus => "Homo", species => "sapiens",
+                   abbreviation => "human", common_name => "human" },
+                 { genus => "Lycopersicon", species => "esculentum",
+                   abbreviation => "", common_name => "tomato" },
+                 { genus => "Zea", species => "mays",
+                   abbreviation => "maize", common_name => "corn" },
+                 { genus => "Oryza", species => "sativa",
+                   abbreviation => "orysa", common_name => "rice" },
+                 { genus => "Nicotiana", species => "benthamiana",
+                   abbreviation => "nicbe", common_name => "tabaco" },
+                 { genus => "Schizosaccharomyces", species => "pombe",
+                   abbreviation => "schpo", common_name => "pombe" },
+                 { genus => "Carmovirus", species => "turnip crinkle virus",
+                   abbreviation => "tcv", common_name => "tcv" },
+                 { genus => "Benyvirus", species => "rice stripe virus",
+                   abbreviation => "rsv", common_name => "rsv" },
+                 { genus => "Unknown", species => "unknown",
+                   abbreviation => "none", common_name => "none" },
                 );
 
 my %organism_objects = ();
@@ -255,6 +269,11 @@ my %ecotype_objs = ();
 $schema->txn_do(sub {
                   for my $ecotype (@ecotypes) {
                     my $org_obj = $organism_objects{$ecotype->{org}};
+
+                    if (!defined $org_obj) {
+                      croak "can't find organism for ", $ecotype->{org}, "\n";
+                    }
+
                     my $obj =
                       $schema->create_with_type('Ecotype',
                                                 {
