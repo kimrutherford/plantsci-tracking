@@ -3,7 +3,7 @@
     <td class="actionlist" width="50%" valign="top">
       <div>
         <div class="label">
-          View
+          View ...
         </div>
         <ul>
           <li>
@@ -45,26 +45,26 @@
     <td class="actionlist" width="50%" valign="top">
       <div>
         <div class="label">
-          Edit
+          Create a new ...
         </div>
         <div>
           <ul>
             <li>
-              <a href="<% $c->uri_for('/new/object/pipeproject') %>">Create a project</a>
+              <a href="<% $c->uri_for('/new/object/pipeproject') %>">Project</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample</a>
+              <a href="<% $c->uri_for('/new/object/sample') %>">Sample</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Create a sequencing run</a>
+              <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Sequencing run</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">
-                Add a sample to an existing sequencing run
+                Sample to an existing sequencing run
               </a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/person') %>">Add a person</a>
+              <a href="<% $c->uri_for('/new/object/person') %>">Person</a>
             </li>
           </ul>
         </div>
