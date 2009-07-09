@@ -180,6 +180,17 @@ sub _initialise_form
       }
       if (defined $object) {
         $elem->{value} = $object->$field_db_column();
+      } else {
+        # try to set the default value (if configured)
+        my $default_value_code = $field_info->{default_value};
+
+        if (defined $default_value_code) {
+          $elem->{value} = eval "$default_value_code";
+          if ($@) {
+            warn "error evaluating default_value configuration for "
+              . "'$field_label': $@";
+          }
+        }
       }
     }
 
