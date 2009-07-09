@@ -24,19 +24,16 @@ __PACKAGE__->add_columns(
   },
   "organism",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
-  "type",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "description",
   {
     data_type => "text",
     default_value => undef,
-    is_nullable => 1,
+    is_nullable => 0,
     size => undef,
   },
 );
 __PACKAGE__->set_primary_key("genotype_id");
 __PACKAGE__->add_unique_constraint("genotype_id_pk", ["genotype_id"]);
-__PACKAGE__->belongs_to("type", "SmallRNA::DB::Cvterm", { cvterm_id => "type" });
 __PACKAGE__->belongs_to(
   "organism",
   "SmallRNA::DB::Organism",
@@ -50,7 +47,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WdQVOO4/4tp0pHuAvAgWcQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Dc0Sw9HW3C8Xmzki7YRe1w
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

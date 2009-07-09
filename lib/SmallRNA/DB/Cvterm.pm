@@ -45,11 +45,6 @@ __PACKAGE__->has_many(
 );
 __PACKAGE__->belongs_to("cv", "SmallRNA::DB::Cv", { cv_id => "cv_id" });
 __PACKAGE__->has_many(
-  "genotypes",
-  "SmallRNA::DB::Genotype",
-  { "foreign.type" => "self.cvterm_id" },
-);
-__PACKAGE__->has_many(
   "pipedata_format_types",
   "SmallRNA::DB::Pipedata",
   { "foreign.format_type" => "self.cvterm_id" },
@@ -127,7 +122,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iVJGt+0lvzO6/lUn9W+vrg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2ZEIuZfTI2D6Rp5ZtM0HCA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
