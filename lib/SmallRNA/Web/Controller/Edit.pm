@@ -277,7 +277,7 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
   if ($req_type eq 'new') {
     $st->{title} = "New $display_type_name";
   } else {
-    $st->{title} = "Edit $type $display_type_name";
+    $st->{title} = "Edit $display_type_name";
   }
 
   $st->{template} = "edit.mhtml";
