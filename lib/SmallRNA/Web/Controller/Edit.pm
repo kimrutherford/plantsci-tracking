@@ -272,10 +272,12 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
 
   my $st = $c->stash;
 
+  my $display_type_name = SmallRNA::DB::display_name($type);
+
   if ($req_type eq 'new') {
-    $st->{title} = "New $type";
+    $st->{title} = "New $display_type_name";
   } else {
-    $st->{title} = "Edit $type $object_id";
+    $st->{title} = "Edit $type $display_type_name";
   }
 
   $st->{template} = "edit.mhtml";

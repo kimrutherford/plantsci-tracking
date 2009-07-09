@@ -223,4 +223,32 @@ sub id_of_object
   return $object->$table_id_field();
 }
 
+=head2 display_name
+
+ Usage   : my $display_name = SmallRNA::DB::display_name($object);
+             or
+           my $display_name = SmallRNA::DB::display_name($table_name);
+             or
+           my $display_name = SmallRNA::DB::display_name($class_name);
+ Function: return a description of a table that is suitable for display.
+           eg. turn "coded_sample" into "coded sample"
+
+=cut
+sub display_name
+{
+  my $arg = shift;
+
+  if (ref $arg) {
+    $arg = $arg->table();
+  }
+
+  if ($arg =~ /::/) {
+    $arg = table_name_of_class($arg);
+  }
+
+  $arg =~ s/[_\-]/ /g;
+
+  return "$arg";
+}
+
 1;
