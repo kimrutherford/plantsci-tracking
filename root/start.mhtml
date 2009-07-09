@@ -50,7 +50,10 @@
         <div>
           <ul>
             <li>
-              <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample to the database</a>
+              <a href="<% $c->uri_for('/new/object/pipeproject') %>">Create a project</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/sample') %>">Add a sample</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Create a sequencing run</a>
