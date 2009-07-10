@@ -41,6 +41,8 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 
+use SmallRNA::DB;
+
 sub set_template : Private {
   my ($self, $c, $type, $object_id) = @_;
 
@@ -48,7 +50,9 @@ sub set_template : Private {
 
   $c->stash()->{template} = "view/object/$type.mhtml";
 
-  my $object = $c->schema()->resultset(ucfirst $type)->find($object_id);
+  my $class_name = SmallRNA::DB::class_name_of_table($type);
+
+  my $object = $c->schema()->resultset($class_name)->find($object_id);
 
   if ($type eq 'person') {
     $c->stash()->{title} = 'User details for ' . $object->full_name();
@@ -69,11 +73,13 @@ sub set_template : Private {
   } elsif ($type eq 'organisation') {
     $c->stash()->{title} = 'Organisation details';
   } elsif ($type eq 'cv') {
-    $c->stash()->{title} = 'Controlled vocabulary id ' . $object->name(),
+    $c->stash()->{title} = 'Controlled vocabulary ' . $object->name(),
+  } elsif ($type eq 'sequencing_sample') {
+    $c->stash()->{title} = 'Sequencing sample ' . $object->name(),
   }
 }
 
-sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype)/(.*)') {
+sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_id) = @{$c->req()->captures()};
   set_template($self, $c, $type, $object_id);
