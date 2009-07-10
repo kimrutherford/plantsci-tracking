@@ -14,6 +14,10 @@ $object
   <& /view/collection.mhtml, object => $object, collection_name => 'ecotypes',
     collection_title => "The ecotype$ecotype_plu for this organism" &></td>
 </div>
+<div>
+  <& /view/collection.mhtml, object => $object, collection_name => 'tissues',
+    collection_title => "The tissue type$tissue_plu for this organism" &></td>
+</div>
 
 <%init>
 my $samples_rs = $object->ecotypes()->search_related('sample_ecotypes')->search_related('sample');
@@ -21,5 +25,7 @@ my $samples_count = $samples_rs->count();
 my $sample_plu = $samples_count !=  1 ? 's' : '';
 my $ecotypes_count = $object->ecotypes()->count();
 my $ecotype_plu = $ecotypes_count !=  1 ? 's' : '';
+my $tissues_count = $object->tissues()->count();
+my $tissue_plu = $tissues_count !=  1 ? 's' : '';
 </%init>
 
