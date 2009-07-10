@@ -163,7 +163,7 @@ CREATE TABLE sample (
        name text NOT NULL UNIQUE,
        pipeproject integer REFERENCES pipeproject(pipeproject_id) NOT NULL,
        genotype integer REFERENCES genotype(genotype_id),
-       description text,
+       description text NOT NULL,
        protocol text, -- there should be a protocol text, or ref to cvterm
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        treatment_type integer REFERENCES cvterm(cvterm_id),

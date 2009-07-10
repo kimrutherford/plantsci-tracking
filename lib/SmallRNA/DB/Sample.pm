@@ -37,7 +37,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "text",
     default_value => undef,
-    is_nullable => 1,
+    is_nullable => 0,
     size => undef,
   },
   "protocol",
@@ -110,7 +110,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qUUUlp0HVyggzFFs9i/wGQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aiT8FwqfQVh8J/I0U9ETMA
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
 __PACKAGE__->many_to_many('ecotypes' => 'sample_ecotypes', 'ecotype');
