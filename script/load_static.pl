@@ -248,21 +248,31 @@ $schema->txn_do(sub {
                   }
                 });
 
-my @ecotypes = ({ description => "unspecified", org => "Arabidopsis thaliana" },
-                { description => "unspecified", org => "Chlamydomonas reinhardtii" },
-                { description => "unspecified", org => "Cardamine hirsuta" },
-                { description => "unspecified", org => "Caenorhabditis elegans" },
-                { description => "unspecified", org => "Dictyostelium discoideum" },
-                { description => "unspecified", org => "Homo sapiens" },
-                { description => "unspecified", org => "Lycopersicon esculentum" },
-                { description => "unspecified", org => "Zea mays" },
-                { description => "unspecified", org => "Nicotiana benthamiana" },
-                { description => "unspecified", org => "Schizosaccharomyces pombe" },
-                { description => "unspecified", org => "Oryza sativa" },
-                { description => "unspecified", org => "Carmovirus turnip crinkle virus" },
-                { description => "unspecified", org => "Benyvirus rice stripe virus" },
-                { description => "unspecified", org => "Unknown unknown" },
-               );
+my @ecotypes = (
+    { description => "unspecified", org => "Arabidopsis thaliana" },
+    { description => "Col", org => "Arabidopsis thaliana" },
+    { description => "WS", org => "Arabidopsis thaliana" },
+    { description => "Ler", org => "Arabidopsis thaliana" },
+    { description => "C24", org => "Arabidopsis thaliana" },
+    { description => "Cvi", org => "Arabidopsis thaliana" },
+    { description => "unspecified", org => "Chlamydomonas reinhardtii" },
+    { description => "unspecified", org => "Cardamine hirsuta" },
+    { description => "unspecified", org => "Caenorhabditis elegans" },
+    { description => "unspecified", org => "Dictyostelium discoideum" },
+    { description => "unspecified", org => "Homo sapiens" },
+    { description => "unspecified", org => "Lycopersicon esculentum" },
+    { description => "unspecified", org => "Zea mays" },
+    { description => "B73", org => "Zea mays" },
+    { description => "Mo17", org => "Zea mays" },
+    { description => "unspecified", org => "Nicotiana benthamiana" },
+    { description => "unspecified", org => "Schizosaccharomyces pombe" },
+    { description => "unspecified", org => "Oryza sativa" },
+    { description => "indica", org => "Oryza sativa" },
+    { description => "japonica", org => "Oryza sativa" },
+    { description => "unspecified", org => "Carmovirus turnip crinkle virus" },
+    { description => "unspecified", org => "Benyvirus rice stripe virus" },
+    { description => "unspecified", org => "Unknown unknown" },
+   );
 
 my %ecotype_objs = ();
 

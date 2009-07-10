@@ -385,7 +385,8 @@ sub get_ecotype_by_org
 
   my $rs = $schema->resultset('Ecotype')->search(
       {
-        organism => $org_obj->organism_id()
+        organism => $org_obj->organism_id(),
+        description => 'unspecified'
       }
     );
 
