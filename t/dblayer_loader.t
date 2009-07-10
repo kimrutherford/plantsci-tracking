@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More tests => 2;
 
 BEGIN {
   unshift @INC, 't';
@@ -21,4 +21,4 @@ SmallRNATest::setup($schema, $config);
 my $new_identifier =
   SmallRNA::DBLayer::Loader::get_unique_identifier($schema, 'Sample', 'name', 'SL');
 
-is($new_identifier, 'SL100');
+is($new_identifier, 'SL237');
