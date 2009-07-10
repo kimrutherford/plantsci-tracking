@@ -1,6 +1,6 @@
 <table>
   <tr>
-    <td class="actionlist" width="50%" valign="top">
+    <td class="actionlist" width="50%" valign="top" rowspan="2">
       <div>
         <div class="label">
           View ...
@@ -45,7 +45,7 @@
     <td class="actionlist" width="50%" valign="top">
       <div>
         <div class="label">
-          Create a new ...
+          Add a ...
         </div>
         <div>
           <ul>
@@ -59,15 +59,26 @@
               <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Sequencing run</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">
-                Sample to an existing sequencing run
-              </a>
-            </li>
-            <li>
               <a href="<% $c->uri_for('/new/object/person') %>">Person</a>
             </li>
           </ul>
         </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="actionlist" width="50%" valign="top">
+      <div class="label">
+        Actions
+      </div>
+      <div>
+        <ul>
+          <li>
+            <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">
+              Sample to an existing sequencing run
+            </a>
+          </li>
+        </ul>
       </div>
     </td>
   </tr>
