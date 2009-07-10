@@ -114,15 +114,10 @@ __PACKAGE__->has_many(
   "SmallRNA::DB::Sequencingrun",
   { "foreign.sequencing_type" => "self.cvterm_id" },
 );
-__PACKAGE__->has_many(
-  "tissues",
-  "SmallRNA::DB::Tissue",
-  { "foreign.type" => "self.cvterm_id" },
-);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2ZEIuZfTI2D6Rp5ZtM0HCA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WYRoG2tOWQB7meMV1quqyA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

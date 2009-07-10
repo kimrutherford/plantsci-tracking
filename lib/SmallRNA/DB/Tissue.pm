@@ -24,8 +24,6 @@ __PACKAGE__->add_columns(
   },
   "organism",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
-  "type",
-  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "description",
   {
     data_type => "text",
@@ -46,11 +44,10 @@ __PACKAGE__->belongs_to(
   "SmallRNA::DB::Organism",
   { organism_id => "organism" },
 );
-__PACKAGE__->belongs_to("type", "SmallRNA::DB::Cvterm", { cvterm_id => "type" });
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qx3/tqATnHCdlc7bCgjG9w
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Or0R432Ap0PtgkPJJ7NfGg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
