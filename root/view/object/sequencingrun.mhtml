@@ -7,16 +7,26 @@ $type
 <& /view/field_list.mhtml, object => $object, field_labels =>
   [qw(identifier initial_pipedata sequencing_centre initial_pipeprocess 
       submission_date run_date data_received_date quality sequencing_type
-      multiplexing_type)] &>
+      multiplexing_type sequencing_sample)] &>
 </div>
+
 <div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$plu sequenced by this run" &></td>
+    list_title => "The sample$sample_plu sequenced by this run" &></td>
+</div>
+
+<div>
+  <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
+    list_title => "The coded sample$sample_plu sequenced by this run" &></td>
 </div>
 
 <%init>
+my $coded_samples_rs =
+  $object->sequencing_sample()->search_related('coded_samples');
+my $coded_samples_count = $coded_samples_rs->count();
+my $coded_plu = $coded_samples_count != 0 ? 's' : '';
 my $samples_rs =
   $object->sequencing_sample()->search_related('coded_samples')->search_related('sample');
 my $samples_count = $samples_rs->count();
-my $plu = $samples_count != 0 ? 's' : '';
+my $sample_plu = $samples_count != 0 ? 's' : '';
 </%init>
