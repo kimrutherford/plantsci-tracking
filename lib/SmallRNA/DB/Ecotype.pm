@@ -62,6 +62,7 @@ sub long_description
   return $self->description() . ' ' . $self->organism()->full_name();
 }
 
+__PACKAGE__->many_to_many('samples' => 'sample_ecotypes', 'sample');
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;
