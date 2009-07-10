@@ -296,6 +296,61 @@ $schema->txn_do(sub {
                   }
                 });
 
+my @tissues = (
+    { description => "unspecified", org => "Arabidopsis thaliana" },
+    { description => "unopened flowers (stage 0-12)", org => "Arabidopsis thaliana" },
+    { description => "open flowers (stage 13)", org => "Arabidopsis thaliana" },
+    { description => "young siliques (<7 dpf)", org => "Arabidopsis thaliana" },
+    { description => "mature siliques (>7 dpf)", org => "Arabidopsis thaliana" },
+    { description => "young leaves (<14 days)", org => "Arabidopsis thaliana" },
+    { description => "mature leaves (>14 days)", org => "Arabidopsis thaliana" },
+    { description => "vegetative meristem", org => "Arabidopsis thaliana" },
+    { description => "floral meristem", org => "Arabidopsis thaliana" },
+    { description => "roots (including meristem)", org => "Arabidopsis thaliana" },
+    { description => "seedlings (roots, cotyledons, leaves, and meristem)", org => "Arabidopsis thaliana" },
+    { description => "cauline leaves", org => "Arabidopsis thaliana" },
+    { description => "stem", org => "Arabidopsis thaliana" },
+
+    { description => "unspecified", org => "Chlamydomonas reinhardtii" },
+    { description => "vegetative cells", org => "Chlamydomonas reinhardtii" },
+    { description => "gametes", org => "Chlamydomonas reinhardtii" },
+
+    { description => "unspecified", org => "Cardamine hirsuta" },
+    { description => "unspecified", org => "Caenorhabditis elegans" },
+    { description => "unspecified", org => "Dictyostelium discoideum" },
+    { description => "unspecified", org => "Homo sapiens" },
+    { description => "unspecified", org => "Lycopersicon esculentum" },
+    { description => "unspecified", org => "Zea mays" },
+    { description => "unspecified", org => "Nicotiana benthamiana" },
+    { description => "unspecified", org => "Schizosaccharomyces pombe" },
+    { description => "unspecified", org => "Oryza sativa" },
+    { description => "unspecified", org => "Carmovirus turnip crinkle virus" },
+    { description => "unspecified", org => "Benyvirus rice stripe virus" },
+    { description => "unspecified", org => "Unknown unknown" },
+   );
+
+my %tissue_objs = ();
+
+$schema->txn_do(sub {
+                  for my $tissue (@tissues) {
+                    my $org_obj = $organism_objects{$tissue->{org}};
+                    
+                    if (!defined $org_obj) {
+                      croak "can't find organism for ", $tissue->{org}, "\n";
+                    }
+
+                    my $obj =
+                      $schema->create_with_type('Tissue',
+                                                {
+                                                  description => $tissue->{description},
+                                                  organism => $org_obj,
+                                                });
+                    my $tissue_desc = 
+                      $tissue->{description} . ' ' . $tissue->{org};
+                    $tissue_objs{$tissue_desc} = $obj;
+                  }
+                });
+
 my @people = (
               ['Andy Bassett', 'andy_bassett', 'DCB'],
               ['David Baulcombe', 'david_baulcombe', 'DCB'],
