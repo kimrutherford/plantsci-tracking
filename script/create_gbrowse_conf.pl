@@ -19,7 +19,7 @@ my $track_config = "";
 my $sample_rs = $schema->resultset('Sample');
 
 while (defined (my $sample = $sample_rs->next())) {
-  if ($sample->ecotype()->organism()->full_name() eq 'Arabidopsis thaliana') {
+  if (($sample->ecotypes())[0]->organism()->full_name() eq 'Arabidopsis thaliana') {
     my $sample_name = $sample->name();
 
     next if $sample_name =~ /_[A-Z]$/;
