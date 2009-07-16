@@ -538,7 +538,11 @@ sub process
             if ($sheet_seq_centre_name eq 'BGI') {
               $seq_centre_name = $sheet_seq_centre_name;
             } else {
-              croak "unknown sequencing centre name: $sheet_seq_centre_name\n";
+              if ($sheet_seq_centre_name eq 'CSHL') {
+                $seq_centre_name = $sheet_seq_centre_name;
+              } else {
+                croak "unknown sequencing centre name: $sheet_seq_centre_name\n";
+              }
             }
           }
         }

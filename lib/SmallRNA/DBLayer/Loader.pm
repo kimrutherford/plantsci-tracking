@@ -226,7 +226,12 @@ sub add_sequencingrun_pipedata
         $process_conf = $self->_find('ProcessConf',
                                      detail => 'BGI');
       } else {
-        croak "unknown sequencing centre name: $seq_centre_name\n";
+        if ($seq_centre_name eq 'CSHL') {
+          $process_conf = $self->_find('ProcessConf',
+                                       detail => 'CSHL');
+        } else {
+          croak "unknown sequencing centre name: $seq_centre_name\n";
+        }
       }
     }
   }
