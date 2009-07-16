@@ -78,10 +78,7 @@ sub run
 
     my @bits = split (/\t/, $line);
 
-    if (!($bits[0] =~ s/^Chr//)) {
-      croak "pattern match failed\n";
-    }
-
+    $bits[0] =~ s/^Chr//;
     $bits[8] =~ s/.*Note=(\w+).*/$params{sample_name} $1/;
 
     my $new_line = join "\t", @bits;
