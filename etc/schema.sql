@@ -136,8 +136,8 @@ CREATE TABLE process_conf_input (
        process_conf_input_id serial CONSTRAINT process_conf_input_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        process_conf integer REFERENCES process_conf(process_conf_id) NOT NULL,
-       format_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
-       content_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
+       format_type integer REFERENCES cvterm(cvterm_id),
+       content_type integer REFERENCES cvterm(cvterm_id),
        ecotype integer REFERENCES ecotype(ecotype_id)
 );
 CREATE TABLE pipeprocess (

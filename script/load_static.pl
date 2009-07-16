@@ -616,10 +616,16 @@ $schema->txn_do(sub {
 
     for my $input (@{$conf{inputs}}) {
       my %args = (
-        process_conf => $process_conf,
-        content_type => $cvterm_objs{$input->{content_type}},
-        format_type => $cvterm_objs{$input->{format_type}}
+        process_conf => $process_conf
       );
+
+      if (defined $input->{content_type}) {
+        $args{content_type} = $cvterm_objs{$input->{content_type}};
+      }
+
+      if (defined $input->{format_type}) {
+        $args{format_type} = $cvterm_objs{$input->{format_type}};
+      }
 
       if (defined $input->{ecotype_name}) {
         $args{ecotype} = $ecotype_objs{$input->{ecotype_name}};

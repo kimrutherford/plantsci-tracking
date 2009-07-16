@@ -64,8 +64,14 @@ sub _make_bit
   my ($conf, $input) = validate_pos(@_, 1, 1);
   my $content_type = $input->content_type();
   my $format_type = $input->format_type();
-  my $content_type_id = $content_type->cvterm_id();
-  my $format_type_id = $format_type->cvterm_id();
+  my $content_type_id = undef;
+  if (defined $content_type) {
+    $content_type_id = $content_type->cvterm_id();
+  }
+  my $format_type_id = undef;
+  if (defined $format_type) {
+    $format_type_id = $format_type->cvterm_id();
+  }
   my $conf_id = $conf->process_conf_id();
 
   # samples where there is a pipedata of the appropriate type for this
@@ -83,13 +89,24 @@ sub _make_bit
             AND organism.genus || ' ' || organism.species = '$organism_full_name')";
   }
 
+  my $content_constraint = '';
+  my $format_constraint = '';
+
+  if (defined $content_type_id) {
+    $content_constraint = "AND pipedata.content_type = $content_type_id"
+  }
+
+  if (defined $format_type_id) {
+    $format_constraint = "AND pipedata.format_type = $format_type_id";
+  }
+
   return qq{
     me.sample_id in (
       SELECT sample_pipedata.sample
         FROM sample_pipedata, pipedata
        WHERE sample_pipedata.pipedata = pipedata.pipedata_id
-         AND pipedata.content_type = $content_type_id
-         AND pipedata.format_type = $format_type_id
+$format_constraint
+$content_constraint
 $org_constraint
          AND NOT pipedata.pipedata_id IN (
            SELECT pipeprocess_in_pipedata.pipedata
@@ -116,10 +133,14 @@ sub _find_pipedata
 
     my @matching_pipedatas = ();
 
-    my $cond = {
-      content_type => $content_type->cvterm_id(),
-      format_type => $format_type->cvterm_id()
-    };
+    my $cond = { };
+
+    if (defined $content_type) {
+      $cond->{content_type} = $content_type->cvterm_id(),
+    }
+    if (defined $format_type) {
+      $cond->{format_type} = $format_type->cvterm_id(),
+    }
 
     my $matching_rs =
       $sample->sample_pipedatas()->search_related('pipedata', $cond);
