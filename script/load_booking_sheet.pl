@@ -336,7 +336,7 @@ sub fix_name
 
 my %dir_files = ();
 
-for my $sub_dir (qw(fastq SL4 SL9 SL11 SL12 SL18 SL19 SL21 SL22 SL1000 SL1001 SL1002)) {
+for my $sub_dir (qw(fastq SL4 SL9 SL11 SL12 SL18 SL19 SL21 SL22 SL1000 SL1001 SL1002 SL1007 SL1008 SL1009 SL1010)) {
   my $dir_name = $config->{data_directory} . "/$sub_dir";
   opendir my $dir, $dir_name or die "can't open directory $dir_name: $!\n";
   while (my $ent = readdir $dir) {
