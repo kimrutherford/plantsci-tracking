@@ -50,6 +50,7 @@ my %terms = (
               'fastq' => 'FastQ format file',
               'fs' => 'FASTA format with an empty description line',
               'fasta' => 'FASTA format',
+              'gff2' => 'GFF2 format',
               'gff3' => 'GFF3 format',
               'seq_offset_index' => 'An index of a GFF3 or FASTA format file',
               'text' => 'A human readable text file with summaries or statistics',
@@ -150,6 +151,8 @@ my %terms = (
                 'Align reads against a sequence database with SSAHA',
               'genome aligned reads filter' =>
                 'Filter a fasta file, creating a file containing only genome aligned reads',
+              'gff3 to gff2 converter' =>
+                'Convert a GFF3 file into a GFF2 file',
               'gff3 index' =>
                 'Create an index of GFF3 file',
               'fasta index' =>
@@ -581,6 +584,15 @@ my @analyses = (
                      {
                        format_type => 'gff3',
                        content_type => 'genome_aligned_srna_reads'
+                     }
+                   ]
+                },
+                {
+                 type_term_name => 'gff3 to gff2 converter',
+                 runable_name => 'SmallRNA::Runable::GFF3ToGFF2Runable',
+                 inputs => [
+                     {
+                       format_type => 'gff3',
                      }
                    ]
                 },
