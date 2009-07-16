@@ -292,7 +292,7 @@ $schema->txn_do(sub {
                                                   description => $ecotype->{description},
                                                   organism => $org_obj,
                                                 });
-                    my $ecotype_desc = 
+                    my $ecotype_desc =
                       $ecotype->{description} . ' ' . $ecotype->{org};
                     $ecotype_objs{$ecotype_desc} = $obj;
                   }
@@ -336,7 +336,7 @@ my %tissue_objs = ();
 $schema->txn_do(sub {
                   for my $tissue (@tissues) {
                     my $org_obj = $organism_objects{$tissue->{org}};
-                    
+
                     if (!defined $org_obj) {
                       croak "can't find organism for ", $tissue->{org}, "\n";
                     }
@@ -347,7 +347,7 @@ $schema->txn_do(sub {
                                                   description => $tissue->{description},
                                                   organism => $org_obj,
                                                 });
-                    my $tissue_desc = 
+                    my $tissue_desc =
                       $tissue->{description} . ' ' . $tissue->{org};
                     $tissue_objs{$tissue_desc} = $obj;
                   }
