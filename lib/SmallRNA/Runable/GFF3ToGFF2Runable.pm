@@ -41,7 +41,7 @@ use Carp;
 
 use Moose;
 
-use SmallRNA::Index::Manager;
+use SmallRNA::Process::GFF3ToGFF2Process;
 
 extends 'SmallRNA::Runable::SmallRNARunable';
 
@@ -80,8 +80,8 @@ sub run
     my $input_format_type = $input_pipedata->format_type()->name();
     my $input_content_type = $input_pipedata->content_type()->name();
 
-    if ($input_format_type eq 'gff3') {
-      croak('must have GFF3 as input');
+    if ($input_format_type ne 'gff3') {
+      croak("must have 'gff3' as input, not: , $input_format_type");
     }
 
     my $output_type = 'gff2';
@@ -92,14 +92,12 @@ sub run
     my $output_file_name = $input_file_name;
 
     if ($output_file_name =~ s/\.$input_format_type$/.$output_type/) {
-      SmallRNA::Process::GFF2ToGFF2Process::run(input_file_name =>
-                                                  "$data_dir/" . $input_file_name,
-                                                output_file_name =>
-                                                  "$data_dir/" . $output_file_name,
+      SmallRNA::Process::GFF3ToGFF2Process::run(input_file_name => $input_file_name,
+                                                output_file_name => $output_file_name,
                                                 sample_name => $sample_name);
 
       $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
-                            file_name => $gff_file_name,
+                            file_name => $output_file_name,
                             format_type_name => $output_type,
                             content_type_name => $input_content_type);
     } else {
