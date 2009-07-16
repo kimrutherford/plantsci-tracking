@@ -254,7 +254,11 @@ sub add_sequencingrun_pipedata
 
   if ($file_name =~ /\.fa$|\.fasta$/) {
     $pipedata_format_type = $self->_find('Cvterm', name => 'fasta');
-    $pipedata_content_type = $self->_find('Cvterm', name => 'small_rna');
+    if ($file_name =~ /\.non_redundant_small_rna\./) {
+      $pipedata_content_type = $self->_find('Cvterm', name => 'non_redundant_small_rna');
+    } else {
+      $pipedata_content_type = $self->_find('Cvterm', name => 'small_rna');
+    }
   } else {
     $pipedata_format_type = $self->_find('Cvterm', name => 'fastq');
 
