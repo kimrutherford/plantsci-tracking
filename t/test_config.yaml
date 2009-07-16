@@ -1,6 +1,7 @@
 name: SmallRNA::Web
 long_name: SmallRNA tracking
 pipeline_directory: /tmp/pipeline-test
+data_sub_directory: test-results
 "Model::SmallRNAModel":
     schema_class: 'SmallRNA::DB'
     connect_info:
