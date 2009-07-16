@@ -68,7 +68,7 @@ class_info:
     editable: 1
     display_field: name
     # hack to put the samples in a sensible order:
-    order_by: "substring(name from E'(?:SL|.*)(\d+)')"
+    order_by: "substring(name from E'(?:SL([\\d]+).*|(.*))')::integer"
     field_info_list:
       - field_label: name
         default_value: |
