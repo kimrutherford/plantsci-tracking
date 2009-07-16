@@ -113,7 +113,7 @@ sub setup
 sub data_directory
 {
   my $self = shift;
-  return $self->{pipeline_directory} . '/process';
+  return $self->{data_directory};
 }
 
 1;
