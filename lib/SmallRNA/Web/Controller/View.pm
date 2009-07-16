@@ -90,10 +90,36 @@ sub list : Local {
     $st->{type} = $type;
 
     my $class_name = SmallRNA::DB::class_name_of_table($type);
+    my $class_info = $c->config()->{class_info}->{$type};
 
-    $st->{rs} = $c->schema->resultset($class_name)->search(undef,
-                                                             { order_by => $type . '_id' }
-                                                           );
+    # default: order by id
+    my $order_by = $type . '_id';
+
+    if (defined $class_info) {
+      my @order_by_fields;
+      if (defined $class_info->{order_by}) {
+        if (ref $class_info->{order_by}) {
+          @order_by_fields = @{$class_info->{order_by}};
+        } else {
+          push @order_by_fields, $class_info->{order_by};
+        }
+      } else {
+        if (defined $class_info->{display_field}) {
+          push @order_by_fields, $class_info->{display_field};
+        }
+      }
+      if (@order_by_fields) {
+        $order_by = \@order_by_fields;
+      }
+    }
+
+    my $params = { order_by => $order_by };
+
+    use Data::Dumper;
+    warn "params: ", Data::Dumper->Dump([$params]), "\n";
+
+
+    $st->{rs} = $c->schema->resultset($class_name)->search(undef, $params);
 
     $st->{page} = $c->req->param('page') || 1;
     $st->{numrows} = $c->req->param('numrows') || 20;
