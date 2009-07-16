@@ -341,3 +341,7 @@ SL1003.RJ_3_1.fq,SL1003,,NO,,BGI,"Susceptible, uninfected",Oryza sativa,L. ssp. 
 SL1004.RJ_3_3.fq,SL1004,,NO,,BGI,"Susceptible, infected",Oryza sativa,L. ssp. Japonica cv. Nipponbare,Krys K,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
 SL1005.RJ_8_1.fq,SL1005,,NO,,BGI,"Resistant, uninfected",Oryza sativa,L. ssp. Japonica cv. Nipponbare,Krys K,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
 SL1006.RJ_8_3.fq,SL1006,,NO,,BGI,"Resistant, infected",Oryza sativa,L. ssp. Japonica cv. Nipponbare,Krys K,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
+SL1007.rmks01_2.fa,SL1007,,NO,,CSHL,Slotkin et al. 2009 - nr_rmks01_2,Arabidopsis thaliana,,Becky M,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
+SL1008.rmks02_2.fa,SL1008,,NO,,CSHL,Slotkin et al. 2009 - nr_rmks02_2,Arabidopsis thaliana,,Becky M,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
+SL1009.rmks03_2.fa,SL1009,,NO,,CSHL,Slotkin et al. 2009 - nr_rmks03_2,Arabidopsis thaliana,,Becky M,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
+SL1010.rmks49_1.fa,SL1010,,NO,,CSHL,Slotkin et al. 2009 - nr_rmks49_1,Arabidopsis thaliana,,Becky M,Guest,,,,,,smallRNA,,,,,,,,,,,,,,,
