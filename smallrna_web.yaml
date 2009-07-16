@@ -168,9 +168,13 @@ class_info:
      - "dbi:Pg:dbname=pipeline-dev-kmr44;host=hydrogen"
      - 'kmr44'
      - 'kmr'
+gbrowse:
+  prefix: 'http://node3/cgi-bin/gbrowse/arabidopsis'
 plugins:
   object_page:
     sample:
+      - name: GBrowse
+        path: /plugins/gbrowse.mhtml
       - name: Size distribution graph
         path: /plugins/sizedists.mhtml
 programs:

@@ -1,0 +1,10 @@
+<%args>
+$object
+</%args>
+
+<a href="<% $gbrowse_image_url %>">View in GBrowse</a>
+
+<%init>
+my $gbrowse_image_url =
+  $c->config->{gbrowse}->{prefix} . '?label=' . $object->name();
+</%init>
