@@ -76,6 +76,8 @@ sub run
     $fasta_counts{$seq->seq()}++;
   }
 
+  my $record_count = 0;
+
   open my $outfile, '>', $output_file_name
     or die "can't open $output_file_name: $!\n";
 
@@ -85,6 +87,12 @@ sub run
 >$key count:$count
 $key
 END
+
+    $record_count++;
+
+    if ($ENV{'SMALLRNA_PIPELINE_TEST'} && $record_count > 1000) {
+      last;
+    }
   }
 
   close $outfile or die "can't close $output_file_name: $!\n";
