@@ -3,7 +3,14 @@ $object
 </%args>
 
 % if (defined $pipe_data_id) {
-  <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipe_data_id) %>'/>
+  <div class="rs_list">
+    <span class="title">
+      First base composition and size distribution
+    </span>
+    <div>
+      <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipe_data_id) %>'/>
+    </div>
+  </div>
 % }
 
 
