@@ -94,10 +94,10 @@ sub create_index
   my $re;
 
   if (lc $params{input_file_type} eq 'gff3') {
-    $re = qr{Note=([atgc]+)}i;
+    $re = qr{Note=([atgcn]+)}i;
   } else {
     if (lc $params{input_file_type} eq 'fasta') {
-      $re = qr{^>([atgc]+)}i;
+      $re = qr{^>([atgcn]+)}i;
     } else {
       croak "unknown type $params{input_file_type}\n";
     }
