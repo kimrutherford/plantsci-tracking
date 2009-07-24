@@ -94,7 +94,8 @@ sub run
 
 
     } else {
-      croak("pattern match failed on: ", $output_file_name);
+      croak("pattern match failed on: ", $output_file_name, 
+            " whlie looking for: $input_format_type");
     }
   };
   $self->schema->txn_do($code);

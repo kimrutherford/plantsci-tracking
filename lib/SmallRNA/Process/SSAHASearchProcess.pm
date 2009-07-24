@@ -114,7 +114,7 @@ sub run
   }
 
   open my $output_gff_file, '>', $params{output_gff_file_name}
-    or die "can't open $params{output_gff_file_name}: $!\n";
+    or die "can't open $params{output_gff_file_name} for writing: $!\n";
 
   print $output_gff_file "##gff-version 3\n";
 
