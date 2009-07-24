@@ -340,7 +340,7 @@ for my $sub_dir (qw(fastq SL4 SL9 SL11 SL12 SL18 SL19 SL21 SL22 SL1000 SL1001 SL
   my $dir_name = $config->data_directory() . "/$sub_dir";
   opendir my $dir, $dir_name or die "can't open directory $dir_name: $!\n";
   while (my $ent = readdir $dir) {
-    next if $ent eq '.' or $ent eq '..' or $ent !~ /\.f[qa]$/;
+    next if $ent eq '.' or $ent eq '..' or $ent !~ /\.f[qa]$|\.fasta$/;
     $dir_files{$ent} = "$sub_dir/$ent";
   }
   closedir $dir;
