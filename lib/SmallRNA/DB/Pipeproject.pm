@@ -53,15 +53,16 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->belongs_to("type", "SmallRNA::DB::Cvterm", { cvterm_id => "type" });
 __PACKAGE__->belongs_to("owner", "SmallRNA::DB::Person", { person_id => "owner" });
 __PACKAGE__->has_many(
-  "samples",
-  "SmallRNA::DB::Sample",
+  "sample_pipeprojects",
+  "SmallRNA::DB::SamplePipeproject",
   { "foreign.pipeproject" => "self.pipeproject_id" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1kaNgfwkqjovMram+vrFBw
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Q9p5uJRu8gG/n3CYP4D4WQ
 
+__PACKAGE__->many_to_many('samples' => 'sample_pipeprojects', 'sample');
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

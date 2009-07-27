@@ -4,6 +4,7 @@ DROP TABLE process_conf CASCADE;
 DROP TABLE pipeprocess CASCADE;
 DROP TABLE pipedata CASCADE;
 DROP TABLE sample CASCADE;
+DROP TABLE sample_pipeproject CASCADE;
 DROP TABLE pipeprocess_in_pipedata CASCADE;
 DROP TABLE pipeproject CASCADE;
 DROP TABLE person CASCADE;
@@ -161,7 +162,6 @@ CREATE TABLE sample (
        sample_id serial CONSTRAINT sample_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        name text NOT NULL UNIQUE,
-       pipeproject integer REFERENCES pipeproject(pipeproject_id) NOT NULL,
        genotype integer REFERENCES genotype(genotype_id),
        description text NOT NULL,
        protocol text, -- there should be a protocol text, or ref to cvterm
@@ -170,6 +170,12 @@ CREATE TABLE sample (
        fractionation_type integer REFERENCES cvterm(cvterm_id),
        processing_requirement integer REFERENCES cvterm(cvterm_id) NOT NULL,
        tissue integer REFERENCES tissue(tissue_id)
+);
+CREATE TABLE sample_pipeproject (
+       sample_pipeproject_id serial CONSTRAINT sample_pipeproject_id_pk PRIMARY KEY,
+       sample integer REFERENCES sample(sample_id) NOT NULL,
+       pipeproject integer REFERENCES pipeproject(pipeproject_id) NOT NULL,
+       CONSTRAINT sample_pipeproject_constraint UNIQUE(sample, pipeproject)
 );
 CREATE TABLE pipedata (
        pipedata_id serial CONSTRAINT pipedata_id_pk PRIMARY KEY,
@@ -199,7 +205,8 @@ CREATE TABLE sample_ecotype (
        sample_ecotype_id serial CONSTRAINT sample_ecotype_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        sample integer REFERENCES sample(sample_id) NOT NULL,
-       ecotype integer REFERENCES ecotype(ecotype_id) NOT NULL
+       ecotype integer REFERENCES ecotype(ecotype_id) NOT NULL,
+       CONSTRAINT sample_ecotype_constraint UNIQUE(sample, ecotype)
 );
 CREATE TABLE sequencing_sample (
        sequencing_sample_id serial CONSTRAINT sequencing_sample_id_pk PRIMARY KEY,

@@ -28,6 +28,7 @@ __PACKAGE__->add_columns(
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
 );
 __PACKAGE__->set_primary_key("sample_ecotype_id");
+__PACKAGE__->add_unique_constraint("sample_ecotype_constraint", ["sample", "ecotype"]);
 __PACKAGE__->add_unique_constraint("sample_ecotype_id_pk", ["sample_ecotype_id"]);
 __PACKAGE__->belongs_to(
   "ecotype",
@@ -38,7 +39,7 @@ __PACKAGE__->belongs_to("sample", "SmallRNA::DB::Sample", { sample_id => "sample
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3kvx8VG06E1Mu215Pkl/NQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gf9xrf7s+RoDWFow1WGBOg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -64,9 +64,11 @@ while (my $obj = $rs->next()) {
       next if $column_name eq 'created_stamp' or $column_name eq "${type}_id";
       push @field_labels, $column_name;
       my $column_heading = undef;
-      if (defined $field_infos{$column_name}) {
-        if (defined $field_infos{$column_name}->{display_title}) {
-          $column_heading = $field_infos{$column_name}->{display_title};
+      my $field_info = $field_infos{$column_name};
+      if (defined $field_info) {
+        next if $field_info->{is_collection};
+        if (defined $field_info->{display_title}) {
+          $column_heading = $field_info->{display_title};
         }
       }
 

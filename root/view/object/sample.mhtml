@@ -4,9 +4,13 @@ $type
 </%args>
 
 <& /view/object/object_top.mhtml, object => $object, 
-  field_labels => [qw(name description pipeproject genotype protocol molecule_type
+  field_labels => [qw(name description genotype protocol molecule_type
                    treatment_type fractionation_type tissue processing_requirement)] &>
 
+<div>
+  <& /view/list.mhtml, type => 'pipeproject', rs => $pipeprojects_rs,
+    list_title => "The project$pipeproject_plu containing this sample" &></td>
+</div>
 <div>
   <& /view/list.mhtml, type => 'organism', rs => $organisms_rs,
     list_title => "The organism$organism_plu for this sample" &></td>
@@ -31,4 +35,7 @@ my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
 my $pipedatas_rs = $object->pipedatas();
 my $pipedatas_count = $pipedatas_rs->count();
 my $pipedata_plu = ($pipedatas_count != 1) ? 's' : '';
+my $pipeprojects_rs = $object->pipeprojects();
+my $pipeprojects_count = $pipeprojects_rs->count();
+my $pipeproject_plu = ($pipeprojects_count != 1) ? 's' : '';
 </%init>

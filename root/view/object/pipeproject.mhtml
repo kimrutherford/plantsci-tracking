@@ -9,12 +9,18 @@ $type
 </div>
 
 <div>
+  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
+    list_title => "The sample$sample_plu for this project" &></td>
+</div>
+
+<div>
   <a href="<% $c->uri_for('/new/object/sample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
     Create a sample for this project
   </a>
 </div>
 
-<div>
-  <& /view/collection.mhtml, object => $object, collection_name => 'samples' &></td>
-</div>
-
+<%init>
+my $samples_rs = $object->samples();
+my $samples_count = $samples_rs->count();
+my $sample_plu = ($samples_count != 1) ? 's' : '';
+</%init>

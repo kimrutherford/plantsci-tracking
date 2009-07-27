@@ -80,6 +80,7 @@ class_info:
       - field_label: project
         field_conf: pipeproject
         editable: 1
+        is_collection: 1
       - field_label: genotype
         editable: 1
       - field_label: protocol

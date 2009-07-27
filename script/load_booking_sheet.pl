@@ -201,7 +201,6 @@ sub create_sample
   my $sample_args = {
                      name => $sample_name,
                      description => $description,
-                     pipeproject => $project,
                      molecule_type => $molecule_type_term,
                      processing_requirement => $processing_type_term
                     };
@@ -209,6 +208,7 @@ sub create_sample
   my $sample = create('Sample', $sample_args);
 
   map { $sample->add_to_ecotypes($_); } @ecotypes;
+  $sample->add_to_pipeprojects($project);
 
   return $sample;
 }
