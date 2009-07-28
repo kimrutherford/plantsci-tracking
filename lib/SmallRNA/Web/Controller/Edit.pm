@@ -255,11 +255,18 @@ sub _initialise_form
 }
 
 sub _create_object {
-  my $schema = shift;
+  my $c = shift;
   my $table_name = shift;
   my $form = shift;
 
+  my $schema = $c->schema();
+
   my $class_name = SmallRNA::DB::class_name_of_table($table_name);
+
+  my $class_info_ref = $c->config()->{class_info}->{$table_name};
+  if (!defined $class_info_ref) {
+    croak "can't find configuration for editing $table_name objects\n";
+  }
 
   my %form_params = %{$form->params()};
   my %object_params = ();
@@ -269,9 +276,20 @@ sub _create_object {
       next;
     }
 
+    my $field_info_ref = $class_info_ref->{field_infos}->{$name};
+    my %field_info = %{$field_info_ref};
+
+    next if $field_info{is_collection};
+
+    my $field_db_column = $name;
+
+    if (defined $field_info{field_conf}) {
+      $field_db_column = $field_info{field_conf};
+    }
+
     my $value = $form_params{$name};
 
-    my $info_ref = $class_name->relationship_info($name);
+    my $info_ref = $class_name->relationship_info($field_db_column);
 
     if (defined $info_ref && $value == 0) {
       # special case for undefined references which are represented in the form
@@ -284,10 +302,14 @@ sub _create_object {
       $value = undef;
     }
 
-    $object_params{$name} = $value;
+    $object_params{$field_db_column} = $value;
   }
 
-  return $schema->create_with_type($class_name, { %object_params });
+  my $object = $schema->create_with_type($class_name, { %object_params });
+
+  # set collections - this is a hack because the other fields will be set for a
+  # second time
+  _update_object($c, $object, $form);
 }
 
 # update the object based on the form values
@@ -399,7 +421,7 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
   if ($form->submitted_and_valid()) {
     if ($req_type eq 'new') {
       $c->schema()->txn_do(sub {
-                             my $object = _create_object($c->schema(), $type, $form);
+                             my $object = _create_object($c, $type, $form);
                              my $table_id_column = $type . '_id';
                              # get the id so we can redirect below
                              $object_id = $object->$table_id_column();
