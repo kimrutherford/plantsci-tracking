@@ -53,6 +53,8 @@ sub _get_field_values
   my $select_value = shift;
   my $field_info = shift;
 
+  my $field_name = $c->config()->{class_info}->{$table_name}->{display_field};
+
   my $values_constraint = $field_info->{values_constraint};
 
   my $constraint_path = undef;
@@ -139,58 +141,60 @@ sub _initialise_form
       name => $field_db_column, label => $display_field_label
     };
 
-    my $class_name = SmallRNA::DB::class_name_of_table($type);
-    my $info_ref = $class_name->relationship_info($field_db_column);
-    my $db_source = $c->schema()->source($class_name);
-    my $field_is_nullable = $db_source->column_info($field_db_column)->{is_nullable};
+    if ($field_info->{is_collection}) {
 
-    if (defined $info_ref) {
-      my %info = %{$info_ref};
-      my $referenced_class_name = $info{class};
-
-      my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
-
-      my $display_field = $c->config()->{class_info}->{$referenced_table}->{display_field};
-
-      if (!defined $display_field) {
-        die "no display_key_fields configuration for $referenced_table\n";
-      }
-
-      $elem->{type} = 'Select';
-      my $table_id_column = $referenced_table . '_id';
-
-      my $current_value = undef;
-      if (defined $object && defined $object->$field_db_column()) {
-        $current_value = $object->$field_db_column()->$table_id_column();
-      } else {
-        $current_value = $c->req->param("$referenced_table.id");
-      }
-
-      $elem->{options} = [_get_field_values($c, $referenced_table,
-                                            $referenced_class_name, $display_field,
-                                            $current_value, $field_info)];
-
-      if ($field_is_nullable) {
-        # add a blank to the select list if this field can be null
-        unshift @{$elem->{options}}, [0, ''];
-      }
     } else {
-      $elem->{type} = 'Text';
-      if (!$field_is_nullable) {
-        $elem->{constraints} = [ { type => 'Length',  min => 1 },
-                                'Required' ];
-      }
-      if (defined $object) {
-        $elem->{value} = $object->$field_db_column();
-      } else {
-        # try to set the default value (if configured)
-        my $default_value_code = $field_info->{default_value};
+      my $class_name = SmallRNA::DB::class_name_of_table($type);
+      my $info_ref = $class_name->relationship_info($field_db_column);
+      my $db_source = $c->schema()->source($class_name);
+      my $field_is_nullable = $db_source->column_info($field_db_column)->{is_nullable};
 
-        if (defined $default_value_code) {
-          $elem->{value} = eval "$default_value_code";
-          if ($@) {
-            warn "error evaluating default_value configuration for "
-              . "'$field_label': $@";
+      if (defined $info_ref) {
+        my %info = %{$info_ref};
+        my $referenced_class_name = $info{class};
+
+        my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
+
+        if (!defined $display_field) {
+          die "no display_key_fields configuration for $referenced_table\n";
+        }
+
+        $elem->{type} = 'Select';
+        my $table_id_column = $referenced_table . '_id';
+
+        my $current_value = undef;
+        if (defined $object && defined $object->$field_db_column()) {
+          $current_value = $object->$field_db_column()->$table_id_column();
+        } else {
+          $current_value = $c->req->param("$referenced_table.id");
+        }
+
+        $elem->{options} = [_get_field_values($c, $referenced_table,
+                                              $referenced_class_name, $display_field,
+                                              $current_value, $field_info)];
+
+        if ($field_is_nullable) {
+          # add a blank to the select list if this field can be null
+          unshift @{$elem->{options}}, [0, ''];
+        }
+      } else {
+        $elem->{type} = 'Text';
+        if (!$field_is_nullable) {
+          $elem->{constraints} = [ { type => 'Length',  min => 1 },
+                                   'Required' ];
+        }
+        if (defined $object) {
+          $elem->{value} = $object->$field_db_column();
+        } else {
+          # try to set the default value (if configured)
+          my $default_value_code = $field_info->{default_value};
+
+          if (defined $default_value_code) {
+            $elem->{value} = eval "$default_value_code";
+            if ($@) {
+              warn "error evaluating default_value configuration for "
+                . "'$field_label': $@";
+            }
           }
         }
       }
