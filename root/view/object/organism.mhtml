@@ -8,15 +8,15 @@ $object
 
 <div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$sample_plu for this organism" &></td>
+    list_title => "The sample$sample_plu for this organism" &>
 </div>
 <div>
   <& /view/collection.mhtml, object => $object, collection_name => 'ecotypes',
-    collection_title => "The ecotype$ecotype_plu for this organism" &></td>
+    collection_title => "The ecotype$ecotype_plu for this organism" &>
 </div>
 <div>
   <& /view/collection.mhtml, object => $object, collection_name => 'tissues',
-    collection_title => "The tissue type$tissue_plu for this organism" &></td>
+    collection_title => "The tissue type$tissue_plu for this organism" &>
 </div>
 
 <%init>

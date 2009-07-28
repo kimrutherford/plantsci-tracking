@@ -9,7 +9,7 @@ $object
 
 <div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$plu for this ecotype" &></td>
+    list_title => "The sample$plu for this ecotype" &>
 </div>
 
 <%init>

@@ -12,12 +12,12 @@ $type
 
 <div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$sample_plu sequenced by this run" &></td>
+    list_title => "The sample$sample_plu sequenced by this run" &>
 </div>
 
 <div>
   <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
-    list_title => "The coded sample$sample_plu sequenced by this run" &></td>
+    list_title => "The coded sample$sample_plu sequenced by this run" &>
 </div>
 
 <%init>

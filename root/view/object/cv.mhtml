@@ -8,5 +8,5 @@ $object
 
 <div>
   <& /view/collection.mhtml, object => $object, collection_name => 'cvterms',
-    collection_title => 'Terms in this controlled vocabulary' &></td>
+    collection_title => 'Terms in this controlled vocabulary' &>
 </div>

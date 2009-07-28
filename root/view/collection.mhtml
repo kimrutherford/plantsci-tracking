@@ -7,7 +7,7 @@ $collection_title => undef
 % if ($error) {
   <% $error %>
 % } else {
-  <& list.mhtml, type => $collection_table_name, rs => $rs, list_title => $collection_title &></td>
+  <& list.mhtml, type => $collection_table_name, rs => $rs, list_title => $collection_title &>
 % }
 
 <%init>

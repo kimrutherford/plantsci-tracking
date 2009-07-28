@@ -9,11 +9,11 @@ $type
 </div>
 <div>
   <& /view/list.mhtml, type => 'pipedata', rs => $input_pipedata_rs,
-  list_title => 'Input data' &></td>
+  list_title => 'Input data' &>
 </div>
 <div>
   <& /view/collection.mhtml, object => $object, collection_name => 'pipedatas',
-    collection_title => 'Output data' &></td>
+    collection_title => 'Output data' &>
 </div>
 
 <%init>

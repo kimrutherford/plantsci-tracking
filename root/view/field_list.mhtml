@@ -8,7 +8,6 @@ $object
 % for my $field_label (@field_labels) {
     <tr>
       <td><% $_get_display_name_code->($field_label) %>:</td>
-      <td>
       <td><& /view/field.mhtml, object => $object, field_label => $field_label &></td>
     </tr>
 % }

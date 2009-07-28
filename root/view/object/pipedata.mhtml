@@ -16,15 +16,15 @@ $type
 
 <div>
   <& /view/list.mhtml, type => 'pipeprocess', rs => $prev_pipeprocess_rs,
-    list_title => 'Process that generated this data' &></td>
+    list_title => 'Process that generated this data' &>
 </div>
 <div>
   <& /view/list.mhtml, type => 'pipeprocess', rs => $next_pipeprocess_rs,
-    list_title => 'Processes that use this data as input' &></td>
+    list_title => 'Processes that use this data as input' &>
 </div>
 <div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$plu that (ultimately) generated this data" &></td>
+    list_title => "The sample$plu that (ultimately) generated this data" &>
 </div>
 
 <%init>

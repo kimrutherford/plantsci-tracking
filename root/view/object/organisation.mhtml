@@ -15,7 +15,7 @@ $object
 </div>
 <div>
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
-    list_title => "The sequencing run$seqruns_plu ordered by people from this organisation" &></td>
+    list_title => "The sequencing run$seqruns_plu ordered by people from this organisation" &>
 </div>
 
 

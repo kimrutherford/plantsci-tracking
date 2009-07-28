@@ -8,10 +8,10 @@ $object
 
 <div>
   <& /view/collection.mhtml, object => $object, collection_name => 'coded_samples',
-    collection_title => "The coded samples for this sequencing sample" &></td>
+    collection_title => "The coded samples for this sequencing sample" &>
 </div>
 
 <div>
   <& /view/collection.mhtml, object => $object, collection_name => 'sequencingruns',
-    collection_title => "The sequencing runs for this sequencing sample" &></td>
+    collection_title => "The sequencing runs for this sequencing sample" &>
 </div>

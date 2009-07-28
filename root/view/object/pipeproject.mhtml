@@ -10,7 +10,7 @@ $type
 
 <div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$sample_plu for this project" &></td>
+    list_title => "The sample$sample_plu for this project" &>
 </div>
 
 <div>
