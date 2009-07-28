@@ -169,7 +169,7 @@ sub _init_form_field
 
       my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
 
-      $elem->{type} = 'Radiogroup';
+      $elem->{type} = 'Checkboxgroup';
       my $table_id_column = $referenced_table . '_id';
 
       # my $current_value = undef;
