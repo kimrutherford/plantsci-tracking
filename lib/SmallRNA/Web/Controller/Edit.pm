@@ -49,7 +49,7 @@ sub _get_field_values
   my $c = shift;
   my $table_name = shift;
   my $class_name = shift;
-  my $select_value = shift;
+  my $select_values = shift;
   my $field_info = shift;
 
   my $field_name = $c->config()->{class_info}->{$table_name}->{display_field};
@@ -86,7 +86,7 @@ sub _get_field_values
     my $option = { value => $row->$table_id_column(),
                    label => $row->$field_name() };
 
-    if (defined $select_value && $row->$table_id_column() eq $select_value) {
+    if (grep { $row->$table_id_column() eq $_ } @$select_values) {
       $option->{attributes} = { selected => 't' };
     }
 
@@ -155,7 +155,7 @@ sub _init_form_field
 
     $elem->{options} = [_get_field_values($c, $referenced_table,
                                           $referenced_class_name,
-                                          $current_value, $field_info)];
+                                          [$current_value], $field_info)];
 
     my $field_is_nullable = $db_source->column_info($field_db_column)->{is_nullable};
 
@@ -165,7 +165,23 @@ sub _init_form_field
     }
   } else {
     if ($field_info->{is_collection}) {
+      my $referenced_class_name = $field_info->{referenced_class};
 
+      my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
+
+      $elem->{type} = 'Radiogroup';
+      my $table_id_column = $referenced_table . '_id';
+
+      # my $current_value = undef;
+      # if (defined $object && defined $object->$field_db_column()) {
+      #   $current_value = $object->$field_db_column()->$table_id_column();
+      # } else {
+      #   $current_value = $c->req->param("$referenced_table.id");
+      # }
+
+      $elem->{options} = [_get_field_values($c, $referenced_table,
+                                            $referenced_class_name,
+                                            [], $field_info)];
     } else {
       $elem->{type} = 'Text';
       if (!$db_source->column_info($field_db_column)->{is_nullable}) {
