@@ -236,9 +236,8 @@ sub _initialise_form
     push @elements, _init_form_field($c, $field_info, $object);
   }
 
-    use Data::Dumper;
+  $form->default_args({elements => { Text => { size => 50 } } });
 
-    warn "XXXXXXXXXXXXFOO:", Data::Dumper->Dump([@elements]);
   $form->auto_fieldset(1);
   $form->elements([
                     @elements,
