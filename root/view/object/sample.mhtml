@@ -16,6 +16,10 @@ $type
     list_title => "The organism$organism_plu for this sample" &>
 </div>
 <div>
+  <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
+    list_title => "The ecotype$ecotype_plu for this sample" &>
+</div>
+<div>
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
     list_title => "The sequencing run$seqruns_plu for this sample" &>
 </div>
@@ -29,6 +33,10 @@ my $organisms_rs =
   $object->sample_ecotypes()->search_related('ecotype')->search_related('organism');
 my $organisms_count = $organisms_rs->count();
 my $organism_plu = ($organisms_count != 1) ? 's' : '';
+my $ecotypes_rs = 
+  $object->sample_ecotypes()->search_related('ecotype');
+my $ecotypes_count = $ecotypes_rs->count();
+my $ecotype_plu = ($ecotypes_count != 1) ? 's' : '';
 my $seqruns_rs = $object->coded_samples()->search_related('sequencing_sample')->search_related('sequencingruns');
 my $seqruns_count = $seqruns_rs->count();
 my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
