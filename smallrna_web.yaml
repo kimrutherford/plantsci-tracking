@@ -99,13 +99,13 @@ class_info:
         field_conf: processing_requirement
         values_constraint: 'cv->name = "tracking sample processing requirements"'
         editable: 1
+      - field_label: ecotypes
+        referenced_class: Ecotype
+        editable: 1
+        is_collection: 1
       - field_label: projects
         field_conf: pipeprojects
         referenced_class: Pipeproject
-        editable: 1
-        is_collection: 1
-      - field_label: ecotypes
-        referenced_class: Ecotype
         editable: 1
         is_collection: 1
   ecotype:
