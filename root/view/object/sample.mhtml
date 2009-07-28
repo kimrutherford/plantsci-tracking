@@ -30,7 +30,8 @@ $type
   
 <%init>
 my $organisms_rs = 
-  $object->sample_ecotypes()->search_related('ecotype')->search_related('organism');
+  $object->sample_ecotypes()->search_related('ecotype')->search_related('organism',
+                                                                        {}, { distinct => 1} );
 my $organisms_count = $organisms_rs->count();
 my $organism_plu = ($organisms_count != 1) ? 's' : '';
 my $ecotypes_rs = 
