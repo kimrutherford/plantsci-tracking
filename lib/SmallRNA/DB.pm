@@ -182,6 +182,11 @@ sub class_name_of_table
 sub table_name_of_class
 {
   my $class_name = shift;
+
+  if (!defined $class_name) {
+    croak "undefined class_name passed to table_name_of_class()\n";
+  }
+
   $class_name =~ s/(?:.*::)//;
   $class_name = join '_', map { lc } ($class_name =~ m/([A-Z][a-z]+)/g);
   return $class_name;
