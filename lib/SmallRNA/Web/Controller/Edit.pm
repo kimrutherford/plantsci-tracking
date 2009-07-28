@@ -51,6 +51,7 @@ sub _get_field_values
   my $class_name = shift;
   my $select_values = shift;
   my $field_info = shift;
+  my $type = shift;
 
   my $field_name = $c->config()->{class_info}->{$table_name}->{display_field};
 
@@ -87,7 +88,11 @@ sub _get_field_values
                    label => $row->$field_name() };
 
     if (grep { $row->$table_id_column() eq $_ } @$select_values) {
-      $option->{attributes} = { selected => 't' };
+      if ($type eq 'Select') {
+        $option->{attributes} = { selected => 't' };
+      } else {
+        $option->{attributes} = { checked => 't' };
+      }
     }
 
     push @res, $option;
@@ -104,8 +109,7 @@ sub _init_form_field
   my $c = shift;
   my $field_info = shift;
   my $object = shift;
-
-  my $type = $object->table();
+  my $type = shift;
 
   my $field_label = $field_info->{field_label};
 
@@ -153,9 +157,16 @@ sub _init_form_field
       $current_value = $c->req->param("$referenced_table.id");
     }
 
+    my @current_values = ();
+
+    if (defined $current_value) {
+      push @current_values, $current_value;
+    }
+
     $elem->{options} = [_get_field_values($c, $referenced_table,
                                           $referenced_class_name,
-                                          [$current_value], $field_info)];
+                                          [@current_values], $field_info,
+                                          'Select')];
 
     my $field_is_nullable = $db_source->column_info($field_db_column)->{is_nullable};
 
@@ -172,16 +183,20 @@ sub _init_form_field
       $elem->{type} = 'Checkboxgroup';
       my $table_id_column = $referenced_table . '_id';
 
-      # my $current_value = undef;
-      # if (defined $object && defined $object->$field_db_column()) {
-      #   $current_value = $object->$field_db_column()->$table_id_column();
-      # } else {
-      #   $current_value = $c->req->param("$referenced_table.id");
-      # }
+      my @current_values = ();
+      if (defined $object) {
+        my $rs = $object->$field_db_column();
+        while (defined (my $row = $rs->next())) {
+          push @current_values, $row->$table_id_column();
+        }
+      } else {
+        push @current_values, $c->req->param("$referenced_table.id");
+      }
 
       $elem->{options} = [_get_field_values($c, $referenced_table,
                                             $referenced_class_name,
-                                            [], $field_info)];
+                                            [@current_values], $field_info,
+                                            'Checkboxgroup')];
     } else {
       $elem->{type} = 'Text';
       if (!$db_source->column_info($field_db_column)->{is_nullable}) {
@@ -214,11 +229,10 @@ sub _initialise_form
 {
   my $c = shift;
   my $object = shift;
+  my $type = shift;
   my $form = shift;
 
   my @elements = ();
-
-  my $type = $object->table();
 
   my $class_info_ref = $c->config()->{class_info}->{$type};
   if (!defined $class_info_ref) {
@@ -233,7 +247,7 @@ sub _initialise_form
   my @field_infos = @{$c->config()->{class_info}->{$type}->{field_info_list}};
 
   for my $field_info (@field_infos) {
-    push @elements, _init_form_field($c, $field_info, $object);
+    push @elements, _init_form_field($c, $field_info, $object, $type);
   }
 
   $form->default_args({elements => { Text => { size => 50 } } });
@@ -337,7 +351,7 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
 
   my $form = $self->form;
 
-  _initialise_form($c, $object, $form);
+  _initialise_form($c, $object, $type, $form);
 
   $form->process;
 
