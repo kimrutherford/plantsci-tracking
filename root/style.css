@@ -198,3 +198,14 @@ fieldset .textarea label
 fieldset .checkboxgroup span {
     display: block;
 }
+
+.checkboxgroup {
+   display: inline;
+   float: left;
+}
+
+fieldset .checkboxgroup > span {
+    height: 15em;
+    overflow: auto;
+}
+

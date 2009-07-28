@@ -255,6 +255,8 @@ sub _initialise_form
   $form->auto_fieldset(1);
   $form->elements([
                     @elements,
+                    { name => 'clear-div', type => 'Block',
+                      attributes => { style => 'clear: both;' } },
                     map { {
                       name => $_, type => 'Submit', value => ucfirst $_
                     } } @INPUT_BUTTON_NAMES,
