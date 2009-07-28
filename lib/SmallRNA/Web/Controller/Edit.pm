@@ -98,6 +98,42 @@ sub _get_field_values
 # the names of buttons in the form so we can skip them later
 my @INPUT_BUTTON_NAMES = qw(submit cancel);
 
+sub _init_form_ref
+{
+  my $c = shift;
+  my $info_ref = shift;
+
+  my %info = %{$info_ref};
+  my $referenced_class_name = $info{class};
+
+  my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
+
+  my $display_field = $c->config()->{class_info}->{$referenced_table}->{display_field};
+
+  if (!defined $display_field) {
+    die "no display_key_fields configuration for $referenced_table\n";
+  }
+
+  $elem->{type} = 'Select';
+  my $table_id_column = $referenced_table . '_id';
+
+  my $current_value = undef;
+  if (defined $object && defined $object->$field_db_column()) {
+    $current_value = $object->$field_db_column()->$table_id_column();
+  } else {
+    $current_value = $c->req->param("$referenced_table.id");
+  }
+
+  $elem->{options} = [_get_field_values($c, $referenced_table,
+                                        $referenced_class_name, $display_field,
+                                        $current_value, $field_info)];
+
+  if ($field_is_nullable) {
+    # add a blank to the select list if this field can be null
+    unshift @{$elem->{options}}, [0, ''];
+  }
+}
+
 # Initialise the form using the list of field_infos in the config file.
 # Attributes will be rendered as text areas, references as pop ups.
 sub _initialise_form
@@ -145,35 +181,7 @@ sub _initialise_form
     my $field_is_nullable = $db_source->column_info($field_db_column)->{is_nullable};
 
     if (defined $info_ref) {
-      my %info = %{$info_ref};
-      my $referenced_class_name = $info{class};
-
-      my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
-
-      my $display_field = $c->config()->{class_info}->{$referenced_table}->{display_field};
-
-      if (!defined $display_field) {
-        die "no display_key_fields configuration for $referenced_table\n";
-      }
-
-      $elem->{type} = 'Select';
-      my $table_id_column = $referenced_table . '_id';
-
-      my $current_value = undef;
-      if (defined $object && defined $object->$field_db_column()) {
-        $current_value = $object->$field_db_column()->$table_id_column();
-      } else {
-        $current_value = $c->req->param("$referenced_table.id");
-      }
-
-      $elem->{options} = [_get_field_values($c, $referenced_table,
-                                            $referenced_class_name, $display_field,
-                                            $current_value, $field_info)];
-
-      if ($field_is_nullable) {
-        # add a blank to the select list if this field can be null
-        unshift @{$elem->{options}}, [0, ''];
-      }
+      _init_form_ref($c, $info_ref);
     } else {
       $elem->{type} = 'Text';
       if (!$field_is_nullable) {
