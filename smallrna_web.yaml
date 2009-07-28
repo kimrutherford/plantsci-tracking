@@ -104,9 +104,8 @@ class_info:
         referenced_class: Pipeproject
         editable: 1
         is_collection: 1
-      - field_label: organisms
-        field_conf: organisms
-        referenced_class: Organism
+      - field_label: ecotypes
+        referenced_class: Ecotype
         editable: 1
         is_collection: 1
   ecotype:
