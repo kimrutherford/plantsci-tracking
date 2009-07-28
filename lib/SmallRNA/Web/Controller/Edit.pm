@@ -125,7 +125,7 @@ sub _init_form_field
   }
 
   my $elem = {
-    name => $field_db_column, label => $display_field_label
+    name => $field_label, label => $display_field_label
   };
 
   my $class_name = SmallRNA::DB::class_name_of_table($type);
@@ -298,20 +298,35 @@ sub _create_object {
   return $schema->create_with_type($class_name, { %object_params });
 }
 
+# update the object based on the form values
 sub _update_object {
+  my $c = shift;
   my $object = shift;
   my $form = shift;
 
   my %form_params = %{$form->params()};
+
+  my $type = $object->table();
+  my $class_name = SmallRNA::DB::class_name_of_table($type);
+
+  my $class_info_ref = $c->config()->{class_info}->{$type};
 
   for my $name (keys %form_params) {
     if (grep { $_ eq $name } @INPUT_BUTTON_NAMES) {
       next;
     }
 
-    my $value = $form_params{$name};
+    my $field_info_ref = $class_info_ref->{field_infos}->{$name};
+    my %field_info = %{$field_info_ref};
 
-    my $info_ref = $object->relationship_info($name);
+    my $field_db_column = $name;
+
+    if (defined $field_info{field_conf}) {
+      $field_db_column = $field_info{field_conf};
+    }
+
+    my $value = $form_params{$name};
+    my $info_ref = $object->relationship_info($field_db_column);
 
     if (defined $info_ref && $value == 0) {
       # special case for undefined references which are represented in the form
@@ -319,7 +334,29 @@ sub _update_object {
       $value = undef;
     }
 
-    $object->$name($value);
+    if (defined $value && $field_info{is_collection}) {
+      # special case for collections, we need to look up the objects
+      my $referenced_class_name = $field_info{referenced_class};
+      my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
+      my $set_meth = "set_$field_db_column";
+
+      my @values;
+
+      if (ref $value) {
+        @values = @$value;
+      } else {
+        @values = ($value);
+      }
+
+      my @values = map {
+        $c->schema()->find_with_type($referenced_class_name,
+                                     "${referenced_table}_id" => $_);
+      } @values;
+
+      $object->$set_meth(@values);
+    } else {
+      $object->$field_db_column($value);
+    }
   }
 
   $object->update();
@@ -365,7 +402,6 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
       $c->res->redirect($c->uri_for("/view/object/$type/$object_id"));
       $c->detach();
     }
-    die;
   }
 
   if ($form->submitted_and_valid()) {
@@ -378,7 +414,7 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
                            });
     } else {
       $c->schema()->txn_do(sub {
-                             _update_object($object, $form);
+                             _update_object($c, $object, $form);
                            });
     }
 
