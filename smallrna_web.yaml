@@ -176,6 +176,8 @@ class_info:
       - field_label: sequencing sample
         field_conf: sequencing_sample
         editable: 1
+  protocol:
+    display_field: name
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:
