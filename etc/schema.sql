@@ -11,11 +11,17 @@ DROP TABLE person CASCADE;
 DROP TABLE organisation CASCADE;
 DROP TABLE cvterm CASCADE;
 DROP TABLE cv CASCADE;
+DROP TABLE db CASCADE;
+DROP TABLE pub_dbxref CASCADE;
+DROP TABLE cvterm_dbxref CASCADE;
+DROP TABLE dbxref CASCADE;
+DROP TABLE pub CASCADE;
 DROP TABLE barcode CASCADE;
 DROP TABLE tissue CASCADE;
 DROP TABLE ecotype CASCADE;
 DROP TABLE genotype CASCADE;
 DROP TABLE organism CASCADE;
+DROP TABLE organism_dbxref CASCADE;
 DROP TABLE sample_pipedata CASCADE;
 DROP TABLE sample_ecotype CASCADE;
 DROP TABLE coded_sample CASCADE;
@@ -26,7 +32,35 @@ DROP SEQUENCE cv_cv_id_seq CASCADE;
 
 \set ON_ERROR_STOP true
 
--- cv table comes from chado
+
+-- From chado:
+CREATE TABLE organism (
+       organism_id serial CONSTRAINT organism_id_pk PRIMARY KEY,
+       abbreviation character varying(255),
+       genus character varying(255) NOT NULL,
+       species character varying(255) NOT NULL,
+       common_name character varying(255),
+       comment text,
+       CONSTRAINT organism_full_name_constraint UNIQUE(genus, species)
+);
+
+CREATE TABLE db (
+    db_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    contact_id integer,
+    description character varying(255),
+    urlprefix character varying(255),
+    url character varying(255)
+);
+
+CREATE TABLE dbxref (
+    dbxref_id integer NOT NULL,
+    db_id integer NOT NULL,
+    accession character varying(255) NOT NULL,
+    version character varying(255) DEFAULT ''::character varying NOT NULL,
+    description text
+);
+
 CREATE SEQUENCE cv_cv_id_seq
     INCREMENT BY 1
     NO MAXVALUE
@@ -56,33 +90,86 @@ CREATE TABLE cvterm (
     cv_id integer NOT NULL,
     name character varying(1024) NOT NULL,
     definition text,
---    dbxref_id integer,
+    dbxref_id integer,
     is_obsolete integer DEFAULT 0 NOT NULL,
     is_relationshiptype integer DEFAULT 0 NOT NULL
 );
 
-ALTER TABLE cvterm ALTER COLUMN cvterm_id
+CREATE TABLE pub_dbxref (
+    pub_dbxref_id integer NOT NULL,
+    pub_id integer NOT NULL,
+    dbxref_id integer NOT NULL,
+    is_current boolean DEFAULT true NOT NULL
+);
+
+CREATE TABLE cvterm_dbxref (
+    cvterm_dbxref_id integer NOT NULL,
+    cvterm_id integer NOT NULL,
+    dbxref_id integer NOT NULL,
+    is_for_definition integer DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE pub (
+    pub_id integer NOT NULL,
+    title text,
+    volumetitle text,
+    volume character varying(255),
+    series_name character varying(255),
+    issue character varying(255),
+    pyear character varying(255),
+    pages character varying(255),
+    miniref character varying(255),
+    type_id integer,
+    is_obsolete boolean DEFAULT false,
+    publisher character varying(255),
+    pubplace character varying(255),
+    uniquename text NOT NULL
+);
+
+
+CREATE TABLE organism_dbxref (
+    organism_dbxref_id integer NOT NULL,
+    organism_id integer NOT NULL,
+    dbxref_id integer NOT NULL
+);
+
+ALTER TABLE ONLY pub
+    ADD CONSTRAINT pub_pkey PRIMARY KEY (pub_id);
+
+ALTER TABLE ONLY dbxref
+    ADD CONSTRAINT dbxref_db_id_key UNIQUE (db_id, accession, version);
+
+ALTER TABLE ONLY dbxref
+    ADD CONSTRAINT dbxref_pkey PRIMARY KEY (dbxref_id);
+
+ALTER TABLE ONLY cvterm ALTER COLUMN cvterm_id
     SET DEFAULT nextval('cvterm_cvterm_id_seq'::regclass);
+
 ALTER TABLE ONLY cvterm
     ADD CONSTRAINT cvterm_pkey PRIMARY KEY (cvterm_id);
 
 ALTER TABLE ONLY cvterm
     ADD CONSTRAINT cvterm_cv_id_fkey FOREIGN KEY (cv_id) REFERENCES cv(cv_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
--- ALTER TABLE ONLY cvterm
---    ADD CONSTRAINT cvterm_dbxref_id_fkey FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON -- DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE ONLY cvterm
+    ADD CONSTRAINT cvterm_dbxref_id_fkey FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE ONLY pub_dbxref
+    ADD CONSTRAINT "$2" FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
 
 
+ALTER TABLE ONLY cvterm_dbxref
+    ADD CONSTRAINT "$2" FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
 
--- From chado:
-CREATE TABLE organism (
-       organism_id serial CONSTRAINT organism_id_pk PRIMARY KEY,
-       abbreviation character varying(255),
-       genus character varying(255) NOT NULL,
-       species character varying(255) NOT NULL,
-       common_name character varying(255),
-       comment text,
-       CONSTRAINT organism_full_name_constraint UNIQUE(genus, species)
-);
+
+ALTER TABLE ONLY pub_dbxref
+    ADD CONSTRAINT "$1" FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE;
+
+
+ALTER TABLE ONLY organism_dbxref
+    ADD CONSTRAINT "$1" FOREIGN KEY (organism_id) REFERENCES organism(organism_id) ON DELETE CASCADE;
+
+
 
 CREATE TABLE organisation (
        organisation_id serial CONSTRAINT organisation_id_pk PRIMARY KEY,

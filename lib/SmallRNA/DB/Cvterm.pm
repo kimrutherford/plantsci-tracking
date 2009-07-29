@@ -31,6 +31,8 @@ __PACKAGE__->add_columns(
     is_nullable => 1,
     size => undef,
   },
+  "dbxref_id",
+  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "is_obsolete",
   { data_type => "integer", default_value => 0, is_nullable => 0, size => 4 },
   "is_relationshiptype",
@@ -44,6 +46,7 @@ __PACKAGE__->has_many(
   { "foreign.coded_sample_type" => "self.cvterm_id" },
 );
 __PACKAGE__->belongs_to("cv", "SmallRNA::DB::Cv", { cv_id => "cv_id" });
+__PACKAGE__->belongs_to("dbxref", "SmallRNA::DB::Dbxref", { dbxref_id => "dbxref_id" });
 __PACKAGE__->has_many(
   "pipedata_format_types",
   "SmallRNA::DB::Pipedata",
@@ -117,7 +120,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WYRoG2tOWQB7meMV1quqyA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:13EplGoRVeOlcQNYziHCfw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

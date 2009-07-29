@@ -60,6 +60,11 @@ __PACKAGE__->has_many(
   { "foreign.organism" => "self.organism_id" },
 );
 __PACKAGE__->has_many(
+  "organism_dbxrefs",
+  "SmallRNA::DB::OrganismDbxref",
+  { "foreign.organism_id" => "self.organism_id" },
+);
+__PACKAGE__->has_many(
   "tissues",
   "SmallRNA::DB::Tissue",
   { "foreign.organism" => "self.organism_id" },
@@ -67,7 +72,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XQvSSQus+aDsVr2+tlj+Fg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2td9Zkqe6IHSpFlQE5DlAA
 
 # the genus and species, used when displaying organisms
 sub full_name {
