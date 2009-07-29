@@ -24,9 +24,7 @@ while (defined (my $sample = $sample_rs->next())) {
 
     next if $sample_name =~ /_[A-Z]$/;
 
-
     my $owner = $sample->pipeproject()->owner();
-    my $user_name = $owner->user_name();
     my $first_name = $owner->first_name();
     my $last_name = $owner->last_name();
 
