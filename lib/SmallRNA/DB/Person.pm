@@ -50,6 +50,8 @@ __PACKAGE__->add_columns(
     is_nullable => 1,
     size => undef,
   },
+  "role",
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "organisation",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
 );
@@ -57,6 +59,7 @@ __PACKAGE__->set_primary_key("person_id");
 __PACKAGE__->add_unique_constraint("person_id_pk", ["person_id"]);
 __PACKAGE__->add_unique_constraint("person_username_key", ["username"]);
 __PACKAGE__->add_unique_constraint("person_full_name_constraint", ["first_name", "last_name"]);
+__PACKAGE__->belongs_to("role", "SmallRNA::DB::Cvterm", { cvterm_id => "role" });
 __PACKAGE__->belongs_to(
   "organisation",
   "SmallRNA::DB::Organisation",
@@ -70,7 +73,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AKJEABE4/kFWGE/NO1dLrA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:479SkyGJCzgqF2caC8z09g
 
 sub full_name {
   my $self = shift;

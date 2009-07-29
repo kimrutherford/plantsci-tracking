@@ -167,6 +167,13 @@ my %terms = (
              },
              'tracking treatment types' => { 'no treatment' => 'no treatment' },
              'tracking fractionation types' => { 'no fractionation' => 'no fractionation' },
+
+             'tracking users types' =>
+             {
+              'admin' => 'Admin user - full privileges',
+              'local' => 'Local user - full access to all data but not full delete/edit privileges',
+              'external' => 'External user - access only to selected data, no delete/edit privileges',
+             },
             );
 
 my %cvterm_objs = ();
@@ -370,7 +377,7 @@ my @people = (
               ['Becky Mosher', 'becky_mosher', 'DCB'],
               ['Kanu Patel', 'kanu_patel', 'DCB'],
               ['Anna Peters', 'anna_peters', 'DCB'],
-              ['Kim Rutherford', 'kim_rutherford', 'DCB'],
+              ['Kim Rutherford', 'kim_rutherford', 'DCB', 'admin'],
               ['Iain Searle', 'iain_searle', 'DCB'],
               ['Padubidri Shivaprasad', 'padubidri_shivaprasad', 'DCB'],
               ['Shuoya Tang', 'shuoya_tang', 'DCB'],
@@ -382,19 +389,32 @@ my @people = (
              );
 
 $schema->txn_do(sub {
+  my $role_cvterm_rs = $schema->resultset('Cvterm');
+  my $admin_role_cvterm = $role_cvterm_rs->find({ name => 'admin' });
+  my $local_role_cvterm = $role_cvterm_rs->find({ name => 'local' });
+
   for my $person (@people) {
-    my ($person_name, $username, $organisation_name) = @$person;
+    my ($person_name, $username, $organisation_name, $admin) = @$person;
 
     my $rs = $schema->resultset('Organisation');
     my $organisation = $rs->find({
                                   name => $organisation_name
                                  });
 
+    my $role_cvterm;
+
+    if (defined $admin) {
+      $role_cvterm = $admin_role_cvterm;
+    } else {
+      $role_cvterm = $local_role_cvterm;
+    }
+
     if ($person_name =~ /(.*) (.*)/) {
       $loader->add_person(first_name => $1, last_name => $2,
                           username => $username,
                           password => $username,
-                          organisation => $organisation);
+                          organisation => $organisation,
+                          role => $role_cvterm);
     } else {
       die "no space in name: $person_name\n";
     }

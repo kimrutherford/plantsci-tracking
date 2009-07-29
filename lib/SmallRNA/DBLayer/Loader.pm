@@ -106,7 +106,7 @@ sub add_person
   my $self = shift;
   my %params = validate(@_, { first_name => 1, last_name => 1,
                               username => 1, password => 1,
-                              organisation => 1});
+                              organisation => 1, role => 1 });
 
   my $rs = $self->{schema}->resultset('Person');
   return $rs->create({
@@ -114,7 +114,8 @@ sub add_person
                       last_name => $params{last_name},
                       username => $params{username},
                       password => $params{password},
-                      organisation => $params{organisation}
+                      organisation => $params{organisation},
+                      role => $params{role},
                      });
 }
 

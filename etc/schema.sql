@@ -184,6 +184,7 @@ CREATE TABLE person (
        last_name text NOT NULL,
        username text UNIQUE NOT NULL,
        password text,
+       role integer REFERENCES cvterm(cvterm_id) NOT NULL,
        organisation integer REFERENCES organisation(organisation_id) NOT NULL,
        CONSTRAINT person_full_name_constraint UNIQUE(first_name, last_name)
 );
