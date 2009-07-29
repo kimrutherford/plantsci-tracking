@@ -154,7 +154,8 @@ CREATE TABLE barcode (
        code text NOT NULL UNIQUE
 );
 CREATE TABLE protocol (
-       name text CONSTRAINT protocol_pk PRIMARY KEY,
+       protocol_id serial CONSTRAINT protocol_id_pk PRIMARY KEY,
+       name text UNIQUE NOT NULL,
        description text NOT NULL
 );
 CREATE TABLE sample (
@@ -163,7 +164,7 @@ CREATE TABLE sample (
        name text NOT NULL UNIQUE,
        genotype text,
        description text NOT NULL,
-       protocol text NOT NULL REFERENCES protocol(name),
+       protocol integer NOT NULL REFERENCES protocol(protocol_id),
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        treatment_type integer REFERENCES cvterm(cvterm_id),
        fractionation_type integer REFERENCES cvterm(cvterm_id),
