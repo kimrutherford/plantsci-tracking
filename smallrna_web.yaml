@@ -108,6 +108,11 @@ class_info:
         referenced_class: Pipeproject
         editable: 1
         is_collection: 1
+      - field_label: pipedatas
+        referenced_class: Pipedata
+        editable: 1
+        is_collection: 1
+        admin_only: 1
   ecotype:
     display_field: long_description
   genotype:
