@@ -115,10 +115,6 @@ sub list : Local {
 
     my $params = { order_by => $order_by };
 
-    use Data::Dumper;
-    warn "params: ", Data::Dumper->Dump([$params]), "\n";
-
-
     $st->{rs} = $c->schema->resultset($class_name)->search(undef, $params);
 
     $st->{page} = $c->req->param('page') || 1;
