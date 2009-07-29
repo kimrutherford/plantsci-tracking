@@ -40,7 +40,7 @@ sub start : Path('/') {
 
 =head2 end
 
-Attempt to render a view, if needed.
+ Attempt to render a view, if needed.
 
 =cut
 
@@ -59,6 +59,11 @@ sub end : Private {
   $c->forward('SmallRNA::Web::View::Mason');
 }
 
+=head2
+
+ Try to authenticate a user based on username and password parameters
+
+=cut
 sub login : Global {
   my ( $self, $c ) = @_;
   my $username = $c->req->param('username');
@@ -79,6 +84,12 @@ sub login : Global {
   $c->detach();
   return 0;
 }
+
+=head2
+
+ Log out the user and return to the front page.
+
+=cut
 
 sub logout : Global {
   my ( $self, $c ) = @_;
