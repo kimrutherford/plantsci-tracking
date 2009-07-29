@@ -22,6 +22,6 @@ $object
 
 
 <%init>
-my $id_field_name = $type . '_id';
-my $object_id = $object->$id_field_name();
+my $table_pk_field = ($object->primary_columns())[0];
+my $object_id = $object->$table_pk_field();
 </%init>

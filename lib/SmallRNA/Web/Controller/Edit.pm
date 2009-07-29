@@ -76,18 +76,19 @@ sub _get_field_values
 
   my @res = ();
 
-  my $table_id_column = $table_name . '_id';
-
   while (defined (my $row = $rs->next())) {
     if (defined $values_constraint) {
       my $this_constrain_value = $constraint_path->resolve($row);
       next unless $constraint_value eq $this_constrain_value;
     }
 
-    my $option = { value => $row->$table_id_column(),
+    # multi-column primary keys aren't supported
+    my $table_pk_column = ($row->primary_columns())[0];
+
+    my $option = { value => $row->$table_pk_column(),
                    label => $row->$field_name() };
 
-    if (grep { $row->$table_id_column() eq $_ } @$select_values) {
+    if (grep { $row->$table_pk_column() eq $_ } @$select_values) {
       if ($type eq 'Select') {
         $option->{attributes} = { selected => 't' };
       } else {
@@ -148,11 +149,12 @@ sub _init_form_field
     }
 
     $elem->{type} = 'Select';
-    my $table_id_column = $referenced_table . '_id';
-
     my $current_value = undef;
     if (defined $object && defined $object->$field_db_column()) {
-      $current_value = $object->$field_db_column()->$table_id_column();
+      my $other_object = $object->$field_db_column();
+      my $table_pk_column = ($other_object->primary_columns())[0];
+
+      $current_value = $other_object->$table_pk_column();
     } else {
       $current_value = $c->req->param("$referenced_table.id");
     }
@@ -181,13 +183,13 @@ sub _init_form_field
       my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
 
       $elem->{type} = 'Checkboxgroup';
-      my $table_id_column = $referenced_table . '_id';
 
       my @current_values = ();
       if (defined $object) {
         my $rs = $object->$field_db_column();
         while (defined (my $row = $rs->next())) {
-          push @current_values, $row->$table_id_column();
+          my $row_pk_field = ($row->primary_columns())[0];
+          push @current_values, $row->$row_pk_field();
         }
       } else {
         push @current_values, $c->req->param("$referenced_table.id");
@@ -422,9 +424,12 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
     if ($req_type eq 'new') {
       $c->schema()->txn_do(sub {
                              my $object = _create_object($c, $type, $form);
-                             my $table_id_column = $type . '_id';
+
+                             # multi-column primary keys aren't supported
+                             my $table_pk_field = ($object->primary_columns())[0];
+
                              # get the id so we can redirect below
-                             $object_id = $object->$table_id_column();
+                             $object_id = $object->$table_pk_field();
                            });
     } else {
       $c->schema()->txn_do(sub {

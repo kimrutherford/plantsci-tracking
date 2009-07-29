@@ -21,8 +21,9 @@ $object
 % $m->call_next;
 
 <%init>
-my $id_field_name = $type . '_id';
-my $object_id = $object->$id_field_name();
+# multi-column primary keys aren't supported
+my $table_pk_field = ($object->primary_columns())[0];
+my $object_id = $object->$table_pk_field();
 
 my $editable = $c->config()->{class_info}->{$type}->{editable};
 </%init>
