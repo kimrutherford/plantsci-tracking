@@ -362,7 +362,7 @@ sub _update_object {
         @values = ($value);
       }
 
-      my @values = map {
+      @values = map {
         $c->schema()->find_with_type($referenced_class_name,
                                      "${referenced_table}_id" => $_);
       } @values;
