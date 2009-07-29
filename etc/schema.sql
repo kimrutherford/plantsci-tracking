@@ -105,12 +105,6 @@ CREATE TABLE ecotype (
        organism integer REFERENCES organism(organism_id) NOT NULL,
        description text NOT NULL
 );
-CREATE TABLE genotype (
-       genotype_id serial CONSTRAINT genotype_id_pk PRIMARY KEY,
-       created_stamp timestamp NOT NULL DEFAULT now(),
-       organism integer REFERENCES organism(organism_id) NOT NULL,
-       description text NOT NULL
-);
 CREATE TABLE tissue (
        tissue_id SERIAL CONSTRAINT tissue_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
@@ -162,7 +156,7 @@ CREATE TABLE sample (
        sample_id serial CONSTRAINT sample_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        name text NOT NULL UNIQUE,
-       genotype integer REFERENCES genotype(genotype_id),
+       genotype text,
        description text NOT NULL,
        protocol text, -- there should be a protocol text, or ref to cvterm
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
