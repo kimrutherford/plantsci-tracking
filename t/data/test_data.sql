@@ -69,7 +69,7 @@ ALTER TABLE ONLY public.pipeprocess_in_pipedata DROP CONSTRAINT pipeprocess_in_p
 ALTER TABLE ONLY public.pipeprocess DROP CONSTRAINT pipeprocess_id_pk;
 ALTER TABLE ONLY public.pipedata DROP CONSTRAINT pipedata_id_pk;
 ALTER TABLE ONLY public.pipedata DROP CONSTRAINT pipedata_file_name_key;
-ALTER TABLE ONLY public.person DROP CONSTRAINT person_user_name_key;
+ALTER TABLE ONLY public.person DROP CONSTRAINT person_username_key;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_id_pk;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_full_name_constraint;
 ALTER TABLE ONLY public.organism DROP CONSTRAINT organism_id_pk;
@@ -439,7 +439,7 @@ CREATE TABLE person (
     created_stamp timestamp without time zone DEFAULT now() NOT NULL,
     first_name text NOT NULL,
     last_name text NOT NULL,
-    user_name text NOT NULL,
+    username text NOT NULL,
     password text,
     organisation integer NOT NULL
 );
@@ -2173,7 +2173,7 @@ COPY organism (organism_id, abbreviation, genus, species, common_name, comment) 
 -- Data for Name: person; Type: TABLE DATA; Schema: public; Owner: kmr44
 --
 
-COPY person (person_id, created_stamp, first_name, last_name, user_name, password, organisation) FROM stdin;
+COPY person (person_id, created_stamp, first_name, last_name, username, password, organisation) FROM stdin;
 1	2009-07-16 18:20:03.030371	Andy	Bassett	andy_bassett	andy_bassett	1
 2	2009-07-16 18:20:03.030371	David	Baulcombe	david_baulcombe	david_baulcombe	1
 3	2009-07-16 18:20:03.030371	Amy	Beeken	amy_beeken	amy_beeken	1
@@ -2525,11 +2525,11 @@ ALTER TABLE ONLY person
 
 
 --
--- Name: person_user_name_key; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+-- Name: person_username_key; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
 ALTER TABLE ONLY person
-    ADD CONSTRAINT person_user_name_key UNIQUE (user_name);
+    ADD CONSTRAINT person_username_key UNIQUE (username);
 
 
 --

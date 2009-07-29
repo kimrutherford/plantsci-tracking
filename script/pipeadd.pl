@@ -70,7 +70,7 @@ my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
 if ($options{add_project}) {
   if (@ARGV == 3) {
     my $project_type = $schema->find_with_type('Cvterm', 'name', $ARGV[1]);
-    my $owner = $schema->find_with_type('Person', 'user_name', $ARGV[2]);
+    my $owner = $schema->find_with_type('Person', 'username', $ARGV[2]);
     my $project = $loader->create_with_prefix('Pipeproject', 'name', 'P_',
                                               { description => $ARGV[0],
                                                 type => $project_type,
