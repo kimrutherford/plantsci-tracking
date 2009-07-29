@@ -18,7 +18,6 @@ $message => undef
     </div>
 
 
-% if (0) {
 % if ($c->user_exists()) {
     <div id="logout">
       Logged in as: <% $c->user()->username() %>
@@ -40,7 +39,6 @@ $message => undef
         <input id="submit" name="submit" type="submit" value="login"/>
       </form>
     </div>
-% }
 % }
 
 <div id="errorsDiv">

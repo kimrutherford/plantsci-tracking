@@ -182,7 +182,7 @@ CREATE TABLE person (
        created_stamp timestamp NOT NULL DEFAULT now(),
        first_name text NOT NULL,
        last_name text NOT NULL,
-       user_name text UNIQUE NOT NULL,
+       username text UNIQUE NOT NULL,
        password text,
        organisation integer REFERENCES organisation(organisation_id) NOT NULL,
        CONSTRAINT person_full_name_constraint UNIQUE(first_name, last_name)

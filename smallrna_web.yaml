@@ -4,17 +4,17 @@ long_name: SmallRNA Tracking
 pipeline_directory: /data/pipeline
 data_sub_directory: process
 authentication:
-  default_realm: 'friends'
+  default_realm: 'members'
   realms:
-    friends:
+    members:
       credential:
         class: 'Password'
         password_field: 'password'
         password_type: 'clear'
       store:
         class: DBIx::Class
-        user_class: DB::Person
-        id_field: identifier
+        user_class: Person
+        id_field: username
 # There needs to be a class_info entry for each class that will be displayed.
 # Class flags:
 #   editable: an edit link and edit page will be created for this class

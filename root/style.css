@@ -209,3 +209,9 @@ fieldset .checkboxgroup > span {
     overflow: auto;
 }
 
+#login {
+    float: right;
+}
+#logout {
+    float: right;
+}

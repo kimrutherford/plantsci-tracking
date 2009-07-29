@@ -392,7 +392,7 @@ $schema->txn_do(sub {
 
     if ($person_name =~ /(.*) (.*)/) {
       $loader->add_person(first_name => $1, last_name => $2,
-                          user_name => $username,
+                          username => $username,
                           password => $username,
                           organisation => $organisation);
     } else {
