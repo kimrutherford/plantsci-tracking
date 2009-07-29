@@ -20,6 +20,7 @@ DROP TABLE sample_pipedata CASCADE;
 DROP TABLE sample_ecotype CASCADE;
 DROP TABLE coded_sample CASCADE;
 DROP TABLE sequencing_sample CASCADE;
+DROP TABLE protocol CASCADE;
 DROP SEQUENCE cvterm_cvterm_id_seq CASCADE;
 DROP SEQUENCE cv_cv_id_seq CASCADE;
 
@@ -152,13 +153,17 @@ CREATE TABLE barcode (
        identifier text NOT NULL UNIQUE,
        code text NOT NULL UNIQUE
 );
+CREATE TABLE protocol (
+       name text CONSTRAINT protocol_pk PRIMARY KEY,
+       description text NOT NULL
+);
 CREATE TABLE sample (
        sample_id serial CONSTRAINT sample_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        name text NOT NULL UNIQUE,
        genotype text,
        description text NOT NULL,
-       protocol text, -- there should be a protocol text, or ref to cvterm
+       protocol text NOT NULL REFERENCES protocol(name),
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        treatment_type integer REFERENCES cvterm(cvterm_id),
        fractionation_type integer REFERENCES cvterm(cvterm_id),

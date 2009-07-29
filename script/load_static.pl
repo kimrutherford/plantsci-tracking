@@ -646,3 +646,19 @@ $schema->txn_do(sub {
     }
   }
 });
+
+my @protocols = (
+              ['unknown', ''],
+             );
+
+$schema->txn_do(sub {
+  for my $protocol (@protocols) {
+    my ($name, $description) = @$protocol;
+    $schema->create_with_type('Protocol',
+                                {
+                                  name => $name,
+                                  description => $description,
+                                });
+
+  }
+});

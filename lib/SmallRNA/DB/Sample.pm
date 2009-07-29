@@ -47,7 +47,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "text",
     default_value => undef,
-    is_nullable => 1,
+    is_nullable => 0,
     size => undef,
   },
   "molecule_type",
@@ -70,6 +70,7 @@ __PACKAGE__->has_many(
   { "foreign.sample" => "self.sample_id" },
 );
 __PACKAGE__->belongs_to("tissue", "SmallRNA::DB::Tissue", { tissue_id => "tissue" });
+__PACKAGE__->belongs_to("protocol", "SmallRNA::DB::Protocol", { name => "protocol" });
 __PACKAGE__->belongs_to(
   "processing_requirement",
   "SmallRNA::DB::Cvterm",
@@ -108,7 +109,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u8BpCf40LM6nD3/Y6HyQJg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mStwvNCcmHTVPrq7009/iw
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
 __PACKAGE__->many_to_many('ecotypes' => 'sample_ecotypes', 'ecotype');

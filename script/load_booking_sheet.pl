@@ -190,6 +190,7 @@ sub create_sample
   my @ecotypes = @$ecotypes_ref;
   my $do_processing = shift;
 
+  my $protocol = find('Protocol', name => 'unknown');
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
   my $processing_type_term = find('Cvterm',
                                   name => ($do_processing ?
@@ -202,7 +203,8 @@ sub create_sample
                      name => $sample_name,
                      description => $description,
                      molecule_type => $molecule_type_term,
-                     processing_requirement => $processing_type_term
+                     processing_requirement => $processing_type_term,
+                     protocol => $protocol,
                     };
 
   my $sample = create('Sample', $sample_args);
