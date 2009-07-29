@@ -239,7 +239,10 @@ sub _initialise_form
   my @field_infos = @{$c->config()->{class_info}->{$type}->{field_info_list}};
 
   for my $field_info (@field_infos) {
-    push @elements, _init_form_field($c, $field_info, $object, $type);
+    if (!$field_info->{admin_only} ||
+          $c->user_exists() && $c->user()->role()->name() eq 'admin') {
+      push @elements, _init_form_field($c, $field_info, $object, $type);
+    }
   }
 
   $form->default_args({elements => { Text => { size => 50 } } });
