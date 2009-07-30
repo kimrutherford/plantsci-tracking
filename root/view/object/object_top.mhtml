@@ -10,7 +10,7 @@ $object
 <div class="plugins">
 % for my $plugin_conf (@object_plugins) {
   <div class="plugin">
-    <div class="plugin_content">
+    <div class="<% $plugin_conf->{css_class} %>">
       <& $plugin_conf->{path}, object => $object &>
     </div>
   </div>

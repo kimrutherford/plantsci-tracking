@@ -10,6 +10,8 @@ $message => undef
     <title><% $c->config()->{long_name} %> - <% $title %></title>
     <link href="<% $c->uri_for('/style.css') %>" type="text/css" 
           rel="stylesheet" />
+    <link href="<% $c->uri_for('/plugins/plugin.css') %>" type="text/css" 
+          rel="stylesheet" />
   </head>
   <body>
     <div id="heading">
