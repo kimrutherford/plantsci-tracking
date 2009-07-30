@@ -150,7 +150,7 @@ my %terms = (
                 'Read FastQ files, trim each read to a fixed length and then create a fasta file',
               'summarise fasta first base' =>
                 'Read a fasta file of short sequences and summarise the first base composition',
-              'statistics fasta file' =>
+              'calculate fasta file statistics' =>
                 'Get statistics from a FASTA file',
               'remove redundant reads' =>
                 'Read a fasta file of short sequences, remove redundant reads '
@@ -476,7 +476,7 @@ my @analyses = (
                      ]
                 },
                 {
-                 type_term_name => 'statistics fasta file',
+                 type_term_name => 'calculate fasta file statistics',
                  runable_name => 'SmallRNA::Runable::FastaStatsRunable',
                  inputs => [
                      {
@@ -486,7 +486,7 @@ my @analyses = (
                     ]
                 },
                 {
-                 type_term_name => 'statistics fasta file',
+                 type_term_name => 'calculate fasta file statistics',
                  runable_name => 'SmallRNA::Runable::FastaStatsRunable',
                  inputs => [
                      {
@@ -496,7 +496,7 @@ my @analyses = (
                     ]
                 },
                 {
-                 type_term_name => 'statistics fasta file',
+                 type_term_name => 'calculate fasta file statistics',
                  runable_name => 'SmallRNA::Runable::FastaStatsRunable',
                  inputs => [
                      {
