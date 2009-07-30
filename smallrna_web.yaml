@@ -194,10 +194,15 @@ gbrowse:
 plugins:
   object_page:
     sample:
-      - name: GBrowse
-        path: /plugins/gbrowse.mhtml
       - name: Size distribution graph
         path: /plugins/sizedists.mhtml
+        css_class: size_dist_graph
+      - name: Read stats summary
+        css_class: read_stats
+        path: /plugins/readstats.mhtml
+      - name: GBrowse
+        path: /plugins/gbrowse.mhtml
+        css_class: gbrowse_link 
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64

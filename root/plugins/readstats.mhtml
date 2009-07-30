@@ -1,0 +1,57 @@
+<%args>
+$object
+</%args>
+
+<table>
+% for my $stat (@stats) {
+<tr>
+  <td>
+    <% $stat->{data}->{sequence_count} %>
+  </td>
+  <td>
+    <% $stat->{data}->{gc_content} %>
+  </td>
+</tr>
+% }
+</table>
+
+<%init>
+my $schema = $c->schema();
+my $fasta_type = $schema->find_with_type('Cvterm', 'name', 'fasta_stats');
+my $fastq_type = $schema->find_with_type('Cvterm', 'name', 'fastq_stats');
+
+my $query = {
+              -or => [ content_type => $fasta_type->cvterm_id(),
+                       content_type => $fastq_type->cvterm_id() ]
+            };
+my @pipe_datas = $object->pipedatas()->search($query);
+my $pipe_data_id = undef;
+
+my @stats = ();
+
+my $data_directory = $c->config()->data_directory();
+
+for my $fast_stat_pipe_data (@pipe_datas) {
+  my @input_pipedatas = $fast_stat_pipe_data->generating_pipeprocess()->input_pipedatas();
+  if (@input_pipedatas) {
+    # "fast" = fasta or fastq
+    my %fast_data = ();
+    my $fast_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
+
+    open my $file, '<', $fast_file_name
+      or die "can't open $fast_file_name: $!\n";
+
+    while (defined (my $line = <$file>)) {
+      if ($line =~ /(.*):\s*(.*?)\s*$/) {
+        $fast_data{$1} = $2;
+      }
+    }
+
+    push @stats, { fast_pipedata => $fast_stat_pipe_data,
+                   data => \%fast_data,
+                   };
+
+    close $file or die "can't close $file: $!\n";
+  }
+}
+</%init>
