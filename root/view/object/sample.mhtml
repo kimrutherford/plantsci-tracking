@@ -19,7 +19,7 @@ $type
   <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
     list_title => "The ecotype$ecotype_plu for this sample" &>
 </div>
-<div>
+<div style="clear: both">
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
     list_title => "The sequencing run$seqruns_plu for this sample" &>
 </div>
