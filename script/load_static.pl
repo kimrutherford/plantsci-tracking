@@ -481,6 +481,27 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
+                       content_type => 'small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'statistics fasta file',
+                 runable_name => 'SmallRNA::Runable::FastaStatsRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_small_rna',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'statistics fasta file',
+                 runable_name => 'SmallRNA::Runable::FastaStatsRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
+                       content_type => 'genome_matching_srna',
                      }
                     ]
                 },
