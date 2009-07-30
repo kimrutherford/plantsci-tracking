@@ -17,9 +17,9 @@ DROP TABLE cvterm_dbxref CASCADE;
 DROP TABLE dbxref CASCADE;
 DROP TABLE pub CASCADE;
 DROP TABLE barcode CASCADE;
+DROP TABLE barcode_set CASCADE;
 DROP TABLE tissue CASCADE;
 DROP TABLE ecotype CASCADE;
-DROP TABLE genotype CASCADE;
 DROP TABLE organism CASCADE;
 DROP TABLE organism_dbxref CASCADE;
 DROP TABLE sample_pipedata CASCADE;
@@ -235,10 +235,15 @@ CREATE TABLE pipeprocess (
        time_started timestamp,
        time_finished timestamp
 );
+CREATE TABLE barcode_set (
+       barcode_set_id serial CONSTRAINT barcode_set_id_pk PRIMARY KEY,
+       name text NOT NULL UNIQUE
+);
 CREATE TABLE barcode (
        barcode_id serial CONSTRAINT barcode_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
        identifier text NOT NULL UNIQUE,
+       barcode_set integer REFERENCES barcode_set(barcode_set_id) NOT NULL,
        code text NOT NULL UNIQUE
 );
 CREATE TABLE protocol (
