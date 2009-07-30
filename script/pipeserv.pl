@@ -79,7 +79,7 @@ while (my $pipeprocess = $conf_rs->next()) {
         }
       }
 
-      sleep (2);
+      sleep (1);
     }
   };
 
