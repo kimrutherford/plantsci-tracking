@@ -57,7 +57,7 @@ sub run
   my $schema = $self->schema();
 
   my $code = sub {
-    my $summary_term_name = 'first_base_summary';
+    my $stats_term_name = 'fasta_stats';
     my $pipeprocess = $self->pipeprocess();
 
     my @input_pipedatas = $pipeprocess->input_pipedatas();
@@ -71,10 +71,7 @@ sub run
     my $input_file_name = $input_pipedata->file_name();
     my $out_file_name = $input_file_name;
 
-    my $suffix = "fasta|fa";
-    if (!($out_file_name =~ s/(\.$suffix)?$/.fasta_stats/)) {
-      croak qq(pattern match failed "$out_file_name" doesn't end with: $suffix);
-    }
+    $out_file_name =~ s/(\.(fasta|fa))?$/.fasta_stats/i;
 
     SmallRNA::Process::FastaStatsProcess::run(input_file_name =>
                                                 "$data_dir/" . $input_file_name,
@@ -86,7 +83,7 @@ sub run
     $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
                           file_name => $out_file_name,
                           format_type_name => 'text',
-                          content_type_name => $summary_term_name,
+                          content_type_name => $stats_term_name,
                           samples => \@samples);
   };
   $self->schema->txn_do($code);
