@@ -88,6 +88,8 @@ my %terms = (
                 'A summary of the first base composition of sequences from a fasta file',
               'fasta_stats' =>
                 'Summary information and statistics about a FASTA file',
+              'fastq_stats' =>
+                'Summary information and statistics about a FASTQ file',
               'genome_matching_srna' =>
                 'Reads that match the genome with a 100% full-length match',
               'genome_aligned_srna_reads' =>
@@ -151,7 +153,9 @@ my %terms = (
               'summarise fasta first base' =>
                 'Read a fasta file of short sequences and summarise the first base composition',
               'calculate fasta file statistics' =>
-                'Get statistics from a FASTA file',
+                'Get sequence composition statistics from a FASTA file',
+              'calculate fastq file statistics' =>
+                'Get sequence composition statistics from a FASTQ file',
               'remove redundant reads' =>
                 'Read a fasta file of short sequences, remove redundant reads '
                   . 'and add a count to the header',
@@ -474,6 +478,16 @@ my @analyses = (
                         content_type => 'multiplexed_small_rna_reads',
                       }
                      ]
+                },
+                {
+                 type_term_name => 'calculate fastq file statistics',
+                 runable_name => 'SmallRNA::Runable::FastqStatsRunable',
+                 inputs => [
+                     {
+                       format_type => 'fastq',
+                       content_type => 'raw_small_rna_reads',
+                     }
+                    ]
                 },
                 {
                  type_term_name => 'calculate fasta file statistics',

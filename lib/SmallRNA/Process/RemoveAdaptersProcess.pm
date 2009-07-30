@@ -145,7 +145,7 @@ sub run
 
   my $reject_file_name = "$output_file_base.rejects.fasta";
   my $fasta_file_name = "$output_file_base.reads.fasta";
-
+ 
   # used when there is no multiplexing
   my $default_out_file_name = "$output_file_base.fasta";
   my $default_out_file;
