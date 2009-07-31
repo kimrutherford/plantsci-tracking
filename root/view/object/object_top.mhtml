@@ -7,6 +7,8 @@ $object
 <& /view/field_list.mhtml, object => $object, field_labels => [@field_labels] &>
 </div>
 
+<% $m->content() %>
+
 <div class="plugins">
 % for my $plugin_conf (@object_plugins) {
   <div class="plugin">
