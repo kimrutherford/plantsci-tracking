@@ -142,7 +142,7 @@ class_info:
   pipeprocess:
     display_field: description
   barcode:
-    display_field: identifier
+    display_field: long_identifier
   pipedata:
     display_field: file_name
   sequencingrun:

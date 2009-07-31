@@ -58,6 +58,17 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RJgKJYOKZbyVmAGLrEsGug
 
+sub long_identifier
+{
+  my $self = shift;
+
+  my $barcode_set_name = $self->barcode_set()->name();
+  my $barcode_identifier = $self->identifier();
+  my $barcode_code = $self->code();
+
+  return "$barcode_set_name $barcode_identifier ($barcode_code)";
+}
+
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;
