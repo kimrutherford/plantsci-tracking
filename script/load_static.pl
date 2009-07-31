@@ -34,7 +34,7 @@ my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
 
 $schema->txn_do(sub {
   my $set_rs = $schema->resultset('BarcodeSet');
-  my $set = $set_rs->create({ name => 'DBC barcode set' });
+  my $set = $set_rs->create({ name => 'DBC set' });
 
   for my $barcode (sort keys %barcodes) {
     my $barcode_identifier = $barcodes{$barcode};
