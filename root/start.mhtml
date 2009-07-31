@@ -56,6 +56,10 @@
               <a href="<% $c->uri_for('/new/object/sample') %>">Sample</a>
             </li>
             <li>
+              <a href="<% $c->uri_for('/new/object/coded_sample') %>">Sample
+              with barcode</a>
+            </li>
+            <li>
               <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Sequencing run</a>
             </li>
             <li>
