@@ -1,9 +1,10 @@
-package SmallRNA::Runable::FastaStatsRunable;
+package SmallRNA::Runable::FastStatsRunable;
 
 =head1 NAME
 
-SmallRNA::Runable::FastaStatsRunable - A Runable that summarises the content
-                                         and composition of a FASTA file
+SmallRNA::Runable::FastStatsRunable - A Runable that summarises the content
+                                       and sequence ecomposition of a FASTQ or 
+                                       FASTA file
 
 =head1 SYNOPSIS
 
@@ -19,7 +20,7 @@ Please report any bugs or feature requests to C<kmr44@cam.ac.uk>.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc SmallRNA::Runable::FastaStatsRunable
+    perldoc SmallRNA::Runable::FastStatsRunable
 
 =over 4
 
@@ -41,13 +42,14 @@ use warnings;
 use Moose;
 use Carp;
 
-use SmallRNA::Process::FastaStatsProcess;
+use SmallRNA::Process::FastStatsProcess;
 
 extends 'SmallRNA::Runable::SmallRNARunable';
 
 =head2
 
- Function: Create a file with summary/statistical information about a FASTA file
+ Function: Create a file with summary/statistical information about a FASTQ or 
+           FASTA file
  Returns : nothing - either succeeds or calls die()
 
 =cut
@@ -57,7 +59,6 @@ sub run
   my $schema = $self->schema();
 
   my $code = sub {
-    my $stats_term_name = 'fasta_stats';
     my $pipeprocess = $self->pipeprocess();
 
     my @input_pipedatas = $pipeprocess->input_pipedatas();
@@ -71,12 +72,20 @@ sub run
     my $input_file_name = $input_pipedata->file_name();
     my $out_file_name = $input_file_name;
 
-    $out_file_name =~ s/(\.(fasta|fa))?$/.fasta_stats/i;
+    my $stats_term_name;
 
-    SmallRNA::Process::FastaStatsProcess::run(input_file_name =>
-                                                "$data_dir/" . $input_file_name,
-                                              output_file_name =>
-                                                "$data_dir/" . $out_file_name);
+    if ($input_pipedata->format_type()->name() eq 'fasta') {
+      $out_file_name =~ s/(\.(fasta|fa))?$/.fasta_stats/i;
+      $stats_term_name = 'fasta_stats';
+    } else {
+      $out_file_name =~ s/(\.(fastq|fq))?$/.fastq_stats/i;
+      $stats_term_name = 'fastq_stats';
+    }
+
+    SmallRNA::Process::FastStatsProcess::run(input_file_name =>
+                                               "$data_dir/" . $input_file_name,
+                                             output_file_name =>
+                                               "$data_dir/" . $out_file_name);
 
     my @samples = $input_pipedata->samples();
 

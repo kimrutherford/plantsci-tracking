@@ -1,8 +1,8 @@
-package SmallRNA::Process::FastaStatsProcess;
+package SmallRNA::Process::FastStatsProcess;
 
 =head1 NAME
 
-SmallRNA::Process::FastaStatsProcess - Summarise a fasta file of short sequences
+SmallRNA::Process::FastStatsProcess - Summarise a FASTA or FASTQ file
 
 =head1 SYNOPSIS
 
@@ -18,7 +18,7 @@ Please report any bugs or feature requests to C<kmr44@cam.ac.uk>.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc SmallRNA::Process::FastaStatsProcess
+    perldoc SmallRNA::Process::FastStatsProcess
 
 You can also look for information at:
 
@@ -45,12 +45,12 @@ use warnings;
 
 =head2
 
- Usage   : SmallRNA::Process::FastaStatsProcess::run(input_file_name =>
-                                                       $in_file_name,
-                                                     output_file_name =>
-                                                       $out_file_name);
- Function: Create a statistics/summary file from a FASTA file
- Args    : input_file_name - the input FASTA file name
+ Usage   : SmallRNA::Process::FastStatsProcess::run(input_file_name =>
+                                                      $in_file_name,
+                                                    output_file_name =>
+                                                      $out_file_name);
+ Function: Create a statistics/summary file from a FASTQ or FASTA file
+ Args    : input_file_name - the input FASTQ/FASTA file name
            output_file_name - the name of the file to write the stats to
  Returns : nothing - either succeeds or calls die()
 
@@ -67,11 +67,27 @@ sub run
     croak "can't find input file: $params{input_file_name}";
   }
 
-  my $in = Bio::SeqIO->new(-file => $params{input_file_name},
-                           -format => 'Fasta');
+  my $format;
 
-  while (defined (my $seq = $in->next_seq())) {
-    my $sequence = $seq->seq();
+  if ($params{input_file_name} =~ /\.(fastq|fq)$/) {
+    $format = 'fastfastq';
+  } else {
+    $format = 'Fasta';
+  }
+
+  my $seqio = Bio::SeqIO->new(-file => $params{input_file_name},
+                              -format => $format);
+
+  while (defined (my $seq_obj = $seqio->next_seq())) {
+    my $sequence;
+
+    if ($format eq 'fastfastq') {
+      $sequence = $seq_obj->{sequence};
+    } else {
+      $sequence = $seq_obj->seq();
+    }
+
+    my $seq_len = length $sequence;
 
     $total_bases += length $sequence;
 

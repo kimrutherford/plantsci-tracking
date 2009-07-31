@@ -152,10 +152,8 @@ my %terms = (
                 'Read FastQ files, trim each read to a fixed length and then create a fasta file',
               'summarise fasta first base' =>
                 'Read a fasta file of short sequences and summarise the first base composition',
-              'calculate fasta file statistics' =>
-                'Get sequence composition statistics from a FASTA file',
-              'calculate fastq file statistics' =>
-                'Get sequence composition statistics from a FASTQ file',
+              'calculate fasta or fastq file statistics' =>
+                'Get sequence composition statistics from a FASTA or FASTQ file',
               'remove redundant reads' =>
                 'Read a fasta file of short sequences, remove redundant reads '
                   . 'and add a count to the header',
@@ -480,8 +478,8 @@ my @analyses = (
                      ]
                 },
                 {
-                 type_term_name => 'calculate fastq file statistics',
-                 runable_name => 'SmallRNA::Runable::FastqStatsRunable',
+                 type_term_name => 'calculate fasta or fastq file statistics',
+                 runable_name => 'SmallRNA::Runable::FastStatsRunable',
                  inputs => [
                      {
                        format_type => 'fastq',
@@ -490,8 +488,8 @@ my @analyses = (
                     ]
                 },
                 {
-                 type_term_name => 'calculate fasta file statistics',
-                 runable_name => 'SmallRNA::Runable::FastaStatsRunable',
+                 type_term_name => 'calculate fasta or fastq file statistics',
+                 runable_name => 'SmallRNA::Runable::FastStatsRunable',
                  inputs => [
                      {
                        format_type => 'fasta',
@@ -500,8 +498,8 @@ my @analyses = (
                     ]
                 },
                 {
-                 type_term_name => 'calculate fasta file statistics',
-                 runable_name => 'SmallRNA::Runable::FastaStatsRunable',
+                 type_term_name => 'calculate fasta or fastq file statistics',
+                 runable_name => 'SmallRNA::Runable::FastStatsRunable',
                  inputs => [
                      {
                        format_type => 'fasta',
@@ -510,8 +508,8 @@ my @analyses = (
                     ]
                 },
                 {
-                 type_term_name => 'calculate fasta file statistics',
-                 runable_name => 'SmallRNA::Runable::FastaStatsRunable',
+                 type_term_name => 'calculate fasta or fastq file statistics',
+                 runable_name => 'SmallRNA::Runable::FastStatsRunable',
                  inputs => [
                      {
                        format_type => 'fasta',
