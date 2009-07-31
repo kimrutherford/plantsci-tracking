@@ -34,7 +34,7 @@ __PACKAGE__->add_columns(
   "sample",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "sequencing_sample",
-  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
+  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
   "barcode",
   { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
 );
@@ -59,7 +59,7 @@ __PACKAGE__->belongs_to(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IBQGLHqEzVNjEZ01ZYJrnA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tbz8oQzTs3FkhxUYxraz2A
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

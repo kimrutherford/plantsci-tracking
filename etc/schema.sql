@@ -330,7 +330,7 @@ CREATE TABLE coded_sample (
        description text,
        coded_sample_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        sample integer REFERENCES sample(sample_id) NOT NULL,
-       sequencing_sample integer REFERENCES sequencing_sample(sequencing_sample_id) NOT NULL,
+       sequencing_sample integer REFERENCES sequencing_sample(sequencing_sample_id),
        barcode integer REFERENCES barcode(barcode_id)
 );
 COMMENT ON TABLE coded_sample IS
