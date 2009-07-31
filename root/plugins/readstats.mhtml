@@ -2,6 +2,7 @@
 $object
 </%args>
 
+% if (@stats > 0) {
 <div class="rs_list">
 
 <div>
@@ -56,6 +57,8 @@ $object
 </table>
 
 </div>
+
+% }
 
 <%init>
 my $schema = $c->schema();
