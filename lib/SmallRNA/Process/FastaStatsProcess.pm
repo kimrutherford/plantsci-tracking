@@ -75,7 +75,7 @@ sub run
 
     $total_bases += length $sequence;
 
-    $gc_count += $sequence =~ tr /[gc]//i;
+    $gc_count += $sequence =~ tr/[gcGC]//i;
 
     if ($ENV{'SMALLRNA_PIPELINE_TEST'} && $all_count > 1000) {
       last;
