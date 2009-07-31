@@ -9,14 +9,14 @@ $type
 </div>
 
 <div>
-  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$sample_plu for this project" &>
-</div>
-
-<div>
   <a href="<% $c->uri_for('/new/object/sample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
     Create a sample for this project
   </a>
+</div>
+
+<div>
+  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
+    list_title => "The sample$sample_plu for this project" &>
 </div>
 
 <%init>
