@@ -2,18 +2,60 @@
 $object
 </%args>
 
-<table>
+<div class="rs_list">
+
+<div>
+  <span class="title">
+    Sequence statistics
+  </span>
+</div>
+
+<table class="list">
+  <thead>
+    <tr>
+      <td>
+        &nbsp;
+      </td>
+      <td>
+        Number of sequences
+      </td>
+      <td>
+        Total bases
+      </td>
+      <td>
+        G+C bases
+      </td>
+      <td>
+        G+C percentage
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+% my $row_count = 0;
 % for my $stat (@stats) {
-<tr>
-  <td>
-    <% $stat->{data}->{sequence_count} %>
-  </td>
-  <td>
-    <% $stat->{data}->{gc_content} %>
-  </td>
-</tr>
+    <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
+    <td>
+      <% $stat->{label} %>
+    </td>
+    <td>
+      <% $stat->{data}->{number_of_sequences} %>
+    </td>
+    <td>
+      <% $stat->{data}->{total_bases} %>
+    </td>
+    <td>
+      <% $stat->{data}->{gc_bases} %>
+    </td>
+    <td>
+      <% $stat->{data}->{gc_content} %>
+    </td>
+  </tr>
+%   $row_count++
 % }
+  </tbody>
 </table>
+
+</div>
 
 <%init>
 my $schema = $c->schema();
@@ -34,9 +76,13 @@ my $data_directory = $c->config()->data_directory();
 for my $fast_stat_pipe_data (@pipe_datas) {
   my @input_pipedatas = $fast_stat_pipe_data->generating_pipeprocess()->input_pipedatas();
   if (@input_pipedatas) {
+    my $fast_pipedata = $input_pipedatas[0];
+
     # "fast" = fasta or fastq
     my %fast_data = ();
     my $fast_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
+
+  warn "opening $fast_file_name\n";
 
     open my $file, '<', $fast_file_name
       or die "can't open $fast_file_name: $!\n";
@@ -47,8 +93,16 @@ for my $fast_stat_pipe_data (@pipe_datas) {
       }
     }
 
+    if ($fast_data{total_bases} > 0) {
+      my $gc_content = 100.0 * $fast_data{gc_bases} / $fast_data{total_bases};
+      $fast_data{gc_content} = sprintf "%3.2f", $gc_content;
+    } else {
+      $fast_data{gc_content} = 'N/A'
+    }
+
     push @stats, { fast_pipedata => $fast_stat_pipe_data,
                    data => \%fast_data,
+                   label => $fast_pipedata->content_type()->name(),
                    };
 
     close $file or die "can't close $file: $!\n";
