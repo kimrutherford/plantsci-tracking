@@ -162,7 +162,11 @@ class_info:
         field_conf: sequencing_sample
         editable: 1
   sequencing_sample:
+    editable: 1
     display_field: name
+    field_info_list:
+      - field_conf: name
+        editable: 1
   coded_sample:
     editable: 1
     display_field: description
