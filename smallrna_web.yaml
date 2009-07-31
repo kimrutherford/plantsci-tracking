@@ -197,12 +197,12 @@ plugins:
       - name: Size distribution graph
         path: /plugins/sizedists.mhtml
         css_class: size_dist_graph
-      - name: Read stats summary
-        css_class: read_stats
-        path: /plugins/readstats.mhtml
       - name: GBrowse
         path: /plugins/gbrowse.mhtml
         css_class: gbrowse_link 
+      - name: Read stats summary
+        css_class: read_stats
+        path: /plugins/readstats.mhtml
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64
