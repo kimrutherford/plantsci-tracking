@@ -1,3 +1,4 @@
+---
 file: t/data/reads_fasta_summary_test.fasta
 number_of_sequences: 14
 total_bases: 312

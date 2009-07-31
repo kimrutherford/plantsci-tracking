@@ -42,6 +42,8 @@ use Carp;
 use Bio::SeqIO;
 use Params::Validate qw(:all);
 use warnings;
+use YAML;
+use Tie::IxHash;
 
 =head2
 
@@ -99,16 +101,19 @@ sub run
 
     $all_count++;
   }
+  
+  my %out;
+  tie %out, 'Tie::IxHash';
+
+  $out{file} = $params{input_file_name};
+  $out{number_of_sequences} = $all_count;
+  $out{total_bases} = $total_bases;
+  $out{gc_bases} = $gc_count;
 
   open my $out, '>', $params{output_file_name}
     or die "can't open $params{output_file_name} for writing: $!\n";
 
-  print $out <<"OUT";
-file: $params{input_file_name}
-number_of_sequences: $all_count
-total_bases: $total_bases
-gc_bases: $gc_count
-OUT
+  print $out Dump(\%out);
 
   close $out or die "can't close $params{output_file_name}: $!\n";
 

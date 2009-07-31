@@ -2,7 +2,8 @@ use strict;
 use warnings;
 use Test::More tests => 7;
 use File::Temp qw(tempfile);
-use Test::Files;
+use YAML qw(LoadFile);
+use Data::Compare;
 
 BEGIN {
   unshift @INC, 't';
@@ -19,7 +20,7 @@ my @inputs = ({ file_name => 't/data/reads_fasta_summary_test.fasta',
                 gc_count => 151,
                 expected_file_name => 't/data/expected_fastq_stats.txt'
               });
-                            
+
 for my $input (@inputs) {
   my $input_file_name = $input->{file_name};
 
@@ -29,10 +30,12 @@ for my $input (@inputs) {
   my $res = SmallRNA::Process::FastStatsProcess::run(
     output_file_name => $output_file_name,
     input_file_name => $input_file_name
-   );
+  );
 
   is($res->{count}, $input->{count});
   is($res->{gc_count}, $input->{gc_count});
-  compare_ok($input->{expected_file_name}, $output_file_name,
-             'output file contents');
+
+  my $expected_yaml = LoadFile($input->{expected_file_name});
+  my $actual_yaml = LoadFile($output_file_name);
+  ok(Compare($actual_yaml, $expected_yaml), 'compare YAML');
 }
