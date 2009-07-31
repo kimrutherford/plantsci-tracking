@@ -73,6 +73,10 @@ sub run
   while (defined (my $seq = $in->next_seq())) {
     my $sequence = $seq->seq();
 
+    $total_bases += length $sequence;
+
+    $gc_count += $sequence =~ tr /[gc]//i;
+
     if ($ENV{'SMALLRNA_PIPELINE_TEST'} && $all_count > 1000) {
       last;
     }
@@ -83,17 +87,11 @@ sub run
   open my $out, '>', $params{output_file_name}
     or die "can't open $params{output_file_name} for writing: $!\n";
 
-  my $gc_content = 0;
-
-  if ($total_bases) {
-    $gc_content = 100.0 * $gc_content / $total_bases;
-  }
-
   print $out <<"OUT";
 file: $params{input_file_name}
-sequence_count: $all_count
+number_of_sequences: $all_count
 total_bases: $total_bases
-gc_content: $gc_content
+gc_bases: $gc_count
 OUT
 
   close $out or die "can't close $params{output_file_name}: $!\n";
