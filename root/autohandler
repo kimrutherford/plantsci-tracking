@@ -59,7 +59,7 @@ $message => undef
 % }
 </div>
       <div class="content">
-% if ($c->request->{path} ne '') {
+% if ($c->request->path() ne '') {
         <div>
           <span class="page_description">
             <% $title %>
