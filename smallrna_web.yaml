@@ -141,6 +141,7 @@ class_info:
     display_field: long_description
   pipeprocess:
     display_field: description
+    order_by: created_stamp
   barcode:
     display_field: long_identifier
   pipedata:
