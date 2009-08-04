@@ -165,7 +165,7 @@ class_info:
     editable: 1
     display_field: name
     field_info_list:
-      - field_conf: name
+      - field_label: name
         editable: 1
   coded_sample:
     editable: 1
