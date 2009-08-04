@@ -168,6 +168,10 @@ class_info:
     field_info_list:
       - field_label: name
         editable: 1
+      - field_label: coded_samples
+        referenced_class: CodedSample
+        editable: 1
+        is_collection: 1
   coded_sample:
     editable: 1
     display_field: description
