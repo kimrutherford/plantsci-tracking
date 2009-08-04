@@ -499,6 +499,16 @@ my @analyses = (
                  runable_name => 'SmallRNA::Runable::FastStatsRunable',
                  inputs => [
                      {
+                       format_type => 'fastq',
+                       content_type => 'raw_genomic_dna_reads',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'calculate fasta or fastq file statistics',
+                 runable_name => 'SmallRNA::Runable::FastStatsRunable',
+                 inputs => [
+                     {
                        format_type => 'fasta',
                        content_type => 'small_rna',
                      }
