@@ -146,6 +146,7 @@ my %terms = (
                 'This pseudo-analysis generates raw sequence files, ' .
                 'with quality scores, and uses multiplexing/barcodes',
               'remove adapters' => 'Read FastQ files, process each read to remove the adapter',
+              'trim reads' => 'Read FastQ files, process each read and trim to a fixed length',
               'remove adapters and de-multiplex' =>
                 'Read FastQ files, process each read to remove the adapter and split the result based on the barcode',
               'trim reads' =>
@@ -463,6 +464,17 @@ my @analyses = (
                  type_term_name => 'non-multiplexed sequencing run',
                  detail => 'CSHL',
                  inputs => []
+                },
+                {
+                 type_term_name => 'trim reads',
+                 detail => 'processing_type: trim',
+                 runable_name => 'SmallRNA::Runable::FastqToFastaRunable',
+                 inputs => [
+                     {
+                       format_type => 'fastq',
+                       content_type => 'raw_genomic_dna_reads',
+                     }
+                    ]
                 },
                 {
                  type_term_name => 'remove adapters',
