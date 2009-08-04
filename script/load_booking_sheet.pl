@@ -416,7 +416,8 @@ sub process
         $sheet_seq_centre_name,
         $description, $organism_name, $genotype, $submitter, $institution,
         $date_submitted,
-        $date_received, $quality, $quality_note, $sample_type, $run_type,
+        $date_received, $time_taken,
+        $quality, $quality_note, $sample_type, $run_type,
         $require_number_of_reads, $sample_concentration) = @columns;
 
     $date_submitted = fix_date($date_submitted);
