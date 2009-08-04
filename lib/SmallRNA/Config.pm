@@ -97,6 +97,9 @@ sub setup
     my $class_info = $self->{class_info}->{$class_name};
     for my $field_info (@{$class_info->{field_info_list}}) {
       my $field_label = $field_info->{field_label};
+      if (!defined $field_label) {
+        die "config loading failed: field_info with no field_label in $class_name\n";
+      }
       $self->{class_info}->{$class_name}->{field_infos}->{$field_label} =
         $field_info;
     }
