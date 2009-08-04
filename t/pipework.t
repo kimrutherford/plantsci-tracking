@@ -12,7 +12,6 @@ use SmallRNA::Config;
 use SmallRNA::DB;
 use SmallRNA::ProcessManager;
 use SmallRNATest;
-use SmallRNA::Runable::RemoveAdaptersRunable;
 use SmallRNA::PipeWork;
 
 my $config = SmallRNA::Config->new('t/test_config.yaml');

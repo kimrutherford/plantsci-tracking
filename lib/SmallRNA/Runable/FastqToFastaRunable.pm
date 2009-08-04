@@ -1,8 +1,8 @@
-package SmallRNA::Runable::RemoveAdaptersRunable;
+package SmallRNA::Runable::FastqToFastaRunable;
 
 =head1 NAME
 
-SmallRNA::Runable::RemoveAdapters - a runable that reads a fastq file, removes
+SmallRNA::Runable::FastqToFasta - a runable that reads a fastq file, removes
                                     adapters and writes fasta output files
 
 =head1 SYNOPSIS
@@ -19,7 +19,7 @@ Please report any bugs or feature requests to C<kmr44@cam.ac.uk>.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc SmallRNA::Runable::RemoveAdapters
+    perldoc SmallRNA::Runable::FastqToFasta
 
 You can also look for information at:
 
@@ -48,7 +48,7 @@ use File::Temp qw(tempdir);
 use File::Path;
 use File::Copy;
 
-use SmallRNA::Process::RemoveAdaptersProcess;
+use SmallRNA::Process::FastqToFastaProcess;
 
 extends 'SmallRNA::Runable::SmallRNARunable';
 
@@ -120,7 +120,7 @@ sub _check_terms
 
 =head2
 
- Function: Run RemoveAdaptersProcess for this Runable/pipeprocess and store the
+ Function: Run FastqToFastaProcess for this Runable/pipeprocess and store the
            name of the resulting files in the pipedata table.
  Returns : nothing - either succeeds or calls die()
 
@@ -194,7 +194,7 @@ sub run
       $fasta_output_term_name = $multiplexed_small_rna_reads;
 
       ($reject_file_name, $fasta_file_name, $output) =
-        SmallRNA::Process::RemoveAdaptersProcess::run(
+        SmallRNA::Process::FastqToFastaProcess::run(
                                                       output_dir_name => $temp_output_dir,
                                                       input_file_name => $input_file_name,
                                                       barcodes => \%barcodes_map
@@ -242,7 +242,7 @@ sub run
       $fasta_output_term_name = $raw_small_rna_reads;
 
       ($reject_file_name, $fasta_file_name, $output) =
-        SmallRNA::Process::RemoveAdaptersProcess::run(
+        SmallRNA::Process::FastqToFastaProcess::run(
                                                       output_dir_name => $temp_output_dir,
                                                       input_file_name => $input_file_name
                                                      );
@@ -253,7 +253,7 @@ sub run
       my $temp_dir_output_file_name = "$temp_output_dir/$output";
 
       if (!-f $temp_dir_output_file_name) {
-        croak "output file $temp_dir_output_file_name missing from RemoveAdaptersProcess->run()\n";
+        croak "output file $temp_dir_output_file_name missing from FastqToFastaProcess->run()\n";
       }
 
       # the directory is just the sample name

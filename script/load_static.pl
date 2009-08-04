@@ -466,7 +466,7 @@ my @analyses = (
                 },
                 {
                  type_term_name => 'remove adapters',
-                 runable_name => 'SmallRNA::Runable::RemoveAdaptersRunable',
+                 runable_name => 'SmallRNA::Runable::FastqToFastaRunable',
                  inputs => [
                      {
                        format_type => 'fastq',
@@ -476,7 +476,7 @@ my @analyses = (
                 },
                 {
                   type_term_name => 'remove adapters and de-multiplex',
-                  runable_name => 'SmallRNA::Runable::RemoveAdaptersRunable',
+                  runable_name => 'SmallRNA::Runable::FastqToFastaRunable',
                   inputs => [
                       {
                         format_type => 'fastq',
