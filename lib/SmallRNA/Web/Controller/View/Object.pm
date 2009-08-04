@@ -73,13 +73,15 @@ sub set_template : Private {
   } elsif ($type eq 'organisation') {
     $c->stash()->{title} = 'Organisation details';
   } elsif ($type eq 'cv') {
-    $c->stash()->{title} = 'Controlled vocabulary ' . $object->name(),
+    $c->stash()->{title} = 'Controlled vocabulary ' . $object->name();
   } elsif ($type eq 'sequencing_sample') {
-    $c->stash()->{title} = 'Sequencing sample ' . $object->name(),
+    $c->stash()->{title} = 'Sequencing sample ' . $object->name();
+  } elsif ($type eq 'coded_sample') {
+    $c->stash()->{title} = 'Sample with barcode for sample: ' . $object->sample()->name();
   }
 }
 
-sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample)/(.*)') {
+sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample|coded_sample)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_id) = @{$c->req()->captures()};
   set_template($self, $c, $type, $object_id);
