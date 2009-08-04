@@ -98,6 +98,11 @@ __PACKAGE__->has_many(
   { "foreign.treatment_type" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
+  "sample_sample_types",
+  "SmallRNA::DB::Sample",
+  { "foreign.sample_type" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
   "sample_fractionation_types",
   "SmallRNA::DB::Sample",
   { "foreign.fractionation_type" => "self.cvterm_id" },
@@ -125,7 +130,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KwW432Tmy9U4hPBaJhLrXg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kUN3NSFPPtpQBRPzpXXI6g
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

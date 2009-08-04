@@ -184,6 +184,13 @@ my %terms = (
               'local' => 'Local user - full access to all data but not full delete/edit privileges',
               'external' => 'External user - access only to selected data, no delete/edit privileges',
              },
+             'tracking sample types' =>
+             {
+               small_rna => 'Small RNA',
+               chip_seq => 'Chromatin immunoprecipitation (ChIP) and sequencing',
+               mrna_expression => 'Expression analysis of mRNA',
+               dna => 'Genomic DNA sequence',
+             }
             );
 
 my %cvterm_objs = ();

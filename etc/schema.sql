@@ -258,6 +258,7 @@ CREATE TABLE sample (
        genotype text,
        description text NOT NULL,
        protocol integer NOT NULL REFERENCES protocol(protocol_id),
+       sample_type integer NOT NULL REFERENCES cvterm(cvterm_id),
        molecule_type integer REFERENCES cvterm(cvterm_id) NOT NULL,
        treatment_type integer REFERENCES cvterm(cvterm_id),
        fractionation_type integer REFERENCES cvterm(cvterm_id),

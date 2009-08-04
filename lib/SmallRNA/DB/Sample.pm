@@ -45,6 +45,8 @@ __PACKAGE__->add_columns(
   },
   "protocol",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
+  "sample_type",
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "molecule_type",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "treatment_type",
@@ -81,6 +83,11 @@ __PACKAGE__->belongs_to(
   { cvterm_id => "treatment_type" },
 );
 __PACKAGE__->belongs_to(
+  "sample_type",
+  "SmallRNA::DB::Cvterm",
+  { cvterm_id => "sample_type" },
+);
+__PACKAGE__->belongs_to(
   "fractionation_type",
   "SmallRNA::DB::Cvterm",
   { cvterm_id => "fractionation_type" },
@@ -108,7 +115,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jdzYvZC36c7oB9+OIWnSxQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yZLCK1IqpSA6J2yt2wzx3Q
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
 __PACKAGE__->many_to_many('ecotypes' => 'sample_ecotypes', 'ecotype');

@@ -189,9 +189,32 @@ sub create_sample
   my $ecotypes_ref = shift;
   my @ecotypes = @$ecotypes_ref;
   my $do_processing = shift;
+  my $sample_type = shift;
+
+  if (length $sample_type == 0) {
+    $sample_type = 'smallRNA';
+  }
 
   my $protocol = find('Protocol', name => 'unknown');
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
+  my %sample_type_map = (
+    smallRNA => 'small_rna',
+    Sequenced => 'small_rna',
+    sequenced => 'small_rna',
+    'manually sequencing' => 'small_rna',
+    'Very good' => 'small_rna',
+    queued => 'small_rna',
+    Expression => 'mrna_expression',
+    DNA => 'dna',
+    ChipSeq => 'chip_seq'
+  );
+  my $sample_type_cvterm_name = $sample_type_map{$sample_type};
+
+  if (!defined $sample_type_cvterm_name) {
+    croak(qq(can't find cvterm name for "$sample_type" from the spreadsheet));
+  }
+
+  my $sample_type_term = find('Cvterm', name => $sample_type_cvterm_name);
   my $processing_type_term = find('Cvterm',
                                   name => ($do_processing ?
                                            'needs processing' :
@@ -205,6 +228,7 @@ sub create_sample
                      molecule_type => $molecule_type_term,
                      processing_requirement => $processing_type_term,
                      protocol => $protocol,
+                     sample_type => $sample_type_term
                     };
 
   my $sample = create('Sample', $sample_args);
@@ -577,7 +601,7 @@ sub process
 
             my $sample = create_sample($proj, $new_sample_name,
                                        $desc_with_barcode, $molecule_type,
-                                       [@ecotypes], $do_processing);
+                                       [@ecotypes], $do_processing, $sample_type);
 
             push @all_samples, $sample;
             create_coded_sample($sample, $sequencing_sample, $is_replicate, $barcode);
@@ -591,7 +615,7 @@ sub process
 
           my $sample = create_sample($proj, $sample_name, $description,
                                      $molecule_type,
-                                     [@ecotypes], $do_processing);
+                                     [@ecotypes], $do_processing, $sample_type);
           push @all_samples, $sample;
           create_coded_sample($sample, $sequencing_sample, $is_replicate, undef);
         }
