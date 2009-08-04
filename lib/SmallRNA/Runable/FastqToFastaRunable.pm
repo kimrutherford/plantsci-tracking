@@ -131,15 +131,11 @@ sub run
 
   my $schema = $self->schema();
 
-  my $kept_term_name = 'small_rna';
   my $reject_term_name = 'remove_adapter_rejects';
   my $unknown_barcode_term_name = 'remove_adapter_unknown_barcode';
+
   my $raw_small_rna_reads = 'raw_small_rna_reads';
   my $multiplexed_small_rna_reads = 'multiplexed_small_rna_reads';
-
-  _check_terms($schema, $kept_term_name, $reject_term_name,
-               $unknown_barcode_term_name, $raw_small_rna_reads,
-               $multiplexed_small_rna_reads);
 
   my $fasta_output_term_name;
 
@@ -147,16 +143,12 @@ sub run
     $self->pipeprocess();
   $self->{_conf} = $pipeprocess->process_conf();
 
-  my $multiplexed;
+  my $processing_type;
 
-  if ($self->{_conf}->type()->name() eq 'remove adapters') {
-    $multiplexed = 0;
-  } else {
-    if ($self->{_conf}->type()->name() eq 'remove adapters and de-multiplex') {
-      $multiplexed = 1;
-    } else {
-      croak "unknown process_conf name: ", $self->{_conf}->type()->name(), "\n";
-    }
+  my $detail = $self->{_conf}->detail();
+
+  if ($detail =~ /^processing_type: (.*)/) {
+    $processing_type = $1;
   }
 
   my @input_pipedatas = $pipeprocess->input_pipedatas();
@@ -167,6 +159,28 @@ sub run
   }
 
   my $input_pipedata = $input_pipedatas[0];
+
+  my $multiplexed;
+
+  if ($input_pipedata->content_type()->name() eq 'raw_small_rna_reads' ||
+      $input_pipedata->content_type()->name() eq 'raw_genomic_dna_reads') {
+    $multiplexed = 0;
+  } else {
+    $multiplexed = 1;
+  }
+
+  my $kept_term_name;
+
+  if ($input_pipedata->content_type() eq 'raw_genomic_dna_reads') {
+    $kept_term_name = 'genomic_dna_reads';
+  } else {
+    $kept_term_name = 'small_rna';
+  }
+
+  _check_terms($schema, $kept_term_name, $reject_term_name,
+               $unknown_barcode_term_name, $raw_small_rna_reads,
+               $multiplexed_small_rna_reads);
+
 
   my $sequencingrun = _find_sequencingrun_from_pipedata($input_pipedata);
 
@@ -197,6 +211,7 @@ sub run
         SmallRNA::Process::FastqToFastaProcess::run(
                                                       output_dir_name => $temp_output_dir,
                                                       input_file_name => $input_file_name,
+                                                      processing_type => $processing_type,
                                                       barcodes => \%barcodes_map
                                                      );
 
@@ -244,7 +259,8 @@ sub run
       ($reject_file_name, $fasta_file_name, $output) =
         SmallRNA::Process::FastqToFastaProcess::run(
                                                       output_dir_name => $temp_output_dir,
-                                                      input_file_name => $input_file_name
+                                                      input_file_name => $input_file_name,
+                                                      processing_type => $processing_type,
                                                      );
 
       my @samples = $input_pipedata->samples();

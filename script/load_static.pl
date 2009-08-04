@@ -186,7 +186,7 @@ my %terms = (
              },
              'tracking sample types' =>
              {
-               small_rna => 'Small RNA',
+               srna => 'Small RNA sequences',
                chip_seq => 'Chromatin immunoprecipitation (ChIP) and sequencing',
                mrna_expression => 'Expression analysis of mRNA',
                dna => 'Genomic DNA sequence',
@@ -466,6 +466,7 @@ my @analyses = (
                 },
                 {
                  type_term_name => 'remove adapters',
+                 detail => 'processing_type: remove_adapters',
                  runable_name => 'SmallRNA::Runable::FastqToFastaRunable',
                  inputs => [
                      {
@@ -476,6 +477,7 @@ my @analyses = (
                 },
                 {
                   type_term_name => 'remove adapters and de-multiplex',
+                  detail => 'processing_type: remove_adapters',
                   runable_name => 'SmallRNA::Runable::FastqToFastaRunable',
                   inputs => [
                       {

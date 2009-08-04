@@ -198,12 +198,12 @@ sub create_sample
   my $protocol = find('Protocol', name => 'unknown');
   my $molecule_type_term = find('Cvterm', name => $molecule_type);
   my %sample_type_map = (
-    smallRNA => 'small_rna',
-    Sequenced => 'small_rna',
-    sequenced => 'small_rna',
-    'manually sequencing' => 'small_rna',
-    'Very good' => 'small_rna',
-    queued => 'small_rna',
+    smallRNA => 'srna',
+    Sequenced => 'srna',
+    sequenced => 'srna',
+    'manually sequencing' => 'srna',
+    'Very good' => 'srna',
+    queued => 'srna',
     Expression => 'mrna_expression',
     DNA => 'dna',
     ChipSeq => 'chip_seq'

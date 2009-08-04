@@ -23,7 +23,8 @@ my $tempdir = tempdir("/tmp/remove_adapters_test_$$.XXXXX", CLEANUP => 0);
 my ($reject_file_name, $fasta_file_name, $output_file_name) =
   SmallRNA::Process::FastqToFastaProcess::run(
     output_dir_name => $tempdir,
-    input_file_name => $in_fastq_file
+    input_file_name => $in_fastq_file,
+    processing_type => 'remove_adapters',
   );
 
 ok(-s "$tempdir/$reject_file_name", 'reject file size');

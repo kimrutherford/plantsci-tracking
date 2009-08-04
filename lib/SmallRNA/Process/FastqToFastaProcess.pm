@@ -83,6 +83,12 @@ sub _get_file_for_code
  Function: Remove adapters and optionally de-multiplex
  Args    : input_file_name - a fastq file name
            output_dir_name - a directory to write output files to
+           processing_type - one of 'remove_adapters', 'trim' or 'passthrough'
+                   - 'remove_adapters' will remove the sequence adapter
+                   - 'trim' will trim reads to 25 bases (by default)
+                   - 'passthrough' will do no processing apart from (optional)
+                      de-multiplexing, just produce a FASTA file or files
+           trim_bases - the maximum number of bases to output, default 25
            barcodes - a map from barcode sequence to barcode id (TACCT => 'A',
                       TACGA => 'B', ...)
 
@@ -108,10 +114,13 @@ that barcode.
 sub run
 {
   my %params = validate(@_, { input_file_name => 1, output_dir_name => 1,
+                              processing_type => 1, trim_bases => 0,
                               barcodes => 0 });
 
   my $input_file_name = $params{input_file_name};
   my $output_dir_name = $params{output_dir_name};
+  my $processing_type = $params{processing_type};
+  my $trim_bases = $params{trim_bases} || 25;
   my $barcodes_map_ref = $params{barcodes};
 
   my $_trim_file = sub {
@@ -172,6 +181,22 @@ sub run
     $code_re = '(' . (join '|', keys %$barcodes_map_ref) . ')';
   }
 
+  my $process_re;
+
+  if ($processing_type eq 'remove_adapters') {
+    $process_re =  qr/^(.+)($code_re)($adapter_start.*)/;
+  } else {
+    if ($processing_type eq 'trim') {
+      $process_re = qr/^(.{$trim_bases})($code_re)/;
+    } else {
+      if ($processing_type eq 'passthrough') {
+        $process_re = qr/^(.+)($code_re)/;
+      } else {
+        croak "unknown processing type: $processing_type\n";
+      }
+    }
+  }
+
   while (defined (my $seq_obj = $fastq_seqio->next_seq())) {
     my $sequence = $seq_obj->{sequence};
     my $seq_len = length $sequence;
@@ -180,7 +205,7 @@ sub run
     print $fasta_file ">$id\n";
     print $fasta_file "$sequence\n";
 
-    if ($sequence =~ m/^(.+)($code_re)($adapter_start.*)/) {
+    if ($sequence =~ m/$process_re/) {
       my $trimmed_seq = $1;
       my $code_from_seq = $2;
 

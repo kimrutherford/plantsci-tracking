@@ -27,6 +27,7 @@ my ($reject_file_name, $fasta_file_name, $output) =
   SmallRNA::Process::FastqToFastaProcess::run(
     output_dir_name => $tempdir,
     input_file_name => $in_fastq_file,
+    processing_type => 'remove_adapters',
     barcodes => \%barcodes_map
   );
 
