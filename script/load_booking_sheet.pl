@@ -513,7 +513,9 @@ sub process
 
       my $molecule_type;
 
-      if ($solexa_library eq 'SL54' or $solexa_library eq 'SL55') {
+      if ($solexa_library eq 'SL54' || $solexa_library eq 'SL55' ||
+          $sample_type eq 'DNA' || $sample_type eq 'ChipSeq' || 
+          $sample_type eq 'Expression') {
         $molecule_type = 'DNA';
       } else {
         $molecule_type = 'RNA';
