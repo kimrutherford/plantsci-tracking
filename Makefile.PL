@@ -31,7 +31,7 @@ requires 'DBD::Pg';
 requires 'DateTime';
 requires 'Params::Validate';
 requires 'File::Copy::Recursive';
-requires 'Compare::Data';
+requires 'Data::Compare';
 
 requires 'parent';
 requires 'Config::General'; # This should reflect the config file format you've chosen
