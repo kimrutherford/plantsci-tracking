@@ -205,7 +205,7 @@ sub create_sample
     'Very good' => 'small_rna_seq',
     queued => 'small_rna_seq',
     Expression => 'mrna_expression',
-    DNA => 'dna',
+    DNA => 'dna_seq',
     ChipSeq => 'chip_seq'
   );
   my $sample_type_cvterm_name = $sample_type_map{$sample_type};
