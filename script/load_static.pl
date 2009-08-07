@@ -717,6 +717,18 @@ my @analyses = (
                     ]
                 },
                 {
+                 type_term_name => 'ssaha alignment',
+                 detail => 'component: genome',
+                 runable_name => 'SmallRNA::Runable::SSAHASearchRunable',
+                 inputs => [
+                     {
+                       ecotype_name => 'unspecified Chlamydomonas reinhardtii',
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_genomic_dna_tags',
+                     }
+                    ]
+                },
+                {
                  type_term_name => 'genome aligned reads filter',
                  runable_name => 'SmallRNA::Runable::GenomeMatchingReadsRunable',
                  inputs => [
