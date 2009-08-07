@@ -552,7 +552,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'genome_matching_srna_reads',
+                       content_type => 'genome_aligned_srna_reads',
                      }
                     ]
                 },
