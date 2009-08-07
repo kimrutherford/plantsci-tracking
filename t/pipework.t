@@ -69,7 +69,7 @@ for (my $i = 0; $i < 6; $i++) {
 
     if ($process_type_name =~ /^remove adapters/) {
       my $remove_adapters_string = 'remove_adapter_rejects';
-      my $small_rna_string = 'small_rna';
+      my $small_rna_string = 'srna_reads';
 
       ok(@pipedatas == 1, 'one pipedata as input to the pipeprocess');
 

@@ -134,8 +134,8 @@ sub run
   my $reject_term_name = 'remove_adapter_rejects';
   my $unknown_barcode_term_name = 'remove_adapter_unknown_barcode';
 
-  my $raw_small_rna_reads = 'raw_small_rna_reads';
-  my $multiplexed_small_rna_reads = 'multiplexed_small_rna_reads';
+  my $raw_srna_reads = 'raw_srna_reads';
+  my $multiplexed_srna_reads = 'multiplexed_srna_reads';
 
   my $fasta_output_term_name;
 
@@ -162,7 +162,7 @@ sub run
 
   my $multiplexed;
 
-  if ($input_pipedata->content_type()->name() eq 'raw_small_rna_reads' ||
+  if ($input_pipedata->content_type()->name() eq 'raw_srna_reads' ||
       $input_pipedata->content_type()->name() eq 'raw_genomic_dna_reads') {
     $multiplexed = 0;
   } else {
@@ -178,12 +178,12 @@ sub run
       $kept_term_name = 'genomic_dna_reads';
     }
   } else {
-    $kept_term_name = 'small_rna';
+    $kept_term_name = 'srna_reads';
   }
 
   _check_terms($schema, $kept_term_name, $reject_term_name,
-               $unknown_barcode_term_name, $raw_small_rna_reads,
-               $multiplexed_small_rna_reads);
+               $unknown_barcode_term_name, $raw_srna_reads,
+               $multiplexed_srna_reads);
 
 
   my $sequencingrun = _find_sequencingrun_from_pipedata($input_pipedata);
@@ -209,7 +209,7 @@ sub run
     if ($multiplexed) {
       my %barcodes_map = _get_barcodes($schema);
 
-      $fasta_output_term_name = $multiplexed_small_rna_reads;
+      $fasta_output_term_name = $multiplexed_srna_reads;
 
       ($reject_file_name, $fasta_file_name, $output) =
         SmallRNA::Process::FastqToFastaProcess::run(
@@ -258,7 +258,7 @@ sub run
                               samples => [@samples]);
       }
     } else {
-      $fasta_output_term_name = $raw_small_rna_reads;
+      $fasta_output_term_name = $raw_srna_reads;
 
       ($reject_file_name, $fasta_file_name, $output) =
         SmallRNA::Process::FastqToFastaProcess::run(

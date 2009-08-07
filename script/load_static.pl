@@ -62,15 +62,15 @@ my %terms = (
              },
              'tracking file content types' =>
              {
-              'raw_small_rna_reads' =>
+              'raw_srna_reads' =>
                 'Raw small RNA sequence reads from a non-multiplexed sequencing run, before any processing',
-              'multiplexed_small_rna_reads' =>
+              'multiplexed_srna_reads' =>
                 'Raw small RNA sequence reads from a multiplexed sequencing run, before any processing',
               'raw_genomic_dna_reads' =>
                 'Raw DNA sequence reads with quality scores',
-              'small_rna' =>
+              'srna_reads' =>
                 'Small RNA sequence reads that have been processed to remove adapters',
-              'non_redundant_small_rna' =>
+              'non_redundant_srna_reads' =>
                 'Small RNA sequence reads without adapters with redundant sequences removed',
               'genomic_dna_reads' =>
                 'Genomic DNA reads',
@@ -80,11 +80,11 @@ my %terms = (
                 'DNA reads that have been trimmed to a fixed number of bases',
               'non_redundant_genomic_dna_tags' =>
                 'Trimmed DNA sequence reads with redundant sequences removed',
-              'small_rna_reads_nuclear_alignment' =>
+              'srna_reads_nuclear_alignment' =>
                 'Small RNA to genome alignments',
-              'small_rna_reads_mitochondrial_alignment' =>
+              'srna_reads_mitochondrial_alignment' =>
                 'Small RNA to mitochondrial dna alignments',
-              'small_rna_reads_chloroplast_alignment' =>
+              'srna_reads_chloroplast_alignment' =>
                 'Small RNA to chloroplast dna alignments',
               'remove_adapter_rejects' =>
                 'Small RNA sequence reads that were rejected by the remove adapters step',
@@ -96,10 +96,14 @@ my %terms = (
                 'Summary information and statistics about a FASTA file',
               'fastq_stats' =>
                 'Summary information and statistics about a FASTQ file',
-              'genome_matching_srna' =>
+              'genome_matching_srna_reads' =>
                 'Reads that match the genome with a 100% full-length match',
               'genome_aligned_srna_reads' =>
                 'Small RNA reads that have been aligned against the genome',
+              'genome_aligned_genomic_dna_reads' =>
+                'DNA reads that have been aligned against the genome',
+              'genome_aligned_genomic_dna_tags' =>
+                'DNA tags that have been aligned against the genome',
               'gff3_index' =>
                 'An index of a gff3 file that has the read sequence as the key',
               'fasta_index' =>
@@ -193,10 +197,10 @@ my %terms = (
              },
              'tracking sample types' =>
              {
-               srna => 'Small RNA sequences',
+               small_rna_seq => 'Small RNA sequences',
                chip_seq => 'Chromatin immunoprecipitation (ChIP) and sequencing',
                mrna_expression => 'Expression analysis of mRNA',
-               dna => 'Genomic DNA sequence',
+               dna_seq => 'Genomic DNA sequence',
              }
             );
 
@@ -489,7 +493,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fastq',
-                       content_type => 'raw_small_rna_reads',
+                       content_type => 'raw_srna_reads',
                      }
                     ]
                 },
@@ -500,7 +504,7 @@ my @analyses = (
                   inputs => [
                       {
                         format_type => 'fastq',
-                        content_type => 'multiplexed_small_rna_reads',
+                        content_type => 'multiplexed_srna_reads',
                       }
                      ]
                 },
@@ -510,7 +514,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fastq',
-                       content_type => 'raw_small_rna_reads',
+                       content_type => 'raw_srna_reads',
                      }
                     ]
                 },
@@ -530,7 +534,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'small_rna',
+                       content_type => 'srna_reads',
                      }
                     ]
                 },
@@ -540,7 +544,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -550,7 +554,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'genome_matching_srna',
+                       content_type => 'genome_matching_srna_reads',
                      }
                     ]
                 },
@@ -560,7 +564,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'small_rna',
+                       content_type => 'srna_reads',
                      }
                     ]
                 },
@@ -570,7 +574,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -580,7 +584,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'raw_small_rna_reads',
+                       content_type => 'raw_srna_reads',
                      }
                     ]
                 },
@@ -590,7 +594,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'multiplexed_small_rna_reads',
+                       content_type => 'multiplexed_srna_reads',
                      }
                     ]
                 },
@@ -620,7 +624,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'small_rna',
+                       content_type => 'srna_reads',
                      }
                     ]
                 },
@@ -640,7 +644,7 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -652,7 +656,7 @@ my @analyses = (
                      {
                        ecotype_name => 'unspecified Arabidopsis thaliana',
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -664,7 +668,7 @@ my @analyses = (
                      {
                        ecotype_name => 'unspecified Lycopersicon esculentum',
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -676,7 +680,7 @@ my @analyses = (
                      {
                        ecotype_name => 'unspecified Carmovirus turnip crinkle virus',
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -688,7 +692,7 @@ my @analyses = (
                      {
                        ecotype_name => 'unspecified Oryza sativa',
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -700,7 +704,7 @@ my @analyses = (
                      {
                        ecotype_name => 'unspecified Benyvirus rice stripe virus',
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -712,7 +716,7 @@ my @analyses = (
                      {
                        ecotype_name => 'unspecified Chlamydomonas reinhardtii',
                        format_type => 'fasta',
-                       content_type => 'non_redundant_small_rna',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },
@@ -754,7 +758,7 @@ my @analyses = (
                 #  inputs => [
                 #      {
                 #        format_type => 'fasta',
-                #        content_type => 'small_rna',
+                #        content_type => 'srna_reads',
                 #      }
                 #     ]
                 # }
