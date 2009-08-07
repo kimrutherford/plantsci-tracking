@@ -596,6 +596,26 @@ my @analyses = (
                  inputs => [
                      {
                        format_type => 'fasta',
+                       content_type => 'genomic_dna_tags',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'remove redundant reads',
+                 runable_name => 'SmallRNA::Runable::NonRedundantFastaRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
+                       content_type => 'genomic_dna_reads',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'remove redundant reads',
+                 runable_name => 'SmallRNA::Runable::NonRedundantFastaRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
                        content_type => 'small_rna',
                      }
                     ]
