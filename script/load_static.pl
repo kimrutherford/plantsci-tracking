@@ -72,6 +72,8 @@ my %terms = (
                 'Small RNA sequence reads that have been processed to remove adapters',
               'non_redundant_small_rna' =>
                 'Small RNA sequence reads without adapters with redundant sequences removed',
+              'genomic_dna_reads' =>
+                'Genomic DNA reads',
               'genomic_dna_tags' =>
                 'DNA reads that have been trimmed to a fixed number of bases',
               'small_rna_reads_nuclear_alignment' =>

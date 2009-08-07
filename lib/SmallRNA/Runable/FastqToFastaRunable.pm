@@ -171,8 +171,12 @@ sub run
 
   my $kept_term_name;
 
-  if ($input_pipedata->content_type() eq 'raw_genomic_dna_reads') {
-    $kept_term_name = 'genomic_dna_reads';
+  if ($input_pipedata->content_type()->name() eq 'raw_genomic_dna_reads') {
+    if ($processing_type eq 'trim') {
+      $kept_term_name = 'genomic_dna_tags';
+    } else {
+      $kept_term_name = 'genomic_dna_reads';
+    }
   } else {
     $kept_term_name = 'small_rna';
   }
