@@ -51,7 +51,7 @@ sub run
   my $schema = $self->schema();
 
   my $code = sub {
-    my $out_content_type = 'genome_matching_srna_reads';
+    my $out_content_type = 'genome_aligned_srna_reads';
     my $fasta_term_name = 'fasta';
     my $tsv_term_name = 'tsv';
     my $pipeprocess = $self->pipeprocess();
