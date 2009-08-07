@@ -83,7 +83,6 @@ sub run
 
     my $sample = $samples[0];
 
-    my $genome_aligned_srna_reads = 'genome_aligned_srna_reads';
     my $data_dir = $self->config()->data_directory();
     my $process_conf = $pipeprocess->process_conf();
     my $detail = $process_conf->detail();
@@ -128,7 +127,11 @@ sub run
 
       my $new_suffix = ".v_${org_full_name}_$component.gff3";
 
-      $gff_file_name =~ s/\.non_redundant_small_rna\.fasta/$new_suffix/;
+      if(! ($gff_file_name =~ s/\.non_redundant_(\w+)\.fasta/$new_suffix/)) {
+        croak qq{file name ("$gff_file_name") doesn't contain the string "non_redundant"};
+      }
+
+      my $genome_aligned_reads = 'genome_aligned_' . $1;
 
       SmallRNA::Process::SSAHASearchProcess::run(input_file_name =>
                                                    "$data_dir/" . $input_file_name,
@@ -142,7 +145,7 @@ sub run
       $self->store_pipedata(generating_pipeprocess => $self->pipeprocess(),
                             file_name => $gff_file_name,
                             format_type_name => 'gff3',
-                            content_type_name => $genome_aligned_srna_reads);
+                            content_type_name => $genome_aligned_reads);
 
     } else {
       croak ("can't understand detail: $1 for pipeprocess: ", $pipeprocess_id);
