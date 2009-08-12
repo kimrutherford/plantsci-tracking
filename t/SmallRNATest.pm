@@ -51,6 +51,8 @@ sub setup
 
   copy('t/data/ID24_171007_FC5359.lane4.fq', $fastq_dir) or die;
   copy('t/data/ID24_171007_FC5359.lane5.fq', $fastq_dir) or die;
+  copy('t/data/SL54.ID24_171007_FC5359.lane4.fq', $fastq_dir) or die;
+  copy('t/data/SL55.ID24_171007_FC5359.lane5.fq', $fastq_dir) or die;
   copy('t/data/SL234_BCF.090202.30W8NAAXX.s_1.fq', $fastq_dir) or die;
   copy('t/data/SL236.090227.311F6AAXX.s_1.fq', $fastq_dir) or die;
   copy('t/data/SL165.080905.306BFAAXX.s_5.fq', $fastq_dir) or die;

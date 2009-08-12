@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 61;
+use Test::More tests => 98;
 use DateTime;
 
 BEGIN {
@@ -44,7 +44,7 @@ for (my $i = 0; $i < 6; $i++) {
 
   $pipeprocess_rs = $schema->resultset('Pipeprocess')->search();
 
-  my %count_exp = (0 => 11, 1 => 25, 2 => 40, 3 => 52, 4 => 52, 5 => 52);
+  my %count_exp = (0 => 18, 1 => 43, 2 => 66, 3 => 83, 4 => 89, 5 => 89);
 
   is($pipeprocess_rs->count(), $count_exp{$i}, "process count for iteration: $i");
 
@@ -61,7 +61,7 @@ for (my $i = 0; $i < 6; $i++) {
     my $process_type_name = $pipeprocess->process_conf()->type()->name();
 
     my @pipedatas = $pipeprocess->input_pipedatas();
-    ok(@pipedatas >= 1, 'at least one pipedata as input to the pipeprocess');
+    ok(@pipedatas >= 1);
     my $pipedata = $pipedatas[0];
 
     SmallRNA::PipeWork::run_process(schema => $schema, config => $config,
