@@ -20,6 +20,9 @@ ok(SmallRNA::DB::table_name_of_class('SmallRNA::DB::ProcessConf') eq 'process_co
   sub table {
     return "test";
   }
+  sub primary_columns {
+    return "test_id"
+  }
 }
 
 my $test_obj = {};
