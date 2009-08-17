@@ -129,8 +129,6 @@ sub run
       . "argument is passed";
   }
 
-  warn "running $input_file_name -> $output_dir_name\n";
-
   my $_trim_file = sub {
     my $file_name = shift;
     if (!($file_name =~ s|^$output_dir_name/||)) {
