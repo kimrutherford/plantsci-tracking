@@ -670,5 +670,4 @@ eval {
 };
 if ($@) {
   die "ROLLBACK called: $@\n";
-
 }
