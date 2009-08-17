@@ -81,7 +81,7 @@ sub set_template : Private {
   }
 }
 
-sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample|coded_sample)/(.*)') {
+sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample|coded_sample|barcode|barcode_set)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_id) = @{$c->req()->captures()};
   set_template($self, $c, $type, $object_id);
