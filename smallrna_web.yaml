@@ -144,6 +144,9 @@ class_info:
     order_by: created_stamp
   barcode:
     display_field: long_identifier
+    order_by: identifier
+  barcode_set:
+    display_field: name
   pipedata:
     display_field: file_name
   sequencingrun:
