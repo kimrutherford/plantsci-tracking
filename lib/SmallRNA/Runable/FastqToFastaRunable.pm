@@ -83,7 +83,11 @@ sub _find_barcode_set
 
   my $sample_barcode = $coded_samples[0]->barcode();
 
-  return $sample_barcode->barcode_set();
+  if (defined $sample_barcode) {
+    return $sample_barcode->barcode_set();
+  } else {
+    return undef;
+  }
 }
 
 sub _find_sequencingrun_from_pipedata
@@ -179,15 +183,6 @@ sub run
 
   my $input_pipedata = $input_pipedatas[0];
 
-  my $multiplexed;
-
-  if ($input_pipedata->content_type()->name() eq 'raw_srna_reads' ||
-      $input_pipedata->content_type()->name() eq 'raw_genomic_dna_reads') {
-    $multiplexed = 0;
-  } else {
-    $multiplexed = 1;
-  }
-
   my $kept_term_name;
 
   if ($input_pipedata->content_type()->name() eq 'raw_genomic_dna_reads') {
@@ -225,11 +220,12 @@ sub run
 
     my $input_file_name = $data_dir . '/' . $input_files[0];
 
-    if ($multiplexed) {
+    my $barcode_set = _find_barcode_set($pipeprocess);
+
+    if (defined $barcode_set) {
       $fasta_output_term_name = $multiplexed_srna_reads;
 
-      my $barcode_set = _find_barcode_set($pipeprocess);
-      my $barcode_position = $barcode_set->position_in_read();
+      my $barcode_position = $barcode_set->position_in_read()->name();
 
       my %barcodes_map = _get_barcodes($schema, $barcode_set->name());
 
