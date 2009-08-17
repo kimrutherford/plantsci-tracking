@@ -300,7 +300,7 @@ sub create_sequencing_run
   my $multiplexing_type_name;
 
   if ($multiplexed) {
-    $multiplexing_type_name = 'DCB multiplexed';
+    $multiplexing_type_name = 'multiplexed';
   } else {
     $multiplexing_type_name = 'non-multiplexed';
   }

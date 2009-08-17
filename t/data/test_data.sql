@@ -2312,7 +2312,7 @@ COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_rela
 48	5	no fractionation	no fractionation	\N	0	0
 49	6	DNA	Deoxyribonucleic acid	\N	0	0
 50	6	RNA	Ribonucleic acid	\N	0	0
-51	7	DCB multiplexed	multiplexed sequencing run using DCB group barcodes	\N	0	0
+51	7	multiplexed	multiplexed sequencing run using barcodes	\N	0	0
 52	7	non-multiplexed	One sample per sequencing run	\N	0	0
 53	8	finished	Processing is done	\N	0	0
 54	8	not_started	Process has not been queued yet	\N	0	0

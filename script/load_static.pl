@@ -114,7 +114,7 @@ my %terms = (
              'tracking multiplexing types' =>
              {
               'non-multiplexed' => 'One sample per sequencing run',
-              'DCB multiplexed' => 'multiplexed sequencing run using DCB group barcodes',
+              'multiplexed' => 'multiplexed sequencing run using barcodes',
              },
              'tracking project types' =>
              {
