@@ -55,8 +55,11 @@ extends 'SmallRNA::Runable::SmallRNARunable';
 sub _get_barcodes
 {
   my $schema = shift;
+  my $barcode_set_name = shift;
 
-  my $rs = $schema->resultset('Barcode')->search();
+  my $rs = $schema->resultset('BarcodeSet')
+    ->search({ name => $barcode_set_name })
+    ->search_related('barcodes');
 
   my %barcodes_map = ();
 
@@ -65,6 +68,22 @@ sub _get_barcodes
   }
 
   return %barcodes_map;
+}
+
+sub _find_barcode_set
+{
+  my $pipeprocess = shift;
+
+  my $input_pipedata = ($pipeprocess->input_pipedatas())[0];
+  my $seq_run_process = $input_pipedata->generating_pipeprocess();
+
+  my @sequencingruns = $seq_run_process->sequencingruns();
+  my $sequencing_sample = $sequencingruns[0]->sequencing_sample();
+  my @coded_samples = $sequencing_sample->coded_samples();
+
+  my $sample_barcode = $coded_samples[0]->barcode();
+
+  return $sample_barcode->barcode_set();
 }
 
 sub _find_sequencingrun_from_pipedata
@@ -207,16 +226,20 @@ sub run
     my $input_file_name = $data_dir . '/' . $input_files[0];
 
     if ($multiplexed) {
-      my %barcodes_map = _get_barcodes($schema);
-
       $fasta_output_term_name = $multiplexed_srna_reads;
+
+      my $barcode_set = _find_barcode_set($pipeprocess);
+      my $barcode_position = $barcode_set->position_in_read();
+
+      my %barcodes_map = _get_barcodes($schema, $barcode_set->name());
 
       ($reject_file_name, $fasta_file_name, $output) =
         SmallRNA::Process::FastqToFastaProcess::run(
                                                       output_dir_name => $temp_output_dir,
                                                       input_file_name => $input_file_name,
                                                       processing_type => $processing_type,
-                                                      barcodes => \%barcodes_map
+                                                      barcodes => \%barcodes_map,
+                                                      barcode_position => $barcode_position
                                                      );
 
       for my $code (keys %{$output}) {

@@ -15,38 +15,7 @@ my $c = SmallRNA::Web->commandline();
 my $config = $c->config();
 
 my $schema = SmallRNA::DB->schema($config);
-
-my %barcodes = (
-                TACCT => 'A',
-                TACGA => 'B',
-                TAGCA => 'C',
-                TAGGT => 'D',
-                TCAAG => 'E',
-                TCATC => 'F',
-                TCTAC => 'G',
-                TCTTG => 'H',
-                TGAAC => 'I',
-                TGTTG => 'J',
-                TGTTC => 'K',
-               );
-
 my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
-
-$schema->txn_do(sub {
-  my $set_rs = $schema->resultset('BarcodeSet');
-  my $set = $set_rs->create({ name => 'DBC set' });
-
-  for my $barcode (sort keys %barcodes) {
-    my $barcode_identifier = $barcodes{$barcode};
-
-    my $rs = $schema->resultset('Barcode');
-    $rs->create({
-                 identifier => $barcode_identifier,
-                 code => $barcode,
-                 barcode_set => $set
-                });
-  }
-});
 
 my %terms = (
              'tracking file format types' =>
@@ -199,6 +168,11 @@ my %terms = (
                chip_seq => 'Chromatin immunoprecipitation (ChIP) and sequencing',
                mrna_expression => 'Expression analysis of mRNA',
                dna_seq => 'Genomic DNA sequence',
+             },
+             'tracking bar code position' =>
+             {
+               '5-prime' => "Bar code will be at 5' end of the read",
+               '3-prime' => "Bar code will be at 3' end of the read",
              }
             );
 
@@ -221,6 +195,71 @@ $schema->txn_do(sub {
                              cv => $cv});
 
       $cvterm_objs{$cvterm_name} = $obj;
+    }
+  }
+});
+
+my %barcode_sets = (
+  "DCB small RNA barcode set" =>
+    { code_position => "3-prime",
+      codes => {
+        A => 'TACCT',
+        B => 'TACGA',
+        C => 'TAGCA',
+        D => 'TAGGT',
+        E => 'TCAAG',
+        F => 'TCATC',
+        G => 'TCTAC',
+        H => 'TCTTG',
+        I => 'TGAAC',
+        J => 'TGTTG',
+        K => 'TGTTC',
+       },
+    },
+  "Dmitry's barcode set" =>
+    { code_position => "5-prime",
+      codes => {
+        A => 'AAAT',
+        B => 'ATCT',
+        C => 'AGGT',
+        D => 'ACTT',
+        E => 'TACT',
+        F => 'TTGT',
+        G => 'TGTT',
+        H => 'TCAT',
+        I => 'GAGT',
+        J => 'GTTT',
+        K => 'GGAT',
+        L => 'GCCT',
+        M => 'CATT',
+        N => 'CTAT',
+        O => 'CGCT',
+        P => 'CCGT',
+       }
+     }
+   );
+
+$schema->txn_do(sub {
+  my $set_rs = $schema->resultset('BarcodeSet');
+
+  for my $barcode_set_name (sort keys %barcode_sets) {
+    my %set_info = %{$barcode_sets{$barcode_set_name}};
+    my $barcode_position_string = $set_info{code_position};
+    my $position_cvterm_rs = $schema->resultset('Cvterm');
+    my $barcode_position =
+      $position_cvterm_rs->find({ name => $barcode_position_string });
+    my %codes = %{$set_info{codes}};
+
+    my $set = $set_rs->create({ name => $barcode_set_name,
+                                position_in_read => $barcode_position });
+
+    for my $barcode_identifier (sort keys %codes) {
+      my $rs = $schema->resultset('Barcode');
+      $rs->create({
+        identifier => $barcode_identifier,
+        code => $codes{$barcode_identifier},
+        barcode_set => $set
+       });
     }
   }
 });

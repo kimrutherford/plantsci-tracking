@@ -15,6 +15,8 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 4,
   },
+  "position_in_read",
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "name",
   {
     data_type => "text",
@@ -31,10 +33,15 @@ __PACKAGE__->has_many(
   "SmallRNA::DB::Barcode",
   { "foreign.barcode_set" => "self.barcode_set_id" },
 );
+__PACKAGE__->belongs_to(
+  "position_in_read",
+  "SmallRNA::DB::Cvterm",
+  { cvterm_id => "position_in_read" },
+);
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IzF6VdkrWfAKGH2EJ5AJ6w
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oJLnGHllWHi9K7STfUAPzg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

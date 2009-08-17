@@ -41,6 +41,11 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("cvterm_id");
 __PACKAGE__->add_unique_constraint("cvterm_pkey", ["cvterm_id"]);
 __PACKAGE__->has_many(
+  "barcode_sets",
+  "SmallRNA::DB::BarcodeSet",
+  { "foreign.position_in_read" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
   "coded_samples",
   "SmallRNA::DB::CodedSample",
   { "foreign.coded_sample_type" => "self.cvterm_id" },
@@ -130,7 +135,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kUN3NSFPPtpQBRPzpXXI6g
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jtF9t1qVcmRCXjBKyNEzVg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

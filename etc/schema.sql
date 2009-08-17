@@ -237,14 +237,17 @@ CREATE TABLE pipeprocess (
 );
 CREATE TABLE barcode_set (
        barcode_set_id serial CONSTRAINT barcode_set_id_pk PRIMARY KEY,
+       position_in_read integer REFERENCES cvterm(cvterm_id) NOT NULL,
        name text NOT NULL UNIQUE
 );
 CREATE TABLE barcode (
        barcode_id serial CONSTRAINT barcode_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),
-       identifier text NOT NULL UNIQUE,
+       identifier text NOT NULL,
        barcode_set integer REFERENCES barcode_set(barcode_set_id) NOT NULL,
-       code text NOT NULL UNIQUE
+       code text NOT NULL,
+       CONSTRAINT barcode_identifier_constraint UNIQUE(identifier, barcode_set),
+       CONSTRAINT barcode_code_constraint UNIQUE(code, barcode_set)
 );
 CREATE TABLE protocol (
        protocol_id serial CONSTRAINT protocol_id_pk PRIMARY KEY,

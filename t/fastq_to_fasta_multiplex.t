@@ -21,19 +21,22 @@ my $config = SmallRNA::Config->new('t/test_config.yaml');
 my $schema = SmallRNA::DB->schema($config);
 SmallRNATest::setup($schema, $config);
 
-my %barcodes_map = SmallRNA::Runable::FastqToFastaRunable::_get_barcodes($schema);
+my %barcodes_map =
+  SmallRNA::Runable::FastqToFastaRunable::_get_barcodes($schema,
+                                                        'DCB small RNA barcode set');
 
 my ($reject_file_name, $fasta_file_name, $output) =
   SmallRNA::Process::FastqToFastaProcess::run(
     output_dir_name => $tempdir,
     input_file_name => $in_fastq_file,
     processing_type => 'remove_adapters',
-    barcodes => \%barcodes_map
+    barcodes => \%barcodes_map,
+    barcode_position => '3-prime'
   );
 
 ok(-s "$tempdir/$reject_file_name");
 
-ok(scalar(keys %$output) == 3, 'two output files');
+is(scalar(keys %$output), 3, 'two output files');
 
 ok($output->{TACGA} eq 'SL234_BCF.090202.30W8NAAXX.s_1.B.fasta');
 ok($output->{TAGCA} eq 'SL234_BCF.090202.30W8NAAXX.s_1.C.fasta');

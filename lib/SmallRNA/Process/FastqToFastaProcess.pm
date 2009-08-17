@@ -115,13 +115,21 @@ sub run
 {
   my %params = validate(@_, { input_file_name => 1, output_dir_name => 1,
                               processing_type => 1, trim_bases => 0,
-                              barcodes => 0 });
+                              barcodes => 0, barcode_position => 0 });
 
   my $input_file_name = $params{input_file_name};
   my $output_dir_name = $params{output_dir_name};
   my $processing_type = $params{processing_type};
   my $trim_bases = $params{trim_bases} || 25;
   my $barcodes_map_ref = $params{barcodes};
+  my $barcode_position = $params{barcode_position};
+
+  if (defined $barcodes_map_ref && !defined $barcode_position) {
+    croak "barcode_position must be passed as an argument if barcodes "
+      . "argument is passed";
+  }
+
+  warn "running $input_file_name -> $output_dir_name\n";
 
   my $_trim_file = sub {
     my $file_name = shift;
@@ -176,21 +184,27 @@ sub run
   open my $fasta_file, '>', $fasta_file_name
     or croak("can't open $fasta_file_name for writing: $!\n");
 
-  my $code_re = '';
+  my $five_prime_code_re = '';
+  my $three_prime_code_re = '';
   if ($multiplexed) {
-    $code_re = '(' . (join '|', keys %$barcodes_map_ref) . ')';
+    my $code_re = '(' . (join '|', keys %$barcodes_map_ref) . ')';
+    if ($barcode_position eq '5-prime') {
+      $five_prime_code_re = $code_re;
+    } else {
+      $three_prime_code_re = $code_re;
+    }
   }
 
   my $process_re;
 
   if ($processing_type eq 'remove_adapters') {
-    $process_re =  qr/^(.+)($code_re)($adapter_start.*)/;
+    $process_re =  qr/^($five_prime_code_re)(.+)($three_prime_code_re)($adapter_start.*)/;
   } else {
     if ($processing_type eq 'trim') {
-      $process_re = qr/^(.{$trim_bases})($code_re)/;
+      $process_re = qr/^($five_prime_code_re)(.{$trim_bases})/;
     } else {
       if ($processing_type eq 'passthrough') {
-        $process_re = qr/^(.+)($code_re)/;
+        $process_re =  qr/^($five_prime_code_re)(.+)($three_prime_code_re)/;
       } else {
         croak "unknown processing type: $processing_type\n";
       }
@@ -206,8 +220,18 @@ sub run
     print $fasta_file "$sequence\n";
 
     if ($sequence =~ m/$process_re/) {
-      my $trimmed_seq = $1;
-      my $code_from_seq = $2;
+      my $trimmed_seq = $2;
+      my $code_from_seq;
+
+      if ($multiplexed) {
+        if ($barcode_position eq '5-prime') {
+          $code_from_seq = $1;
+        } else {
+          $code_from_seq = $3;
+        }
+      } else {
+        $code_from_seq = '';
+      }
 
       if (length $trimmed_seq < 15) {
         print $rej_file "$sequence\tIs too short ($seq_len)\n";
