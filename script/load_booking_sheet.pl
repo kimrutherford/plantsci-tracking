@@ -507,6 +507,10 @@ sub process
         $barcodes = 'ABCDFG';
       }
 
+      if ($solexa_library =~ /^(SL28[345])/) {
+        $barcodes = 'B';
+      }
+
       my $replicate_identifier = $3;
 
       my $is_replicate = 0;
@@ -590,7 +594,21 @@ sub process
         if ($multiplexed) {
           my @barcode_identifiers = ($barcodes =~ /(\w)/g);
           for my $barcode_identifier (@barcode_identifiers) {
-            my $barcode = find('Barcode', identifier => $barcode_identifier);
+            my $barcode_set_name;
+
+            if ($solexa_library =~ /^(SL28[345])/) {
+              $barcode_set_name = "Dmitry's barcode set";
+            } else {
+              $barcode_set_name = "DCB small RNA barcode set";
+            }
+
+            my $barcode_set = find('BarcodeSet', name => $barcode_set_name);
+            my $barcode = find('Barcode', 
+                               {
+                                 identifier => $barcode_identifier,
+                                 barcode_set => $barcode_set
+                               }
+                              );
 
             my $new_sample_name = $sample_prefix . '_' . $barcode_identifier;
 
