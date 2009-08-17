@@ -81,6 +81,9 @@ class_info:
         editable: 1
       - field_label: protocol
         editable: 1
+      - field_label: sample_type
+        editable: 1
+        values_constraint: 'cv->name = "tracking sample types"'
       - field_label: molecule
         field_conf: molecule_type
         editable: 1
@@ -137,6 +140,10 @@ class_info:
         editable: 1
       - field_label: funder
         editable: 1
+      - field_label: samples
+        referenced_class: Sample
+        editable: 1
+        is_collection: 1
   process_conf:
     display_field: long_description
   pipeprocess:
