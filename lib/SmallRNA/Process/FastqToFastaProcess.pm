@@ -185,7 +185,7 @@ sub run
   my $five_prime_code_re = '';
   my $three_prime_code_re = '';
   if ($multiplexed) {
-    my $code_re = '(' . (join '|', keys %$barcodes_map_ref) . ')';
+    my $code_re = join '|', keys %$barcodes_map_ref;
     if ($barcode_position eq '5-prime') {
       $five_prime_code_re = $code_re;
     } else {
