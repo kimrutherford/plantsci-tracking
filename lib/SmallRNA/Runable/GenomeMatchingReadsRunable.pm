@@ -74,7 +74,7 @@ sub run
     my $fasta_out_file_name = $gff_file_name;
     my $tsv_out_file_name = $gff_file_name;
 
-    my $old_suffix = ".$gff_content_type.$gff_format_type";
+    my $old_suffix = ".$gff_format_type";
 
     my $new_suffix = ".$out_content_type.$fasta_term_name";
     $fasta_out_file_name =~ s/(\Q$old_suffix\E)?$/$new_suffix/;
