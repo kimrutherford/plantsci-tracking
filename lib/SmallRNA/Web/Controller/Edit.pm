@@ -330,12 +330,27 @@ sub _update_object {
 
   my $class_info_ref = $c->config()->{class_info}->{$type};
 
-  for my $name (keys %form_params) {
+  my %field_infos = %{$class_info_ref->{field_infos}};
+
+  my @form_fields = keys %form_params;
+
+  # special case for setting collections - if nothing is select then nothing 
+  # is sent in the form.  We'd like to clear the collection in that case so we 
+  # make sure that all collections are processed
+  for my $field_label (keys %field_infos) {
+    if (grep { $_ eq $field_label } @form_fields) {
+      next;
+    }
+
+    push @form_fields, $field_label;
+  }
+
+  for my $name (@form_fields) {
     if (grep { $_ eq $name } @INPUT_BUTTON_NAMES) {
       next;
     }
 
-    my $field_info_ref = $class_info_ref->{field_infos}->{$name};
+    my $field_info_ref = $field_infos{$name};
     my %field_info = %{$field_info_ref};
 
     my $field_db_column = $name;
@@ -353,18 +368,22 @@ sub _update_object {
       $value = undef;
     }
 
-    if (defined $value && $field_info{is_collection}) {
+    if ($field_info{is_collection}) {
       # special case for collections, we need to look up the objects
       my $referenced_class_name = $field_info{referenced_class};
       my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
-      my $set_meth = "set_$field_db_column";
 
       my @values;
 
-      if (ref $value) {
-        @values = @$value;
+      if (defined $value) {
+        if (ref $value) {
+          @values = @$value;
+        } else {
+          @values = ($value);
+        }
+
       } else {
-        @values = ($value);
+        @values = ();
       }
 
       @values = map {
@@ -372,7 +391,33 @@ sub _update_object {
                                      "${referenced_table}_id" => $_);
       } @values;
 
-      $object->$set_meth(@values);
+      if (defined $info_ref) {
+        # there don't seem to be set_* methods for the has_many case, so delete
+        # contents of the collection and set the references instead
+        my $other_set_meth = $object->table();
+        my $rs_meth = $field_db_column;
+        my $other_rs = $object->$rs_meth();
+        while (defined (my $other_obj = $other_rs->next())) {
+          if (grep { 
+                my $other_id_field = $referenced_table . '_id';
+                $_->$other_id_field() eq $other_obj->$other_id_field();
+              } @values) {
+            next;
+          }
+
+          $other_obj->$other_set_meth(undef);
+          $other_obj->update();
+        }
+
+        for my $other_obj (@values) {
+          my $object_id_col = $type . '_id';
+          $other_obj->$other_set_meth($object->$object_id_col());
+          $other_obj->update();
+        }
+      } else {
+        my $set_meth = "set_$field_db_column";
+        $object->$set_meth(@values);
+      }
     } else {
       $object->$field_db_column($value);
     }
