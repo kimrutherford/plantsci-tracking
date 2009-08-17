@@ -6,7 +6,7 @@ $object
   field_labels => [qw(description sample barcode sequencing_sample coded_sample_type)]&>
   <div>
     <a href="<% $c->uri_for('/new/object/sequencing_sample', { 'coded_sample.id' => $object->coded_sample_id() }) %>">
-      Create a new sequencing for this coded sample 
+      Create a new sequencing sample for this coded sample
     </a>
   </div>
 </&>
