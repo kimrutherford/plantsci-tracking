@@ -269,7 +269,15 @@ sub run
       }
     } else {
       $reject_count++;
-      print $rej_file "$sequence\tDoes not match (seq)(adapter)\n";
+      if ($processing_type eq 'remove_adapters') {
+        if ($multiplexed) {
+          print $rej_file "$sequence\tDoes not match the barcode or does not match the adapter\n";
+        } else {
+          print $rej_file "$sequence\tDoes not match the adapter\n";
+        }
+      } else {
+        print $rej_file "$sequence\tDoes not match the barcode\n";
+      }
     }
 
     if ($ENV{'SMALLRNA_PIPELINE_TEST'} &&
