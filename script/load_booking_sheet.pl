@@ -580,7 +580,7 @@ sub process
           }
         }
 
-        my $sequencing_run_identifier = 'Run_' . $solexa_library;
+        my $sequencing_run_identifier = 'RUN_' . $solexa_library;
 
         if (run_exists($sequencing_run_identifier)) {
           warn "a sequencingrun entry exists for $solexa_library - skipping\n";
