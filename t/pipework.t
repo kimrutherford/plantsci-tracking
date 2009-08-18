@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 98;
+use Test::More tests => 108;
 use DateTime;
 
 BEGIN {
@@ -44,7 +44,9 @@ for (my $i = 0; $i < 6; $i++) {
 
   $pipeprocess_rs = $schema->resultset('Pipeprocess')->search();
 
-  my %count_exp = (0 => 18, 1 => 43, 2 => 66, 3 => 83, 4 => 89, 5 => 89);
+  # this is a bad way to test things as these numbers change each time a new
+  # process is added
+  my %count_exp = (0 => 21, 1 => 49, 2 => 74, 3 => 93, 4 => 100, 5 => 100);
 
   is($pipeprocess_rs->count(), $count_exp{$i}, "process count for iteration: $i");
 
