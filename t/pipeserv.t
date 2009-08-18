@@ -22,7 +22,7 @@ my $conf_manager = SmallRNA::ProcessManager->new(schema => $schema);
 
 my @processes = $conf_manager->create_new_pipeprocesses();
 
-is(scalar(@processes), 12, 'pipeprocess count');
+is(scalar(@processes), 14, 'pipeprocess count');
 my $process = $processes[0];
 ok(defined $process);
 
