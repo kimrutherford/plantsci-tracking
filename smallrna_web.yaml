@@ -185,7 +185,6 @@ class_info:
   coded_sample:
     editable: 1
     display_field: description
-    post_hook: 'SmallRNA::Web::'
     field_info_list:
       - field_label: description
         editable: 1
