@@ -60,7 +60,10 @@
               with barcode</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Sequencing run</a>
+              <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">Sequencing sample</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/sequencingrun') %>">Sequencing run</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/person') %>">Person</a>
