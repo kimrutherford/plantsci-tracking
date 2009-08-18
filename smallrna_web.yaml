@@ -161,6 +161,9 @@ class_info:
     display_field: identifier
     field_info_list:
       - field_label: identifier
+        default_value: |
+           use SmallRNA::DBLayer::Loader;
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Sequencingrun', 'identifier', 'RUN-');
         editable: 1
       - field_label: Sequencing centre
         field_conf: sequencing_centre
@@ -177,6 +180,9 @@ class_info:
     display_field: name
     field_info_list:
       - field_label: name
+        default_value: |
+           use SmallRNA::DBLayer::Loader;
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 'name', 'SEQSAMP-');
         editable: 1
       - field_label: coded_samples
         referenced_class: CodedSample
