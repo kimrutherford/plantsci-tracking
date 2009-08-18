@@ -21,4 +21,4 @@ SmallRNATest::setup($schema, $config);
 my $new_identifier =
   SmallRNA::DBLayer::Loader::get_unique_identifier($schema, 'Sample', 'name', 'SL');
 
-is($new_identifier, 'SL237');
+is($new_identifier, 'SL286');
