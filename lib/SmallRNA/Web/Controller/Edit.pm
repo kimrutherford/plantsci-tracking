@@ -416,7 +416,7 @@ sub _update_object {
         }
       } else {
         my $set_meth = "set_$field_db_column";
-        $object->$set_meth(@values);
+        $object->$set_meth(\@values);
       }
     } else {
       $object->$field_db_column($value);
