@@ -202,8 +202,7 @@ sub _init_form_field
     } else {
       $elem->{type} = 'Text';
       if (!$db_source->column_info($field_db_column)->{is_nullable}) {
-        $elem->{constraints} = [ { type => 'Length',  min => 1 },
-          'Required' ];
+        $elem->{constraints} = [ { type => 'Length',  min => 1 }, 'Required' ];
       }
       if (defined $object) {
         $elem->{value} = $object->$field_db_column();
