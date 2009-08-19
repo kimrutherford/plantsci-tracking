@@ -175,6 +175,12 @@ class_info:
       - field_label: Sequencing sample
         field_conf: sequencing_sample
         editable: 1
+      - field_label: quality
+        editable: 1
+        values_constraint: 'cv->name = "tracking quality values"'
+      - field_label: multiplexing_type
+        editable: 1
+        values_constraint: 'cv->name = "tracking multiplexing types"'
   sequencing_sample:
     editable: 1
     display_field: name
