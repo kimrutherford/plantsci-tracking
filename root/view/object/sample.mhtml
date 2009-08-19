@@ -8,8 +8,8 @@ $type
                    treatment_type fractionation_type tissue
                    processing_requirement)]&>
   <div>
-    <a href="<% $c->uri_for('/custom/create_seq_run', { 'sample.id' => $object->sample_id() }) %>">
-      Create a non-multiplexed sequencing run for this sample
+    <a href="<% $c->uri_for('/custom/create_seq_sample', { 'sample.id' => $object->sample_id() }) %>">
+      Create a non-multiplexed sequencing sample for this sample
     </a>
   </div>
   <div>
