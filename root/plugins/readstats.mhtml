@@ -3,7 +3,7 @@ $object
 </%args>
 
 % if (@stats > 0) {
-<div class="rs_list">
+<div class="infobox">
 
 <div>
   <span class="title">
