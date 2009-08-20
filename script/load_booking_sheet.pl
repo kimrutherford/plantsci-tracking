@@ -459,7 +459,6 @@ sub process
       $virus_name = $1;
     }
 
-    # XXX TEMP
     if ($solexa_library !~ /SL11$|SL234_BCF|SL236|SL5[45]|SL165_1|SL285/ && $test_mode) {
       next;
     }
