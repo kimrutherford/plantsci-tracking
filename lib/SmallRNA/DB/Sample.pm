@@ -98,6 +98,11 @@ __PACKAGE__->belongs_to(
   { cvterm_id => "molecule_type" },
 );
 __PACKAGE__->has_many(
+  "sample_dbxrefs",
+  "SmallRNA::DB::SampleDbxref",
+  { "foreign.sample_id" => "self.sample_id" },
+);
+__PACKAGE__->has_many(
   "sample_ecotypes",
   "SmallRNA::DB::SampleEcotype",
   { "foreign.sample" => "self.sample_id" },
@@ -115,7 +120,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yZLCK1IqpSA6J2yt2wzx3Q
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0gZyl41qMMv1eV1gIy74bg
 
 __PACKAGE__->many_to_many('pipedatas' => 'sample_pipedatas', 'pipedata');
 __PACKAGE__->many_to_many('ecotypes' => 'sample_ecotypes', 'ecotype');

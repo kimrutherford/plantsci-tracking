@@ -24,6 +24,7 @@ DROP TABLE organism CASCADE;
 DROP TABLE organism_dbxref CASCADE;
 DROP TABLE sample_pipedata CASCADE;
 DROP TABLE sample_ecotype CASCADE;
+DROP TABLE sample_dbxref CASCADE;
 DROP TABLE coded_sample CASCADE;
 DROP TABLE sequencing_sample CASCADE;
 DROP TABLE protocol CASCADE;
@@ -126,12 +127,12 @@ CREATE TABLE pub (
     uniquename text NOT NULL
 );
 
-
 CREATE TABLE organism_dbxref (
     organism_dbxref_id integer NOT NULL,
     organism_id integer NOT NULL,
     dbxref_id integer NOT NULL
 );
+
 
 ALTER TABLE ONLY pub
     ADD CONSTRAINT pub_pkey PRIMARY KEY (pub_id);
@@ -165,10 +166,11 @@ ALTER TABLE ONLY cvterm_dbxref
 ALTER TABLE ONLY pub_dbxref
     ADD CONSTRAINT "$1" FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY organism_dbxref
+    ADD CONSTRAINT  organism_dbxref_organism_fk FOREIGN KEY (organism_id) REFERENCES organism(organism_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY organism_dbxref
-    ADD CONSTRAINT "$1" FOREIGN KEY (organism_id) REFERENCES organism(organism_id) ON DELETE CASCADE;
-
+    ADD CONSTRAINT  organism_dbxref_dbxref_fk FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
 
 
 CREATE TABLE organisation (
@@ -268,6 +270,18 @@ CREATE TABLE sample (
        processing_requirement integer REFERENCES cvterm(cvterm_id) NOT NULL,
        tissue integer REFERENCES tissue(tissue_id)
 );
+CREATE TABLE sample_dbxref (
+    sample_dbxref_id integer NOT NULL,
+    sample_id integer NOT NULL,
+    dbxref_id integer NOT NULL
+);
+ALTER TABLE ONLY sample_dbxref
+    ADD CONSTRAINT sample_dbxref_sample_fk FOREIGN KEY (sample_id) REFERENCES sample(sample_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY sample_dbxref
+    ADD CONSTRAINT sample_dbxref_dbxref_fk FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
+
+
 CREATE TABLE sample_pipeproject (
        sample_pipeproject_id serial CONSTRAINT sample_pipeproject_id_pk PRIMARY KEY,
        sample integer REFERENCES sample(sample_id) NOT NULL,

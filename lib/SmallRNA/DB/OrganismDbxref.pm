@@ -15,6 +15,7 @@ __PACKAGE__->add_columns(
   "dbxref_id",
   { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
 );
+__PACKAGE__->belongs_to("dbxref", "SmallRNA::DB::Dbxref", { dbxref_id => "dbxref_id" });
 __PACKAGE__->belongs_to(
   "organism",
   "SmallRNA::DB::Organism",
@@ -23,7 +24,7 @@ __PACKAGE__->belongs_to(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AjcKoxOGtu0eONEGZ0S6Sw
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jxr4bmfdHeB8yoTOBbyXXA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
