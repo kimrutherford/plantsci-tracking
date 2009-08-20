@@ -2,7 +2,10 @@
 $object
 </%args>
 
-% if (keys %graphs > 0) {
+<%doc>
+This component show composition statistics and graphs.
+</%doc>
+
 <script type="text/javascript">
 $(function() {
                 $("#tabs").tabs();
@@ -11,14 +14,18 @@ $(function() {
 
 <div class="infobox">
 <span class="title">
-  First base composition and size distribution
+  Base composition and size distribution graphs and statistics
 </span>
 <div id="tabs">
   <ul>
+    <li><a href="#tabs-stats">Sequence statistics</a></li>
 %   while (my ($pipe_data_id, $type) = each %graphs) {
     <li><a href="#tabs-<%$pipe_data_id%>"><% $type %></a></li>
 %   }
   </ul>
+  <div id="tabs-stats">
+    <& /plugins/readstats.mhtml, object => $object &>
+  </div>
 %   while (my ($pipe_data_id, $type) = each %graphs) {
   <div id="tabs-<%$pipe_data_id%>">
     <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipe_data_id) %>'/>
@@ -26,7 +33,6 @@ $(function() {
 %   }
 </div>
 </div>
-% }
 
 <%init>
 my $schema = $c->schema();

@@ -3,14 +3,6 @@ $object
 </%args>
 
 % if (@stats > 0) {
-<div class="infobox">
-
-<div>
-  <span class="title">
-    Sequence statistics
-  </span>
-</div>
-
 <table class="list">
   <thead>
     <tr>
@@ -55,9 +47,6 @@ $object
 % }
   </tbody>
 </table>
-
-</div>
-
 % }
 
 <%init>

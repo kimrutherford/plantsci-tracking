@@ -1,5 +1,8 @@
 .size_dist_graph {
-  float: right;
+}
+
+.ui-tabs {
+  width: 700px;
 }
 
 .ui-tabs .ui-tabs-nav li a { 
