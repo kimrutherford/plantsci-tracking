@@ -52,7 +52,7 @@ sub create_seq_sample : Local {
   my $seq_sample = $schema->create_with_type('SequencingSample',
                                              { name => 'SEQSAMP-' . $sample->name() });
 
-  my $description = 'Dummy coded sample for ', $sample->name(), ' - no barcode';
+  my $description = 'Dummy coded sample for ' . $sample->name() . ' - no barcode';
   my $initial_run_cvterm = $schema->find_with_type('Cvterm',
                                                    { name => 'initial run' });
   my $coded_sample = $schema->create_with_type('CodedSample',
