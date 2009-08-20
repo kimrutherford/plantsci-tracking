@@ -14,15 +14,11 @@ $type
 </div>
 
 
-<div>
+<div id="collections">
   <& /view/list.mhtml, type => 'pipeprocess', rs => $prev_pipeprocess_rs,
     list_title => 'Process that generated this data' &>
-</div>
-<div>
   <& /view/list.mhtml, type => 'pipeprocess', rs => $next_pipeprocess_rs,
     list_title => 'Processes that use this data as input' &>
-</div>
-<div>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
     list_title => "The sample$plu that (ultimately) generated this data" &>
 </div>

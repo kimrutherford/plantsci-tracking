@@ -5,20 +5,13 @@ $list_title
 @columns => ()
 </%args>
 
-<div class="rs_list">
 % if ($list_title ne '') {
-  <div>
-    <span class="title"> <% $list_title %> </span>
-  </div>
+<h3><a href="#"> <% $list_title %> </a> </h3>
 % }
+<div>
 % if (@field_labels == 0) {
-  <div>
     [none]
-  </div>
 % } else {
-
-</p>
-
   <table class="list">
     <thead>
       <tr>

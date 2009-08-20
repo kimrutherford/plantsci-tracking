@@ -124,7 +124,7 @@ table.list tr td {
 
 .rs_list {
     padding: 8px 0px 8px 0px;
-    font-size: 95%
+    font-size: 95%;
 }
 
 .rs_list table.list {
@@ -233,4 +233,12 @@ fieldset .checkboxgroup > span {
 }
 #logout {
     float: right;
+}
+
+.ui-widget {
+  width: 80%;
+}
+
+.ui-accordion {
+  font-size: 90%;
 }

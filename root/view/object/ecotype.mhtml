@@ -7,7 +7,7 @@ $object
   => [qw|description organism|] &>
 </div>
 
-<div>
+<div id="collections">
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
     list_title => "The sample$plu for this ecotype" &>
 </div>

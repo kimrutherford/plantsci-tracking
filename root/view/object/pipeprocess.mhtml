@@ -4,14 +4,13 @@ $type
 </%args>
 
 <div>
-<& /view/field_list.mhtml, object => $object, field_labels =>
-  [qw(description process_conf status job_identifier time_queued time_started time_finished )] &>
+  <& /view/field_list.mhtml, object => $object, field_labels =>
+    [qw(description process_conf status job_identifier time_queued time_started time_finished )] &>
 </div>
-<div>
+
+<div id="collections">
   <& /view/list.mhtml, type => 'pipedata', rs => $input_pipedata_rs,
-  list_title => 'Input data' &>
-</div>
-<div>
+    list_title => 'Input data' &>
   <& /view/collection.mhtml, object => $object, collection_name => 'pipedatas',
     collection_title => 'Output data' &>
 </div>

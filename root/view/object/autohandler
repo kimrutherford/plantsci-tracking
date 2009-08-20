@@ -3,6 +3,16 @@ $type
 $object
 </%args>
 
+<script type="text/javascript">
+  $(function() {
+     $("#collections").accordion({
+         autoHeight: false,
+         collapsible: true,
+         active: false
+       });
+  });
+</script>
+
 % if ($editable) {
 <div class="actionlist" style="float: right">
   <div class="label">

@@ -19,27 +19,17 @@ $type
   </div>
 </&>
 
-<div>
+<div id="collections">
   <& /view/list.mhtml, type => 'pipeproject', rs => $pipeprojects_rs,
     list_title => "The project$pipeproject_plu containing this sample" &>
-</div>
-<div>
   <& /view/list.mhtml, type => 'organism', rs => $organisms_rs,
     list_title => "The organism$organism_plu for this sample" &>
-</div>
-<div>
   <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
     list_title => "The ecotype$ecotype_plu for this sample" &>
-</div>
-<div style="clear: both">
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
     list_title => "The sequencing run$seqruns_plu for this sample" &>
-</div>
-<div>
   <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
     list_title => "The bar-coded sample$coded_samples_plu created from this sample" &>
-</div>
-<div>
   <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
     list_title => "The file$pipedata_plu for this sample" &>
 </div>
