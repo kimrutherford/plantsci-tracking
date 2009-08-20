@@ -104,6 +104,33 @@ table.list tr td {
     font-weight: bold;
 }
 
+.sect .sect-title {
+    background-color: #ddd;
+    color: #227;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 1px 5px 1px 5px;
+    margin: 3px;
+}
+.undisclosed-title {
+    background-image: url('../static/images/undisclosed.png');
+    background-repeat: no-repeat;
+    background-position: center left
+}
+.disclosed-title {
+    background-image: url('../static/images/disclosed.png');
+    background-repeat: no-repeat;
+    background-position: center left
+}
+
+.sect .sect-title a {
+    margin-left: 9px;
+}
+
+.sect {
+  margin: 10px 0px 10px 0px;
+}
+
 .infobox {
     padding: 8px 0px 8px 0px;
     font-size: 95%
@@ -120,28 +147,6 @@ table.list tr td {
     font-weight: bold;
     margin-bottom: 10px;
     padding: 1px 5px 1px 5px;
-}
-
-.rs_list {
-    padding: 8px 0px 8px 0px;
-    font-size: 95%;
-}
-
-.rs_list table.list {
-    font-size: 85%;
-}
-
-.rs_list .title {
-    background-color: #ddd;
-    color: #227;
-    font-size: 110%;
-    font-weight: bold;
-    margin-bottom: 10px;
-    padding: 1px 5px 1px 5px;
-}
-
-.this_id_field {
-    whitespace: nowrap;
 }
 
 /* front page: */

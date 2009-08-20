@@ -5,12 +5,13 @@ $object
 
 <script type="text/javascript">
   $(function() {
-     $("#collections").accordion({
-         autoHeight: false,
-         collapsible: true,
-         active: false
-       });
-  });
+     $(".sect .sect-title").click(function() {
+       $(this).next().toggle();
+       $(this).toggleClass('undisclosed-title');
+       $(this).toggleClass('disclosed-title');
+       return false;
+  }).next().hide();
+});
 </script>
 
 % if ($editable) {

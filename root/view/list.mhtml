@@ -5,10 +5,11 @@ $list_title
 @columns => ()
 </%args>
 
+<div class="sect">
 % if ($list_title ne '') {
-<h3><a href="#"> <% $list_title %> </a> </h3>
+<span class="sect-title undisclosed-title"><a href="#"> <% $list_title %> </a> </span>
 % }
-<div>
+<div class="sect-content">
 % if (@field_labels == 0) {
     [none]
 % } else {
@@ -33,6 +34,7 @@ $list_title
 %   }
   </table>
 % }
+</div>
 </div>
 
 <%init>
