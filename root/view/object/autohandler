@@ -9,6 +9,7 @@ $object
        $(this).next().toggle();
        $(this).toggleClass('undisclosed-title');
        $(this).toggleClass('disclosed-title');
+       $.sparkline_display_visible()
        return false;
   }).next().hide();
 });

@@ -50,9 +50,44 @@ use Chart::Clicker::Renderer::StackedBar;
 use Geometry::Primitive::Rectangle;
 use Graphics::Color::RGB;
 
-sub _get_data
+sub _minmax
 {
-  my $file_name = shift;
+  my @lengths = @_;
+
+  my $min = 999999999999;
+  my $max = -999999999999;
+
+  for my $val (@lengths) {
+    if ($val < $min) {
+      $min = $val;
+    }
+    if ($val > $max) {
+      $max = $val;
+    }
+  }
+
+  return ($min, $max);
+}
+
+=head2 get_pipedata_counts
+
+ Usage   : my ($counts_ref, $min, $max) = get_pipedata_counts($c, $pipedata);
+ Function: Count the read counts and first base composition from a file in
+           first_base_summary format
+ Args    : $c - the Catalyst context
+           $pipedata - a Pipedata for a first_base_summary file
+ Returns : $counts_ref - a hash from read length to a hash of base to base
+                         count.  eg. $counts_ref->{21}{A} will be the number
+                         of 21 base reads that start with base "A"
+
+=cut
+sub get_pipedata_counts
+{
+  my $c = shift;
+  my $pipedata = shift;
+
+  my $data_directory = $c->config()->data_directory();
+  my $file_name = $data_directory . '/' . $pipedata->file_name();
 
   my %res = ();
 
@@ -85,41 +120,9 @@ sub _get_data
 
   close $file or die "can't close $file: $!\n";
 
-  return %res;
-}
+  my @lengths = keys %res;
 
-sub _minmax
-{
-  my @lengths = @_;
-
-  my $min = 999999999999;
-  my $max = -999999999999;
-
-  for my $val (@lengths) {
-    if ($val < $min) {
-      $min = $val;
-    }
-    if ($val > $max) {
-      $max = $val;
-    }
-  }
-
-  return ($min, $max);
-}
-
-sub sizedist : Path('/plugin/graph/sizedist') {
-  my ($self, $c, $pipedata_id) = @_;
-
-  my $schema = $c->schema();
-  my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
-  my $data_directory = $c->config()->data_directory();
-  my $pipedata_file_name = $data_directory . '/' . $pipedata->file_name();
-  my %counts = _get_data($pipedata_file_name);
-  my $cc = Chart::Clicker->new(width => 600, height => 400);
-
-  my @lengths = keys %counts;
   my ($min, $max) = _minmax(@lengths);
-
   if ($min > 15) {
     $min = 15;
   }
@@ -127,7 +130,30 @@ sub sizedist : Path('/plugin/graph/sizedist') {
     $max = 36;
   }
 
-  @lengths = ($min .. $max);
+  return \%res, $min, $max;
+}
+
+=head2 sizedist
+
+ Usage   : Called as a Catalyst action
+ Function: Given a pipedata_id of a first_base_summary pipedata, create a size
+           distribution graph, store it in the stash then forward to
+           SmallRNA::Web::View::Graph
+ Args    : pipedata_id - the id of the pipedata containing the stats in
+                         first_base_summary format
+
+=cut
+sub sizedist : Path('/plugin/graph/sizedist') {
+  my ($self, $c, $pipedata_id) = @_;
+
+  my $schema = $c->schema();
+  my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
+  my ($counts_ref, $min, $max) = get_pipedata_counts($c, $pipedata);
+  my $cc = Chart::Clicker->new(width => 600, height => 400);
+
+  my %counts = %$counts_ref;
+
+  my @lengths = ($min .. $max);
 
   my @series_list = ();
 
