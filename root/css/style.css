@@ -240,10 +240,6 @@ fieldset .checkboxgroup > span {
     float: right;
 }
 
-.ui-widget {
-  width: 80%;
-}
-
-.ui-accordion {
-  font-size: 90%;
+#tabs {
+  width: 60em;
 }
