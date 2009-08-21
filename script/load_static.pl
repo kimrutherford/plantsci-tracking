@@ -700,6 +700,16 @@ my @analyses = (
                     ]
                 },
                 {
+                 type_term_name => 'summarise fasta first base',
+                 runable_name => 'SmallRNA::Runable::FirstBaseCompSummaryRunable',
+                 inputs => [
+                     {
+                       format_type => 'fasta',
+                       content_type => 'genome_aligned_srna_reads',
+                     }
+                    ]
+                },
+                {
                  type_term_name => 'remove redundant reads',
                  runable_name => 'SmallRNA::Runable::NonRedundantFastaRunable',
                  inputs => [
