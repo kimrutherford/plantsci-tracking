@@ -19,3 +19,13 @@ programs:
       Chlamydomonas_reinhardtii:
         database_files:
           genome: chlamydomonas_reinhardtii_test_genome.fasta
+  bwa:
+    path: /applications/bwa/bwa-0.4.9/bwa
+    root: t/data
+    organisms:
+      Arabidopsis_thaliana:
+        database_files:
+          genome: arabidopsis_thaliana_test_genome.fasta
+      Chlamydomonas_reinhardtii:
+        database_files:
+          genome: chlamydomonas_reinhardtii_test_genome.fasta

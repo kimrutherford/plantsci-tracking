@@ -25,6 +25,8 @@ my %terms = (
               'fasta' => 'FASTA format',
               'gff2' => 'GFF2 format',
               'gff3' => 'GFF3 format',
+              'sam' => 'SAM format',
+              'bam' => 'BAM format',
               'seq_offset_index' => 'An index of a GFF3 or FASTA format file',
               'text' => 'A human readable text file with summaries or statistics',
               'tsv' => 'A file containing tab-separated value',
@@ -137,6 +139,8 @@ my %terms = (
                   . 'and add a count to the header',
               'ssaha alignment' =>
                 'Align reads against a sequence database with SSAHA',
+              'bwa alignment' =>
+                'Align reads against a sequence database with BWA',
               'genome aligned reads filter' =>
                 'Filter a fasta file, creating a file containing only genome aligned reads',
               'gff3 to gff2 converter' =>
@@ -826,6 +830,18 @@ my @analyses = (
                        ecotype_name => 'unspecified Chlamydomonas reinhardtii',
                        format_type => 'fasta',
                        content_type => 'non_redundant_genomic_dna_tags',
+                     }
+                    ]
+                },
+                {
+                 type_term_name => 'bwa alignment',
+                 detail => 'component: genome',
+                 runable_name => 'SmallRNA::Runable::BWASearchRunable',
+                 inputs => [
+                     {
+                       ecotype_name => 'unspecified Arabidopsis thaliana',
+                       format_type => 'fasta',
+                       content_type => 'non_redundant_srna_reads',
                      }
                     ]
                 },

@@ -253,3 +253,25 @@ programs:
       Chlamydomonas_reinhardtii:
         database_files:
           genome: chlamydomonas/20090120_chlamy_assembly4/C_reinhardtii.main_genome.scaffolds_plus_unmapped_scaffolds.fasta
+  bwa:
+    path: /applications/bwa/bwa-0.4.9/bwa
+    root: /data/public_data
+    organisms:
+      Arabidopsis_thaliana:
+        database_files:
+          genome: arabidopsis/TAIR_8/arabidopsis_nuclear_genome
+      Lycopersicon_esculentum:
+        database_files:
+          genome: tomato/v340/bacs.v340.seq.20081007121008
+      Carmovirus_turnip_crinkle_virus:
+        database_files:
+          genome: TCV/TCV.fa
+      Oryza_sativa:
+        database_files:
+          genome: rice/Oryza_sativa/IRGSP_Build5/nuclear_genome.fasta
+      Benyvirus_rice_stripe_virus:
+        database_files:
+          genome: viruses/Benyvirus/rice_stripe_virus_isolate_Zhejiang.fasta
+      Chlamydomonas_reinhardtii:
+        database_files:
+          genome: chlamydomonas/20090120_chlamy_assembly4/C_reinhardtii.main_genome.scaffolds_plus_unmapped_scaffolds.fasta
