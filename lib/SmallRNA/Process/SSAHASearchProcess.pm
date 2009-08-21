@@ -143,7 +143,7 @@ sub run
 
   close $ssaha_out or croak "failed to close command pipe: $! (exit code $?)";
 
-  if (defined $output_gff_fpile) {
+  if (defined $output_gff_file) {
     close $output_gff_file;
   }
 }
