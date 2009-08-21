@@ -76,11 +76,16 @@ sub get_sparkline_values
 for my $pipedata (@pipedatas) {
   my @input_pipedatas = $pipedata->generating_pipeprocess()->input_pipedatas();
   if (@input_pipedatas) {
-    if ($input_pipedatas[0]->content_type()->name() eq 'srna_reads') {
+    my $content_type_name = $input_pipedatas[0]->content_type()->name();
+    if ($content_type_name eq 'srna_reads') {
       $graphs{'All reads'} = $pipedata;
     } else {
-      if ($input_pipedatas[0]->content_type()->name() eq 'non_redundant_srna_reads') {
+      if ($content_type_name eq 'non_redundant_srna_reads') {
         $graphs{'Non-redundant reads'} = $pipedata;
+      } else {
+        if ($content_type_name eq 'genome_aligned_srna_reads') {
+          $graphs{'Genome aligned reads'} = $pipedata;
+        }
       }
     }
   }
