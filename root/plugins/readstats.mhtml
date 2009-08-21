@@ -47,7 +47,10 @@ $object
 % }
   </tbody>
 </table>
+% } else {
+  No statistics available
 % }
+
 
 <%init>
 my $schema = $c->schema();
