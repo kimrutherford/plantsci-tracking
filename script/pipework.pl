@@ -53,7 +53,7 @@ $pipeprocess->time_started(DateTime->now());
 $pipeprocess->status($started_status);
 $pipeprocess->update();
 
-if (!defined $ENV{SMALLRNA_PIPELINE_TEST}) {
+if (!$ENV{SMALLRNA_PIPELINE_TEST}) {
   use POSIX ();
   POSIX::nice(19);
 }
