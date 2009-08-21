@@ -12,7 +12,8 @@ This component show composition statistics and graphs.
     });
 
     $(function() {
-        $('.inlinesparkline').sparkline('html', {type: 'bar', barSpacing: 0, barWidth: 1}); 
+        $('.inlinesparkline').sparkline('html', {type: 'bar', barSpacing: 0,
+                  barWidth: 1, barColor: '#d00'}); 
     });
 </script>
 
