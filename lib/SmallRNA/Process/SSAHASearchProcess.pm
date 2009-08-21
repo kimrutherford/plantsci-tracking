@@ -72,7 +72,7 @@ sub _write
 }
 
 =head2
- 
+
  Usage   : SmallRNA::Process::SSAHASearchProcess(input_file_name =>
                                                    $in_file_name,
                                                  output_gff_file_name =>
@@ -82,12 +82,12 @@ sub _write
                                                    $source_name,
                                                  database_file_name =>
                                                    $database_file_name);
- Function: Create a non-redundant FASTA file from the input.  The records in
-           the output file will have a count:<num> in the header to show how
-           many times the read/sequence occurs in the input.
- Args    : input_file_name - the input file name of sequences in FASTA format
-           output_file_name - the name of the file to write the non-redundant
-                              sequences to
+ Function: Run a SSAHA search for the given input file against a fasta database
+ Args    : input_file_name - the fasta file of reads
+           output_gff_file_name - the output gff3 file path name
+           ssaha_path - full path to the SSAHA executable
+           gff_source_name - the value to use for the source field in the ouuput
+           database_file_name - the full path to the target database
  Returns : nothing - either succeeds or calls die()
 
 =cut
@@ -143,8 +143,8 @@ sub run
 
   close $ssaha_out or croak "failed to close command pipe: $! (exit code $?)";
 
-  if (defined $output_gff_file) {
-    close $output_gff_file 
+  if (defined $output_gff_fpile) {
+    close $output_gff_file;
   }
 }
 
