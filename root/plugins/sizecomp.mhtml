@@ -12,9 +12,9 @@ $(function() {
              });
 </script>
 
-<div class="infobox">
-<span class="title">
-  Base composition and size distribution graphs and statistics
+<div class="sect">
+<span class="sect-title undisclosed-title">
+  <a href="#">Base composition and size distribution graphs and statistics</a>
 </span>
 <div id="tabs">
   <ul>
