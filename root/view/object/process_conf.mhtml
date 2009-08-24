@@ -1,0 +1,15 @@
+<%args>
+$object
+</%args>
+
+<div>
+  <& /view/field_list.mhtml, object => $object, field_labels =>
+    [qw(type detail runable_name)] &>
+</div>
+
+<div id="collections">
+  <& /view/collection.mhtml, object => $object, collection_name => 'process_conf_inputs',
+    collection_title => 'Inputs file types configured for this Process Configuration' &>
+  <& /view/collection.mhtml, object => $object, collection_name => 'pipeprocesses',
+    collection_title => 'Pipe processes that use this configuration' &>
+</div>

@@ -58,6 +58,20 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hOjGnowIjoZGxXx5vP+rYg
 
+sub description
+{
+  my $self = shift;
+
+  my $description = 'Input configuration for: ' . $self->process_conf->type()->name();
+
+  if (defined $self->format_type()) {
+    $description .= ', format type: ' . $self->format_type()->name()
+  }
+
+  if (defined $self->content_type()) {
+    $description .= ', content type: ' . $self->content_type()->name();
+  }
+}
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

@@ -74,6 +74,18 @@
             <li>
               <a href="<% $c->uri_for('/new/object/pub') %>">Publication</a>
             </li>
+% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+            <li>
+              <a href="<% $c->uri_for('/new/object/process_conf') %>">
+                Pipeline process configuration
+              </a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/process_conf_input') %>">
+                Pipeline process input configuration
+              </a>
+            </li>
+% }
           </ul>
         </div>
       </div>

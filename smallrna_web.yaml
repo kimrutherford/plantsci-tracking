@@ -145,7 +145,32 @@ class_info:
         editable: 1
         is_collection: 1
   process_conf:
+    editable: 1
     display_field: long_description
+    order_by: type
+    field_info_list:
+      - field_label: type
+        values_constraint: 'cv->name = "tracking analysis types"'
+        editable: 1
+      - field_label: detail
+        editable: 1
+      - field_label: runable_name
+        editable: 1
+  process_conf_input:
+    editable: 1
+    display_field: description
+    order_by: process_conf
+    field_info_list:
+      - field_label: content_type
+        values_constraint: 'cv->name = "tracking file content types"'
+        editable: 1 
+      - field_label: format_type
+        values_constraint: 'cv->name = "tracking file format types"'
+        editable: 1
+      - field_label: ecotype
+        editable: 1
+      - field_label: process_conf
+        editable: 1
   pipeprocess:
     display_field: description
     order_by: created_stamp
