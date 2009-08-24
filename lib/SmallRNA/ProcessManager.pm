@@ -190,7 +190,7 @@ sub _create_sample_proc
     my $description = "processing with conf: $process_conf_name";
 
     if (defined $process_conf->detail()) {
-      $description .= ' ' . $process_conf->detail();
+      $description .= ', ' . $process_conf->detail();
     }
 
     my %pipeprocess_args = (

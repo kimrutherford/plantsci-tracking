@@ -31,6 +31,11 @@ ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_molecule_type_fkey;
 ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_fractionation_type_fkey;
 ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_sample_fkey;
 ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_ecotype_fkey;
+ALTER TABLE ONLY public.sample_dbxref DROP CONSTRAINT sample_dbxref_sample_fk;
+ALTER TABLE ONLY public.sample_dbxref DROP CONSTRAINT sample_dbxref_dbxref_fk;
+ALTER TABLE ONLY public.pub DROP CONSTRAINT pub_type_id_fkey;
+ALTER TABLE ONLY public.pub_dbxref DROP CONSTRAINT pub_dbxref_pub_id_fkey;
+ALTER TABLE ONLY public.pub_dbxref DROP CONSTRAINT pub_dbxref_dbxref_id_fkey;
 ALTER TABLE ONLY public.process_conf DROP CONSTRAINT process_conf_type_fkey;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_process_conf_fkey;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_format_type_fkey;
@@ -40,6 +45,8 @@ ALTER TABLE ONLY public.pipeproject DROP CONSTRAINT pipeproject_type_fkey;
 ALTER TABLE ONLY public.pipeproject DROP CONSTRAINT pipeproject_owner_fkey;
 ALTER TABLE ONLY public.pipeproject DROP CONSTRAINT pipeproject_funder_fkey;
 ALTER TABLE ONLY public.pipeprocess DROP CONSTRAINT pipeprocess_status_fkey;
+ALTER TABLE ONLY public.pipeprocess_pub DROP CONSTRAINT pipeprocess_pub_pub_fk;
+ALTER TABLE ONLY public.pipeprocess_pub DROP CONSTRAINT pipeprocess_pub_pipeprocess_fk;
 ALTER TABLE ONLY public.pipeprocess DROP CONSTRAINT pipeprocess_process_conf_fkey;
 ALTER TABLE ONLY public.pipeprocess_in_pipedata DROP CONSTRAINT pipeprocess_in_pipedata_pipeprocess_fkey;
 ALTER TABLE ONLY public.pipeprocess_in_pipedata DROP CONSTRAINT pipeprocess_in_pipedata_pipedata_fkey;
@@ -48,8 +55,13 @@ ALTER TABLE ONLY public.pipedata DROP CONSTRAINT pipedata_format_type_fkey;
 ALTER TABLE ONLY public.pipedata DROP CONSTRAINT pipedata_content_type_fkey;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_role_fkey;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_organisation_fkey;
+ALTER TABLE ONLY public.organism_dbxref DROP CONSTRAINT organism_dbxref_organism_id_fkey;
+ALTER TABLE ONLY public.organism_dbxref DROP CONSTRAINT organism_dbxref_dbxref_id_fkey;
 ALTER TABLE ONLY public.ecotype DROP CONSTRAINT ecotype_organism_fkey;
+ALTER TABLE ONLY public.dbxref DROP CONSTRAINT dbxref_db_id_fkey;
 ALTER TABLE ONLY public.cvterm DROP CONSTRAINT cvterm_dbxref_id_fkey;
+ALTER TABLE ONLY public.cvterm_dbxref DROP CONSTRAINT cvterm_dbxref_dbxref_id_fkey;
+ALTER TABLE ONLY public.cvterm_dbxref DROP CONSTRAINT cvterm_dbxref_cvterm_id_fkey;
 ALTER TABLE ONLY public.cvterm DROP CONSTRAINT cvterm_cv_id_fkey;
 ALTER TABLE ONLY public.coded_sample DROP CONSTRAINT coded_sample_sequencing_sample_fkey;
 ALTER TABLE ONLY public.coded_sample DROP CONSTRAINT coded_sample_sample_fkey;
@@ -57,10 +69,19 @@ ALTER TABLE ONLY public.coded_sample DROP CONSTRAINT coded_sample_coded_sample_t
 ALTER TABLE ONLY public.coded_sample DROP CONSTRAINT coded_sample_barcode_fkey;
 ALTER TABLE ONLY public.barcode_set DROP CONSTRAINT barcode_set_position_in_read_fkey;
 ALTER TABLE ONLY public.barcode DROP CONSTRAINT barcode_barcode_set_fkey;
-ALTER TABLE ONLY public.cvterm_dbxref DROP CONSTRAINT "$2";
-ALTER TABLE ONLY public.pub_dbxref DROP CONSTRAINT "$2";
-ALTER TABLE ONLY public.organism_dbxref DROP CONSTRAINT "$1";
-ALTER TABLE ONLY public.pub_dbxref DROP CONSTRAINT "$1";
+DROP INDEX public.pub_idx1;
+DROP INDEX public.pub_dbxref_idx2;
+DROP INDEX public.pub_dbxref_idx1;
+DROP INDEX public.organism_dbxref_idx2;
+DROP INDEX public.organism_dbxref_idx1;
+DROP INDEX public.dbxref_idx3;
+DROP INDEX public.dbxref_idx2;
+DROP INDEX public.dbxref_idx1;
+DROP INDEX public.cvterm_idx3;
+DROP INDEX public.cvterm_idx2;
+DROP INDEX public.cvterm_idx1;
+DROP INDEX public.cvterm_dbxref_idx2;
+DROP INDEX public.cvterm_dbxref_idx1;
 ALTER TABLE ONLY public.tissue DROP CONSTRAINT tissue_id_pk;
 ALTER TABLE ONLY public.sequencingrun DROP CONSTRAINT sequencingrun_identifier_key;
 ALTER TABLE ONLY public.sequencingrun DROP CONSTRAINT sequencingrun_id_pk;
@@ -74,6 +95,9 @@ ALTER TABLE ONLY public.sample DROP CONSTRAINT sample_id_pk;
 ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_id_pk;
 ALTER TABLE ONLY public.sample_ecotype DROP CONSTRAINT sample_ecotype_constraint;
 ALTER TABLE ONLY public.pub DROP CONSTRAINT pub_pkey;
+ALTER TABLE ONLY public.pub_dbxref DROP CONSTRAINT pub_dbxref_pkey;
+ALTER TABLE ONLY public.pub_dbxref DROP CONSTRAINT pub_dbxref_c1;
+ALTER TABLE ONLY public.pub DROP CONSTRAINT pub_c1;
 ALTER TABLE ONLY public.protocol DROP CONSTRAINT protocol_name_key;
 ALTER TABLE ONLY public.protocol DROP CONSTRAINT protocol_id_pk;
 ALTER TABLE ONLY public.process_conf_input DROP CONSTRAINT process_conf_input_id_pk;
@@ -87,13 +111,21 @@ ALTER TABLE ONLY public.pipedata DROP CONSTRAINT pipedata_file_name_key;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_username_key;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_id_pk;
 ALTER TABLE ONLY public.person DROP CONSTRAINT person_full_name_constraint;
-ALTER TABLE ONLY public.organism DROP CONSTRAINT organism_id_pk;
-ALTER TABLE ONLY public.organism DROP CONSTRAINT organism_full_name_constraint;
+ALTER TABLE ONLY public.organism DROP CONSTRAINT organism_pkey;
+ALTER TABLE ONLY public.organism_dbxref DROP CONSTRAINT organism_dbxref_pkey;
+ALTER TABLE ONLY public.organism_dbxref DROP CONSTRAINT organism_dbxref_c1;
+ALTER TABLE ONLY public.organism DROP CONSTRAINT organism_c1;
 ALTER TABLE ONLY public.organisation DROP CONSTRAINT organisation_id_pk;
 ALTER TABLE ONLY public.ecotype DROP CONSTRAINT ecotype_id_pk;
 ALTER TABLE ONLY public.dbxref DROP CONSTRAINT dbxref_pkey;
-ALTER TABLE ONLY public.dbxref DROP CONSTRAINT dbxref_db_id_key;
+ALTER TABLE ONLY public.dbxref DROP CONSTRAINT dbxref_c1;
+ALTER TABLE ONLY public.db DROP CONSTRAINT db_pkey;
+ALTER TABLE ONLY public.db DROP CONSTRAINT db_c1;
 ALTER TABLE ONLY public.cvterm DROP CONSTRAINT cvterm_pkey;
+ALTER TABLE ONLY public.cvterm_dbxref DROP CONSTRAINT cvterm_dbxref_pkey;
+ALTER TABLE ONLY public.cvterm_dbxref DROP CONSTRAINT cvterm_dbxref_c1;
+ALTER TABLE ONLY public.cvterm DROP CONSTRAINT cvterm_c2;
+ALTER TABLE ONLY public.cvterm DROP CONSTRAINT cvterm_c1;
 ALTER TABLE ONLY public.cv DROP CONSTRAINT cv_pkey;
 ALTER TABLE ONLY public.cv DROP CONSTRAINT cv_c1;
 ALTER TABLE ONLY public.coded_sample DROP CONSTRAINT coded_sample_id_pk;
@@ -109,6 +141,8 @@ ALTER TABLE public.sample_pipeproject ALTER COLUMN sample_pipeproject_id DROP DE
 ALTER TABLE public.sample_pipedata ALTER COLUMN sample_pipedata_id DROP DEFAULT;
 ALTER TABLE public.sample_ecotype ALTER COLUMN sample_ecotype_id DROP DEFAULT;
 ALTER TABLE public.sample ALTER COLUMN sample_id DROP DEFAULT;
+ALTER TABLE public.pub_dbxref ALTER COLUMN pub_dbxref_id DROP DEFAULT;
+ALTER TABLE public.pub ALTER COLUMN pub_id DROP DEFAULT;
 ALTER TABLE public.protocol ALTER COLUMN protocol_id DROP DEFAULT;
 ALTER TABLE public.process_conf_input ALTER COLUMN process_conf_input_id DROP DEFAULT;
 ALTER TABLE public.process_conf ALTER COLUMN process_conf_id DROP DEFAULT;
@@ -117,9 +151,15 @@ ALTER TABLE public.pipeprocess_in_pipedata ALTER COLUMN pipeprocess_in_pipedata_
 ALTER TABLE public.pipeprocess ALTER COLUMN pipeprocess_id DROP DEFAULT;
 ALTER TABLE public.pipedata ALTER COLUMN pipedata_id DROP DEFAULT;
 ALTER TABLE public.person ALTER COLUMN person_id DROP DEFAULT;
+ALTER TABLE public.organism_dbxref ALTER COLUMN organism_dbxref_id DROP DEFAULT;
 ALTER TABLE public.organism ALTER COLUMN organism_id DROP DEFAULT;
 ALTER TABLE public.organisation ALTER COLUMN organisation_id DROP DEFAULT;
 ALTER TABLE public.ecotype ALTER COLUMN ecotype_id DROP DEFAULT;
+ALTER TABLE public.dbxref ALTER COLUMN dbxref_id DROP DEFAULT;
+ALTER TABLE public.db ALTER COLUMN db_id DROP DEFAULT;
+ALTER TABLE public.cvterm_dbxref ALTER COLUMN cvterm_dbxref_id DROP DEFAULT;
+ALTER TABLE public.cvterm ALTER COLUMN cvterm_id DROP DEFAULT;
+ALTER TABLE public.cv ALTER COLUMN cv_id DROP DEFAULT;
 ALTER TABLE public.coded_sample ALTER COLUMN coded_sample_id DROP DEFAULT;
 ALTER TABLE public.barcode_set ALTER COLUMN barcode_set_id DROP DEFAULT;
 ALTER TABLE public.barcode ALTER COLUMN barcode_id DROP DEFAULT;
@@ -130,6 +170,8 @@ DROP SEQUENCE public.sample_sample_id_seq;
 DROP SEQUENCE public.sample_pipeproject_sample_pipeproject_id_seq;
 DROP SEQUENCE public.sample_pipedata_sample_pipedata_id_seq;
 DROP SEQUENCE public.sample_ecotype_sample_ecotype_id_seq;
+DROP SEQUENCE public.pub_pub_id_seq;
+DROP SEQUENCE public.pub_dbxref_pub_dbxref_id_seq;
 DROP SEQUENCE public.protocol_protocol_id_seq;
 DROP SEQUENCE public.process_conf_process_conf_id_seq;
 DROP SEQUENCE public.process_conf_input_process_conf_input_id_seq;
@@ -139,8 +181,14 @@ DROP SEQUENCE public.pipeprocess_in_pipedata_pipeprocess_in_pipedata_id_seq;
 DROP SEQUENCE public.pipedata_pipedata_id_seq;
 DROP SEQUENCE public.person_person_id_seq;
 DROP SEQUENCE public.organism_organism_id_seq;
+DROP SEQUENCE public.organism_dbxref_organism_dbxref_id_seq;
 DROP SEQUENCE public.organisation_organisation_id_seq;
 DROP SEQUENCE public.ecotype_ecotype_id_seq;
+DROP SEQUENCE public.dbxref_dbxref_id_seq;
+DROP SEQUENCE public.db_db_id_seq;
+DROP SEQUENCE public.cvterm_dbxref_cvterm_dbxref_id_seq;
+DROP SEQUENCE public.cvterm_cvterm_id_seq;
+DROP SEQUENCE public.cv_cv_id_seq;
 DROP SEQUENCE public.coded_sample_coded_sample_id_seq;
 DROP SEQUENCE public.barcode_set_barcode_set_id_seq;
 DROP SEQUENCE public.barcode_barcode_id_seq;
@@ -194,6 +242,7 @@ DROP TABLE public.sequencing_sample;
 DROP TABLE public.sample_pipeproject;
 DROP TABLE public.sample_pipedata;
 DROP TABLE public.sample_ecotype;
+DROP TABLE public.sample_dbxref;
 DROP TABLE public.sample;
 DROP TABLE public.pub_dbxref;
 DROP TABLE public.pub;
@@ -201,6 +250,7 @@ DROP TABLE public.protocol;
 DROP TABLE public.process_conf_input;
 DROP TABLE public.process_conf;
 DROP TABLE public.pipeproject;
+DROP TABLE public.pipeprocess_pub;
 DROP TABLE public.pipeprocess_in_pipedata;
 DROP TABLE public.pipeprocess;
 DROP TABLE public.pipedata;
@@ -213,9 +263,7 @@ DROP TABLE public.dbxref;
 DROP TABLE public.db;
 DROP TABLE public.cvterm_dbxref;
 DROP TABLE public.cvterm;
-DROP SEQUENCE public.cvterm_cvterm_id_seq;
 DROP TABLE public.cv;
-DROP SEQUENCE public.cv_cv_id_seq;
 DROP TABLE public.coded_sample;
 DROP TYPE public.bioseg CASCADE;
 DROP FUNCTION public.bioseg_out(bioseg);
@@ -348,31 +396,11 @@ COMMENT ON TABLE coded_sample IS 'This table records the many-to-many relationsh
 
 
 --
--- Name: cv_cv_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
---
-
-CREATE SEQUENCE cv_cv_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.cv_cv_id_seq OWNER TO kmr44;
-
---
--- Name: cv_cv_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
---
-
-SELECT pg_catalog.setval('cv_cv_id_seq', 16, true);
-
-
---
 -- Name: cv; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
 --
 
 CREATE TABLE cv (
-    cv_id integer DEFAULT nextval('cv_cv_id_seq'::regclass) NOT NULL,
+    cv_id integer NOT NULL,
     name character varying(255) NOT NULL,
     definition text
 );
@@ -381,23 +409,30 @@ CREATE TABLE cv (
 ALTER TABLE public.cv OWNER TO kmr44;
 
 --
--- Name: cvterm_cvterm_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+-- Name: TABLE cv; Type: COMMENT; Schema: public; Owner: kmr44
 --
 
-CREATE SEQUENCE cvterm_cvterm_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+COMMENT ON TABLE cv IS 'A controlled vocabulary or ontology. A cv is
+composed of cvterms (AKA terms, classes, types, universals - relations
+and properties are also stored in cvterm) and the relationships
+between them.';
 
-
-ALTER TABLE public.cvterm_cvterm_id_seq OWNER TO kmr44;
 
 --
--- Name: cvterm_cvterm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+-- Name: COLUMN cv.name; Type: COMMENT; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('cvterm_cvterm_id_seq', 75, true);
+COMMENT ON COLUMN cv.name IS 'The name of the ontology. This
+corresponds to the obo-format -namespace-. cv names uniquely identify
+the cv. In OBO file format, the cv.name is known as the namespace.';
+
+
+--
+-- Name: COLUMN cv.definition; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cv.definition IS 'A text description of the criteria for
+membership of this ontology.';
 
 
 --
@@ -405,17 +440,81 @@ SELECT pg_catalog.setval('cvterm_cvterm_id_seq', 75, true);
 --
 
 CREATE TABLE cvterm (
-    cvterm_id integer DEFAULT nextval('cvterm_cvterm_id_seq'::regclass) NOT NULL,
+    cvterm_id integer NOT NULL,
     cv_id integer NOT NULL,
     name character varying(1024) NOT NULL,
     definition text,
-    dbxref_id integer,
+    dbxref_id integer NOT NULL,
     is_obsolete integer DEFAULT 0 NOT NULL,
     is_relationshiptype integer DEFAULT 0 NOT NULL
 );
 
 
 ALTER TABLE public.cvterm OWNER TO kmr44;
+
+--
+-- Name: TABLE cvterm; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE cvterm IS 'A term, class, universal or type within an
+ontology or controlled vocabulary.  This table is also used for
+relations and properties. cvterms constitute nodes in the graph
+defined by the collection of cvterms and cvterm_relationships.';
+
+
+--
+-- Name: COLUMN cvterm.cv_id; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm.cv_id IS 'The cv or ontology or namespace to which
+this cvterm belongs.';
+
+
+--
+-- Name: COLUMN cvterm.name; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm.name IS 'A concise human-readable name or
+label for the cvterm. Uniquely identifies a cvterm within a cv.';
+
+
+--
+-- Name: COLUMN cvterm.definition; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm.definition IS 'A human-readable text
+definition.';
+
+
+--
+-- Name: COLUMN cvterm.dbxref_id; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm.dbxref_id IS 'Primary identifier dbxref - The
+unique global OBO identifier for this cvterm.  Note that a cvterm may
+have multiple secondary dbxrefs - see also table: cvterm_dbxref.';
+
+
+--
+-- Name: COLUMN cvterm.is_obsolete; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm.is_obsolete IS 'Boolean 0=false,1=true; see
+GO documentation for details of obsoletion. Note that two terms with
+different primary dbxrefs may exist if one is obsolete.';
+
+
+--
+-- Name: COLUMN cvterm.is_relationshiptype; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm.is_relationshiptype IS 'Boolean
+0=false,1=true relations or relationship types (also known as Typedefs
+in OBO format, or as properties or slots) form a cv/ontology in
+themselves. We use this flag to indicate whether this cvterm is an
+actual term/class/universal or a relation. Relations may be drawn from
+the OBO Relations ontology, but are not exclusively drawn from there.';
+
 
 --
 -- Name: cvterm_dbxref; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -432,13 +531,43 @@ CREATE TABLE cvterm_dbxref (
 ALTER TABLE public.cvterm_dbxref OWNER TO kmr44;
 
 --
+-- Name: TABLE cvterm_dbxref; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE cvterm_dbxref IS 'In addition to the primary
+identifier (cvterm.dbxref_id) a cvterm can have zero or more secondary
+identifiers/dbxrefs, which may refer to records in external
+databases. The exact semantics of cvterm_dbxref are not fixed. For
+example: the dbxref could be a pubmed ID that is pertinent to the
+cvterm, or it could be an equivalent or similar term in another
+ontology. For example, GO cvterms are typically linked to InterPro
+IDs, even though the nature of the relationship between them is
+largely one of statistical association. The dbxref may be have data
+records attached in the same database instance, or it could be a
+"hanging" dbxref pointing to some external database. NOTE: If the
+desired objective is to link two cvterms together, and the nature of
+the relation is known and holds for all instances of the subject
+cvterm then consider instead using cvterm_relationship together with a
+well-defined relation.';
+
+
+--
+-- Name: COLUMN cvterm_dbxref.is_for_definition; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN cvterm_dbxref.is_for_definition IS 'A
+cvterm.definition should be supported by one or more references. If
+this column is true, the dbxref is not for a term in an external database -
+it is a dbxref for provenance information for the definition.';
+
+
+--
 -- Name: db; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
 --
 
 CREATE TABLE db (
     db_id integer NOT NULL,
     name character varying(255) NOT NULL,
-    contact_id integer,
     description character varying(255),
     urlprefix character varying(255),
     url character varying(255)
@@ -446,6 +575,19 @@ CREATE TABLE db (
 
 
 ALTER TABLE public.db OWNER TO kmr44;
+
+--
+-- Name: TABLE db; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE db IS 'A database authority. Typical databases in
+bioinformatics are FlyBase, GO, UniProt, NCBI, MGI, etc. The authority
+is generally known by this shortened form, which is unique within the
+bioinformatics and biomedical realm.  To Do - add support for URIs,
+URNs (e.g. LSIDs). We can do this by treating the URL as a URI -
+however, some applications may expect this to be resolvable - to be
+decided.';
+
 
 --
 -- Name: dbxref; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -461,6 +603,20 @@ CREATE TABLE dbxref (
 
 
 ALTER TABLE public.dbxref OWNER TO kmr44;
+
+--
+-- Name: TABLE dbxref; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE dbxref IS 'A unique, global, public, stable identifier. Not necessarily an external reference - can reference data items inside the particular chado instance being used. Typically a row in a table can be uniquely identified with a primary identifier (called dbxref_id); a table may also have secondary identifiers (in a linking table <T>_dbxref). A dbxref is generally written as <DB>:<ACCESSION> or as <DB>:<ACCESSION>:<VERSION>.';
+
+
+--
+-- Name: COLUMN dbxref.accession; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN dbxref.accession IS 'The local part of the identifier. Guaranteed by the db authority to be unique for that db.';
+
 
 --
 -- Name: ecotype; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -505,6 +661,29 @@ CREATE TABLE organism (
 
 
 ALTER TABLE public.organism OWNER TO kmr44;
+
+--
+-- Name: TABLE organism; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE organism IS 'The organismal taxonomic
+classification. Note that phylogenies are represented using the
+phylogeny module, and taxonomies can be represented using the cvterm
+module or the phylogeny module.';
+
+
+--
+-- Name: COLUMN organism.species; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN organism.species IS 'A type of organism is always
+uniquely identified by genus and species. When mapping from the NCBI
+taxonomy names.dmp file, this column must be used where it
+is present, as the common_name column is not always unique (e.g. environmental
+samples). If a particular strain or subspecies is to be represented,
+this is appended onto the species name. Follows standard NCBI taxonomy
+pattern.';
+
 
 --
 -- Name: organism_dbxref; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -595,6 +774,19 @@ COMMENT ON TABLE pipeprocess_in_pipedata IS 'Join table containing the input pip
 
 
 --
+-- Name: pipeprocess_pub; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE TABLE pipeprocess_pub (
+    pipeprocess_pub_id integer NOT NULL,
+    pipeprocess_id integer NOT NULL,
+    pub_id integer NOT NULL
+);
+
+
+ALTER TABLE public.pipeprocess_pub OWNER TO kmr44;
+
+--
 -- Name: pipeproject; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
 --
 
@@ -669,15 +861,58 @@ CREATE TABLE pub (
     pyear character varying(255),
     pages character varying(255),
     miniref character varying(255),
-    type_id integer,
+    uniquename text NOT NULL,
+    type_id integer NOT NULL,
     is_obsolete boolean DEFAULT false,
     publisher character varying(255),
-    pubplace character varying(255),
-    uniquename text NOT NULL
+    pubplace character varying(255)
 );
 
 
 ALTER TABLE public.pub OWNER TO kmr44;
+
+--
+-- Name: TABLE pub; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE pub IS 'A documented provenance artefact - publications,
+documents, personal communication.';
+
+
+--
+-- Name: COLUMN pub.title; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN pub.title IS 'Descriptive general heading.';
+
+
+--
+-- Name: COLUMN pub.volumetitle; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN pub.volumetitle IS 'Title of part if one of a series.';
+
+
+--
+-- Name: COLUMN pub.series_name; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN pub.series_name IS 'Full name of (journal) series.';
+
+
+--
+-- Name: COLUMN pub.pages; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN pub.pages IS 'Page number range[s], e.g. 457--459, viii + 664pp, lv--lvii.';
+
+
+--
+-- Name: COLUMN pub.type_id; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON COLUMN pub.type_id IS 'The type of the publication (book, journal, poem, graffiti, etc). Uses pub cv.';
+
 
 --
 -- Name: pub_dbxref; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -692,6 +927,14 @@ CREATE TABLE pub_dbxref (
 
 
 ALTER TABLE public.pub_dbxref OWNER TO kmr44;
+
+--
+-- Name: TABLE pub_dbxref; Type: COMMENT; Schema: public; Owner: kmr44
+--
+
+COMMENT ON TABLE pub_dbxref IS 'Handle links to repositories,
+e.g. Pubmed, Biosis, zoorec, OCLC, Medline, ISSN, coden...';
+
 
 --
 -- Name: sample; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -714,6 +957,19 @@ CREATE TABLE sample (
 
 
 ALTER TABLE public.sample OWNER TO kmr44;
+
+--
+-- Name: sample_dbxref; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE TABLE sample_dbxref (
+    sample_dbxref_id integer NOT NULL,
+    sample_id integer NOT NULL,
+    dbxref_id integer NOT NULL
+);
+
+
+ALTER TABLE public.sample_dbxref OWNER TO kmr44;
 
 --
 -- Name: sample_ecotype; Type: TABLE; Schema: public; Owner: kmr44; Tablespace: 
@@ -1559,6 +1815,142 @@ SELECT pg_catalog.setval('coded_sample_coded_sample_id_seq', 9, true);
 
 
 --
+-- Name: cv_cv_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE cv_cv_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cv_cv_id_seq OWNER TO kmr44;
+
+--
+-- Name: cv_cv_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE cv_cv_id_seq OWNED BY cv.cv_id;
+
+
+--
+-- Name: cv_cv_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('cv_cv_id_seq', 17, true);
+
+
+--
+-- Name: cvterm_cvterm_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE cvterm_cvterm_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cvterm_cvterm_id_seq OWNER TO kmr44;
+
+--
+-- Name: cvterm_cvterm_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE cvterm_cvterm_id_seq OWNED BY cvterm.cvterm_id;
+
+
+--
+-- Name: cvterm_cvterm_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('cvterm_cvterm_id_seq', 89, true);
+
+
+--
+-- Name: cvterm_dbxref_cvterm_dbxref_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE cvterm_dbxref_cvterm_dbxref_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cvterm_dbxref_cvterm_dbxref_id_seq OWNER TO kmr44;
+
+--
+-- Name: cvterm_dbxref_cvterm_dbxref_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE cvterm_dbxref_cvterm_dbxref_id_seq OWNED BY cvterm_dbxref.cvterm_dbxref_id;
+
+
+--
+-- Name: cvterm_dbxref_cvterm_dbxref_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('cvterm_dbxref_cvterm_dbxref_id_seq', 1, false);
+
+
+--
+-- Name: db_db_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE db_db_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.db_db_id_seq OWNER TO kmr44;
+
+--
+-- Name: db_db_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE db_db_id_seq OWNED BY db.db_id;
+
+
+--
+-- Name: db_db_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('db_db_id_seq', 1, true);
+
+
+--
+-- Name: dbxref_dbxref_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE dbxref_dbxref_id_seq
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dbxref_dbxref_id_seq OWNER TO kmr44;
+
+--
+-- Name: dbxref_dbxref_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE dbxref_dbxref_id_seq OWNED BY dbxref.dbxref_id;
+
+
+--
+-- Name: dbxref_dbxref_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('dbxref_dbxref_id_seq', 89, true);
+
+
+--
 -- Name: ecotype_ecotype_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
 --
 
@@ -1610,6 +2002,34 @@ ALTER SEQUENCE organisation_organisation_id_seq OWNED BY organisation.organisati
 --
 
 SELECT pg_catalog.setval('organisation_organisation_id_seq', 6, true);
+
+
+--
+-- Name: organism_dbxref_organism_dbxref_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE organism_dbxref_organism_dbxref_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.organism_dbxref_organism_dbxref_id_seq OWNER TO kmr44;
+
+--
+-- Name: organism_dbxref_organism_dbxref_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE organism_dbxref_organism_dbxref_id_seq OWNED BY organism_dbxref.organism_dbxref_id;
+
+
+--
+-- Name: organism_dbxref_organism_dbxref_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('organism_dbxref_organism_dbxref_id_seq', 1, false);
 
 
 --
@@ -1799,7 +2219,7 @@ ALTER SEQUENCE process_conf_input_process_conf_input_id_seq OWNED BY process_con
 -- Name: process_conf_input_process_conf_input_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('process_conf_input_process_conf_input_id_seq', 34, true);
+SELECT pg_catalog.setval('process_conf_input_process_conf_input_id_seq', 36, true);
 
 
 --
@@ -1826,7 +2246,7 @@ ALTER SEQUENCE process_conf_process_conf_id_seq OWNED BY process_conf.process_co
 -- Name: process_conf_process_conf_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
 --
 
-SELECT pg_catalog.setval('process_conf_process_conf_id_seq', 39, true);
+SELECT pg_catalog.setval('process_conf_process_conf_id_seq', 41, true);
 
 
 --
@@ -1854,6 +2274,62 @@ ALTER SEQUENCE protocol_protocol_id_seq OWNED BY protocol.protocol_id;
 --
 
 SELECT pg_catalog.setval('protocol_protocol_id_seq', 1, true);
+
+
+--
+-- Name: pub_dbxref_pub_dbxref_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE pub_dbxref_pub_dbxref_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pub_dbxref_pub_dbxref_id_seq OWNER TO kmr44;
+
+--
+-- Name: pub_dbxref_pub_dbxref_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE pub_dbxref_pub_dbxref_id_seq OWNED BY pub_dbxref.pub_dbxref_id;
+
+
+--
+-- Name: pub_dbxref_pub_dbxref_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('pub_dbxref_pub_dbxref_id_seq', 1, false);
+
+
+--
+-- Name: pub_pub_id_seq; Type: SEQUENCE; Schema: public; Owner: kmr44
+--
+
+CREATE SEQUENCE pub_pub_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pub_pub_id_seq OWNER TO kmr44;
+
+--
+-- Name: pub_pub_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kmr44
+--
+
+ALTER SEQUENCE pub_pub_id_seq OWNED BY pub.pub_id;
+
+
+--
+-- Name: pub_pub_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kmr44
+--
+
+SELECT pg_catalog.setval('pub_pub_id_seq', 1, false);
 
 
 --
@@ -2067,6 +2543,41 @@ ALTER TABLE coded_sample ALTER COLUMN coded_sample_id SET DEFAULT nextval('coded
 
 
 --
+-- Name: cv_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE cv ALTER COLUMN cv_id SET DEFAULT nextval('cv_cv_id_seq'::regclass);
+
+
+--
+-- Name: cvterm_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE cvterm ALTER COLUMN cvterm_id SET DEFAULT nextval('cvterm_cvterm_id_seq'::regclass);
+
+
+--
+-- Name: cvterm_dbxref_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE cvterm_dbxref ALTER COLUMN cvterm_dbxref_id SET DEFAULT nextval('cvterm_dbxref_cvterm_dbxref_id_seq'::regclass);
+
+
+--
+-- Name: db_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE db ALTER COLUMN db_id SET DEFAULT nextval('db_db_id_seq'::regclass);
+
+
+--
+-- Name: dbxref_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE dbxref ALTER COLUMN dbxref_id SET DEFAULT nextval('dbxref_dbxref_id_seq'::regclass);
+
+
+--
 -- Name: ecotype_id; Type: DEFAULT; Schema: public; Owner: kmr44
 --
 
@@ -2085,6 +2596,13 @@ ALTER TABLE organisation ALTER COLUMN organisation_id SET DEFAULT nextval('organ
 --
 
 ALTER TABLE organism ALTER COLUMN organism_id SET DEFAULT nextval('organism_organism_id_seq'::regclass);
+
+
+--
+-- Name: organism_dbxref_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE organism_dbxref ALTER COLUMN organism_dbxref_id SET DEFAULT nextval('organism_dbxref_organism_dbxref_id_seq'::regclass);
 
 
 --
@@ -2144,6 +2662,20 @@ ALTER TABLE protocol ALTER COLUMN protocol_id SET DEFAULT nextval('protocol_prot
 
 
 --
+-- Name: pub_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE pub ALTER COLUMN pub_id SET DEFAULT nextval('pub_pub_id_seq'::regclass);
+
+
+--
+-- Name: pub_dbxref_id; Type: DEFAULT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE pub_dbxref ALTER COLUMN pub_dbxref_id SET DEFAULT nextval('pub_dbxref_pub_dbxref_id_seq'::regclass);
+
+
+--
 -- Name: sample_id; Type: DEFAULT; Schema: public; Owner: kmr44
 --
 
@@ -2197,33 +2729,33 @@ ALTER TABLE tissue ALTER COLUMN tissue_id SET DEFAULT nextval('tissue_tissue_id_
 --
 
 COPY barcode (barcode_id, created_stamp, identifier, barcode_set, code) FROM stdin;
-1	2009-08-17 17:51:31.271944	A	1	TACCT
-2	2009-08-17 17:51:31.271944	B	1	TACGA
-3	2009-08-17 17:51:31.271944	C	1	TAGCA
-4	2009-08-17 17:51:31.271944	D	1	TAGGT
-5	2009-08-17 17:51:31.271944	E	1	TCAAG
-6	2009-08-17 17:51:31.271944	F	1	TCATC
-7	2009-08-17 17:51:31.271944	G	1	TCTAC
-8	2009-08-17 17:51:31.271944	H	1	TCTTG
-9	2009-08-17 17:51:31.271944	I	1	TGAAC
-10	2009-08-17 17:51:31.271944	J	1	TGTTG
-11	2009-08-17 17:51:31.271944	K	1	TGTTC
-12	2009-08-17 17:51:31.271944	A	2	AAAT
-13	2009-08-17 17:51:31.271944	B	2	ATCT
-14	2009-08-17 17:51:31.271944	C	2	AGGT
-15	2009-08-17 17:51:31.271944	D	2	ACTT
-16	2009-08-17 17:51:31.271944	E	2	TACT
-17	2009-08-17 17:51:31.271944	F	2	TTGT
-18	2009-08-17 17:51:31.271944	G	2	TGTT
-19	2009-08-17 17:51:31.271944	H	2	TCAT
-20	2009-08-17 17:51:31.271944	I	2	GAGT
-21	2009-08-17 17:51:31.271944	J	2	GTTT
-22	2009-08-17 17:51:31.271944	K	2	GGAT
-23	2009-08-17 17:51:31.271944	L	2	GCCT
-24	2009-08-17 17:51:31.271944	M	2	CATT
-25	2009-08-17 17:51:31.271944	N	2	CTAT
-26	2009-08-17 17:51:31.271944	O	2	CGCT
-27	2009-08-17 17:51:31.271944	P	2	CCGT
+1	2009-08-24 17:10:58.520924	A	1	TACCT
+2	2009-08-24 17:10:58.520924	B	1	TACGA
+3	2009-08-24 17:10:58.520924	C	1	TAGCA
+4	2009-08-24 17:10:58.520924	D	1	TAGGT
+5	2009-08-24 17:10:58.520924	E	1	TCAAG
+6	2009-08-24 17:10:58.520924	F	1	TCATC
+7	2009-08-24 17:10:58.520924	G	1	TCTAC
+8	2009-08-24 17:10:58.520924	H	1	TCTTG
+9	2009-08-24 17:10:58.520924	I	1	TGAAC
+10	2009-08-24 17:10:58.520924	J	1	TGTTG
+11	2009-08-24 17:10:58.520924	K	1	TGTTC
+12	2009-08-24 17:10:58.520924	A	2	AAAT
+13	2009-08-24 17:10:58.520924	B	2	ATCT
+14	2009-08-24 17:10:58.520924	C	2	AGGT
+15	2009-08-24 17:10:58.520924	D	2	ACTT
+16	2009-08-24 17:10:58.520924	E	2	TACT
+17	2009-08-24 17:10:58.520924	F	2	TTGT
+18	2009-08-24 17:10:58.520924	G	2	TGTT
+19	2009-08-24 17:10:58.520924	H	2	TCAT
+20	2009-08-24 17:10:58.520924	I	2	GAGT
+21	2009-08-24 17:10:58.520924	J	2	GTTT
+22	2009-08-24 17:10:58.520924	K	2	GGAT
+23	2009-08-24 17:10:58.520924	L	2	GCCT
+24	2009-08-24 17:10:58.520924	M	2	CATT
+25	2009-08-24 17:10:58.520924	N	2	CTAT
+26	2009-08-24 17:10:58.520924	O	2	CGCT
+27	2009-08-24 17:10:58.520924	P	2	CCGT
 \.
 
 
@@ -2232,8 +2764,8 @@ COPY barcode (barcode_id, created_stamp, identifier, barcode_set, code) FROM std
 --
 
 COPY barcode_set (barcode_set_id, position_in_read, name) FROM stdin;
-1	14	DCB small RNA barcode set
-2	15	Dmitry's barcode set
+1	15	DCB small RNA barcode set
+2	16	Dmitry's barcode set
 \.
 
 
@@ -2242,15 +2774,15 @@ COPY barcode_set (barcode_set_id, position_in_read, name) FROM stdin;
 --
 
 COPY coded_sample (coded_sample_id, created_stamp, description, coded_sample_type, sample, sequencing_sample, barcode) FROM stdin;
-1	2009-08-17 17:51:35.012095	non-barcoded sample for: SL11	18	1	1	\N
-2	2009-08-17 17:51:35.012095	non-barcoded sample for: SL54	18	2	2	\N
-3	2009-08-17 17:51:35.012095	non-barcoded sample for: SL55	18	3	3	\N
-4	2009-08-17 17:51:35.012095	non-barcoded sample for: SL165_1	18	4	4	\N
-5	2009-08-17 17:51:35.012095	barcoded sample for: SL234_B using barcode: B	18	5	5	2
-6	2009-08-17 17:51:35.012095	barcoded sample for: SL234_C using barcode: C	18	6	5	3
-7	2009-08-17 17:51:35.012095	barcoded sample for: SL234_F using barcode: F	18	7	5	6
-8	2009-08-17 17:51:35.012095	non-barcoded sample for: SL236	18	8	6	\N
-9	2009-08-17 17:51:35.012095	barcoded sample for: SL285_B using barcode: B	18	9	7	13
+1	2009-08-24 17:11:00.805423	non-barcoded sample for: SL11	19	1	1	\N
+2	2009-08-24 17:11:00.805423	non-barcoded sample for: SL54	19	2	2	\N
+3	2009-08-24 17:11:00.805423	non-barcoded sample for: SL55	19	3	3	\N
+4	2009-08-24 17:11:00.805423	non-barcoded sample for: SL165_1	19	4	4	\N
+5	2009-08-24 17:11:00.805423	barcoded sample for: SL234_B using barcode: B	19	5	5	2
+6	2009-08-24 17:11:00.805423	barcoded sample for: SL234_C using barcode: C	19	6	5	3
+7	2009-08-24 17:11:00.805423	barcoded sample for: SL234_F using barcode: F	19	7	5	6
+8	2009-08-24 17:11:00.805423	non-barcoded sample for: SL236	19	8	6	\N
+9	2009-08-24 17:11:00.805423	barcoded sample for: SL285_B using barcode: B	19	9	7	13
 \.
 
 
@@ -2269,12 +2801,13 @@ COPY cv (cv_id, name, definition) FROM stdin;
 8	tracking multiplexing types	\N
 9	tracking pipeprocess status	\N
 10	tracking project types	\N
-11	tracking quality values	\N
-12	tracking sample processing requirements	\N
-13	tracking sample types	\N
-14	tracking sequencing method	\N
-15	tracking treatment types	\N
-16	tracking users types	\N
+11	tracking publication types	\N
+12	tracking quality values	\N
+13	tracking sample processing requirements	\N
+14	tracking sample types	\N
+15	tracking sequencing method	\N
+16	tracking treatment types	\N
+17	tracking users types	\N
 \.
 
 
@@ -2283,81 +2816,95 @@ COPY cv (cv_id, name, definition) FROM stdin;
 --
 
 COPY cvterm (cvterm_id, cv_id, name, definition, dbxref_id, is_obsolete, is_relationshiptype) FROM stdin;
-1	1	calculate fasta or fastq file statistics	Get sequence composition statistics from a FASTA or FASTQ file	\N	0	0
-2	1	fasta index	Create an index of FASTA file	\N	0	0
-3	1	genome aligned reads filter	Filter a fasta file, creating a file containing only genome aligned reads	\N	0	0
-4	1	gff3 index	Create an index of GFF3 file	\N	0	0
-5	1	gff3 to gff2 converter	Convert a GFF3 file into a GFF2 file	\N	0	0
-6	1	multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, and uses multiplexing/barcodes	\N	0	0
-7	1	non-multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, with no multiplexing	\N	0	0
-8	1	remove adapters	Read FastQ files, process each read to remove the adapter	\N	0	0
-9	1	remove adapters and de-multiplex	Read FastQ files, process each read to remove the adapter and split the result based on the barcode	\N	0	0
-10	1	remove redundant reads	Read a fasta file of short sequences, remove redundant reads and add a count to the header	\N	0	0
-11	1	ssaha alignment	Align reads against a sequence database with SSAHA	\N	0	0
-12	1	summarise fasta first base	Read a fasta file of short sequences and summarise the first base composition	\N	0	0
-13	1	trim reads	Read FastQ files, trim each read to a fixed length and then create a fasta file	\N	0	0
-14	2	3-prime	Bar code will be at 3' end of the read	\N	0	0
-15	2	5-prime	Bar code will be at 5' end of the read	\N	0	0
-16	3	biological replicate	biological replicate/re-run	\N	0	0
-17	3	failure re-run	re-run because of failure	\N	0	0
-18	3	initial run	intial sequencing run	\N	0	0
-19	3	technical replicate	technical replicate/re-run	\N	0	0
-20	4	fasta_index	An index of a fasta file that has the sequence as the key	\N	0	0
-21	4	fasta_stats	Summary information and statistics about a FASTA file	\N	0	0
-22	4	fastq_stats	Summary information and statistics about a FASTQ file	\N	0	0
-23	4	first_base_summary	A summary of the first base composition of sequences from a fasta file	\N	0	0
-24	4	genome_aligned_genomic_dna_reads	DNA reads that have been aligned against the genome	\N	0	0
-25	4	genome_aligned_genomic_dna_tags	DNA tags that have been aligned against the genome	\N	0	0
-26	4	genome_aligned_srna_reads	Small RNA reads that have been aligned against the genome	\N	0	0
-27	4	genomic_dna_reads	Genomic DNA reads	\N	0	0
-28	4	genomic_dna_tags	DNA reads that have been trimmed to a fixed number of bases	\N	0	0
-29	4	gff3_index	An index of a gff3 file that has the read sequence as the key	\N	0	0
-30	4	multiplexed_srna_reads	Raw small RNA sequence reads from a multiplexed sequencing run, before any processing	\N	0	0
-31	4	non_redundant_genomic_dna_reads	DNA sequence reads with redundant sequences removed	\N	0	0
-32	4	non_redundant_genomic_dna_tags	Trimmed DNA sequence reads with redundant sequences removed	\N	0	0
-33	4	non_redundant_srna_reads	Small RNA sequence reads without adapters with redundant sequences removed	\N	0	0
-34	4	raw_genomic_dna_reads	Raw DNA sequence reads with quality scores	\N	0	0
-35	4	raw_srna_reads	Raw small RNA sequence reads from a non-multiplexed sequencing run, before any processing	\N	0	0
-36	4	remove_adapter_rejects	Small RNA sequence reads that were rejected by the remove adapters step	\N	0	0
-37	4	remove_adapter_unknown_barcode	Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode	\N	0	0
-38	4	srna_reads	Small RNA sequence reads that have been processed to remove adapters	\N	0	0
-39	4	srna_reads_chloroplast_alignment	Small RNA to chloroplast dna alignments	\N	0	0
-40	4	srna_reads_mitochondrial_alignment	Small RNA to mitochondrial dna alignments	\N	0	0
-41	4	srna_reads_nuclear_alignment	Small RNA to genome alignments	\N	0	0
-42	5	fasta	FASTA format	\N	0	0
-43	5	fastq	FastQ format file	\N	0	0
-44	5	fs	FASTA format with an empty description line	\N	0	0
-45	5	gff2	GFF2 format	\N	0	0
-46	5	gff3	GFF3 format	\N	0	0
-47	5	seq_offset_index	An index of a GFF3 or FASTA format file	\N	0	0
-48	5	text	A human readable text file with summaries or statistics	\N	0	0
-49	5	tsv	A file containing tab-separated value	\N	0	0
-50	6	no fractionation	no fractionation	\N	0	0
-51	7	DNA	Deoxyribonucleic acid	\N	0	0
-52	7	RNA	Ribonucleic acid	\N	0	0
-53	8	multiplexed	multiplexed sequencing run using barcodes	\N	0	0
-54	8	non-multiplexed	One sample per sequencing run	\N	0	0
-55	9	finished	Processing is done	\N	0	0
-56	9	not_started	Process has not been queued yet	\N	0	0
-57	9	queued	A job is queued to run this process	\N	0	0
-58	9	started	Processing has started	\N	0	0
-59	10	DNA tag sequencing	Sequencing of fragments of genomic DNA	\N	0	0
-60	10	small RNA sequencing	Small RNA sequencing	\N	0	0
-61	11	high	high quality	\N	0	0
-62	11	low	low quality	\N	0	0
-63	11	medium	medium quality	\N	0	0
-64	11	unknown	unknown quality	\N	0	0
-65	12	needs processing	 Processing should be performed for this sample	\N	0	0
-66	12	no processing	Processing should not be performed for this sample	\N	0	0
-67	13	chip_seq	Chromatin immunoprecipitation (ChIP) and sequencing	\N	0	0
-68	13	dna_seq	Genomic DNA sequence	\N	0	0
-69	13	mrna_expression	Expression analysis of mRNA	\N	0	0
-70	13	small_rna_seq	Small RNA sequences	\N	0	0
-71	14	Illumina	Illumina sequencing method	\N	0	0
-72	15	no treatment	no treatment	\N	0	0
-73	16	admin	Admin user - full privileges	\N	0	0
-74	16	external	External user - access only to selected data, no delete/edit privileges	\N	0	0
-75	16	local	Local user - full access to all data but not full delete/edit privileges	\N	0	0
+1	1	bwa alignment	Align reads against a sequence database with BWA	1	0	0
+2	1	calculate fasta or fastq file statistics	Get sequence composition statistics from a FASTA or FASTQ file	2	0	0
+3	1	fasta index	Create an index of FASTA file	3	0	0
+4	1	genome aligned reads filter	Filter a fasta file, creating a file containing only genome aligned reads	4	0	0
+5	1	gff3 index	Create an index of GFF3 file	5	0	0
+6	1	gff3 to gff2 converter	Convert a GFF3 file into a GFF2 file	6	0	0
+7	1	multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, and uses multiplexing/barcodes	7	0	0
+8	1	non-multiplexed sequencing run	This pseudo-analysis generates raw sequence files, with quality scores, with no multiplexing	8	0	0
+9	1	remove adapters	Read FastQ files, process each read to remove the adapter	9	0	0
+10	1	remove adapters and de-multiplex	Read FastQ files, process each read to remove the adapter and split the result based on the barcode	10	0	0
+11	1	remove redundant reads	Read a fasta file of short sequences, remove redundant reads and add a count to the header	11	0	0
+12	1	ssaha alignment	Align reads against a sequence database with SSAHA	12	0	0
+13	1	summarise fasta first base	Read a fasta file of short sequences and summarise the first base composition	13	0	0
+14	1	trim reads	Read FastQ files, trim each read to a fixed length and then create a fasta file	14	0	0
+15	2	3-prime	Bar code will be at 3' end of the read	15	0	0
+16	2	5-prime	Bar code will be at 5' end of the read	16	0	0
+17	3	biological replicate	biological replicate/re-run	17	0	0
+18	3	failure re-run	re-run because of failure	18	0	0
+19	3	initial run	intial sequencing run	19	0	0
+20	3	technical replicate	technical replicate/re-run	20	0	0
+21	4	fasta_index	An index of a fasta file that has the sequence as the key	21	0	0
+22	4	fasta_stats	Summary information and statistics about a FASTA file	22	0	0
+23	4	fastq_stats	Summary information and statistics about a FASTQ file	23	0	0
+24	4	first_base_summary	A summary of the first base composition of sequences from a fasta file	24	0	0
+25	4	genome_aligned_genomic_dna_reads	DNA reads that have been aligned against the genome	25	0	0
+26	4	genome_aligned_genomic_dna_tags	DNA tags that have been aligned against the genome	26	0	0
+27	4	genome_aligned_srna_reads	Small RNA reads that have been aligned against the genome	27	0	0
+28	4	genomic_dna_reads	Genomic DNA reads	28	0	0
+29	4	genomic_dna_tags	DNA reads that have been trimmed to a fixed number of bases	29	0	0
+30	4	gff3_index	An index of a gff3 file that has the read sequence as the key	30	0	0
+31	4	multiplexed_srna_reads	Raw small RNA sequence reads from a multiplexed sequencing run, before any processing	31	0	0
+32	4	non_redundant_genomic_dna_reads	DNA sequence reads with redundant sequences removed	32	0	0
+33	4	non_redundant_genomic_dna_tags	Trimmed DNA sequence reads with redundant sequences removed	33	0	0
+34	4	non_redundant_srna_reads	Small RNA sequence reads without adapters with redundant sequences removed	34	0	0
+35	4	raw_genomic_dna_reads	Raw DNA sequence reads with quality scores	35	0	0
+36	4	raw_srna_reads	Raw small RNA sequence reads from a non-multiplexed sequencing run, before any processing	36	0	0
+37	4	remove_adapter_rejects	Small RNA sequence reads that were rejected by the remove adapters step	37	0	0
+38	4	remove_adapter_unknown_barcode	Small RNA sequence reads that were rejected by the remove adapters step because they did not match an expected barcode	38	0	0
+39	4	srna_reads	Small RNA sequence reads that have been processed to remove adapters	39	0	0
+40	4	srna_reads_chloroplast_alignment	Small RNA to chloroplast dna alignments	40	0	0
+41	4	srna_reads_mitochondrial_alignment	Small RNA to mitochondrial dna alignments	41	0	0
+42	4	srna_reads_nuclear_alignment	Small RNA to genome alignments	42	0	0
+43	5	bam	BAM format	43	0	0
+44	5	fasta	FASTA format	44	0	0
+45	5	fastq	FastQ format file	45	0	0
+46	5	fs	FASTA format with an empty description line	46	0	0
+47	5	gff2	GFF2 format	47	0	0
+48	5	gff3	GFF3 format	48	0	0
+49	5	sam	SAM format	49	0	0
+50	5	seq_offset_index	An index of a GFF3 or FASTA format file	50	0	0
+51	5	text	A human readable text file with summaries or statistics	51	0	0
+52	5	tsv	A file containing tab-separated value	52	0	0
+53	6	no fractionation	no fractionation	53	0	0
+54	7	DNA	Deoxyribonucleic acid	54	0	0
+55	7	RNA	Ribonucleic acid	55	0	0
+56	8	multiplexed	multiplexed sequencing run using barcodes	56	0	0
+57	8	non-multiplexed	One sample per sequencing run	57	0	0
+58	9	finished	Processing is done	58	0	0
+59	9	not_started	Process has not been queued yet	59	0	0
+60	9	queued	A job is queued to run this process	60	0	0
+61	9	started	Processing has started	61	0	0
+62	10	DNA tag sequencing	Sequencing of fragments of genomic DNA	62	0	0
+63	10	small RNA sequencing	Small RNA sequencing	63	0	0
+64	11	book	Publication type: book	64	0	0
+65	11	book review	Publication type: book review	65	0	0
+66	11	conference report	Publication type: conference report	66	0	0
+67	11	editorial	Publication type: editorial	67	0	0
+68	11	letter	Publication type: letter	68	0	0
+69	11	meeting report	Publication type: meeting report	69	0	0
+70	11	news article	Publication type: news article	70	0	0
+71	11	paper	Publication type: paper	71	0	0
+72	11	personal communication	Publication type: personal communication	72	0	0
+73	11	review	Publication type: review	73	0	0
+74	11	thesis	Publication type: thesis	74	0	0
+75	12	high	high quality	75	0	0
+76	12	low	low quality	76	0	0
+77	12	medium	medium quality	77	0	0
+78	12	unknown	unknown quality	78	0	0
+79	13	needs processing	 Processing should be performed for this sample	79	0	0
+80	13	no processing	Processing should not be performed for this sample	80	0	0
+81	14	chip_seq	Chromatin immunoprecipitation (ChIP) and sequencing	81	0	0
+82	14	dna_seq	Genomic DNA sequence	82	0	0
+83	14	mrna_expression	Expression analysis of mRNA	83	0	0
+84	14	small_rna_seq	Small RNA sequences	84	0	0
+85	15	Illumina	Illumina sequencing method	85	0	0
+86	16	no treatment	no treatment	86	0	0
+87	17	admin	Admin user - full privileges	87	0	0
+88	17	external	External user - access only to selected data, no delete/edit privileges	88	0	0
+89	17	local	Local user - full access to all data but not full delete/edit privileges	89	0	0
 \.
 
 
@@ -2373,7 +2920,8 @@ COPY cvterm_dbxref (cvterm_dbxref_id, cvterm_id, dbxref_id, is_for_definition) F
 -- Data for Name: db; Type: TABLE DATA; Schema: public; Owner: kmr44
 --
 
-COPY db (db_id, name, contact_id, description, urlprefix, url) FROM stdin;
+COPY db (db_id, name, description, urlprefix, url) FROM stdin;
+1	SmallRNA pipeline database	\N	\N	\N
 \.
 
 
@@ -2382,6 +2930,95 @@ COPY db (db_id, name, contact_id, description, urlprefix, url) FROM stdin;
 --
 
 COPY dbxref (dbxref_id, db_id, accession, version, description) FROM stdin;
+1	1	bwa alignment		\N
+2	1	calculate fasta or fastq file statistics		\N
+3	1	fasta index		\N
+4	1	genome aligned reads filter		\N
+5	1	gff3 index		\N
+6	1	gff3 to gff2 converter		\N
+7	1	multiplexed sequencing run		\N
+8	1	non-multiplexed sequencing run		\N
+9	1	remove adapters		\N
+10	1	remove adapters and de-multiplex		\N
+11	1	remove redundant reads		\N
+12	1	ssaha alignment		\N
+13	1	summarise fasta first base		\N
+14	1	trim reads		\N
+15	1	3-prime		\N
+16	1	5-prime		\N
+17	1	biological replicate		\N
+18	1	failure re-run		\N
+19	1	initial run		\N
+20	1	technical replicate		\N
+21	1	fasta_index		\N
+22	1	fasta_stats		\N
+23	1	fastq_stats		\N
+24	1	first_base_summary		\N
+25	1	genome_aligned_genomic_dna_reads		\N
+26	1	genome_aligned_genomic_dna_tags		\N
+27	1	genome_aligned_srna_reads		\N
+28	1	genomic_dna_reads		\N
+29	1	genomic_dna_tags		\N
+30	1	gff3_index		\N
+31	1	multiplexed_srna_reads		\N
+32	1	non_redundant_genomic_dna_reads		\N
+33	1	non_redundant_genomic_dna_tags		\N
+34	1	non_redundant_srna_reads		\N
+35	1	raw_genomic_dna_reads		\N
+36	1	raw_srna_reads		\N
+37	1	remove_adapter_rejects		\N
+38	1	remove_adapter_unknown_barcode		\N
+39	1	srna_reads		\N
+40	1	srna_reads_chloroplast_alignment		\N
+41	1	srna_reads_mitochondrial_alignment		\N
+42	1	srna_reads_nuclear_alignment		\N
+43	1	bam		\N
+44	1	fasta		\N
+45	1	fastq		\N
+46	1	fs		\N
+47	1	gff2		\N
+48	1	gff3		\N
+49	1	sam		\N
+50	1	seq_offset_index		\N
+51	1	text		\N
+52	1	tsv		\N
+53	1	no fractionation		\N
+54	1	DNA		\N
+55	1	RNA		\N
+56	1	multiplexed		\N
+57	1	non-multiplexed		\N
+58	1	finished		\N
+59	1	not_started		\N
+60	1	queued		\N
+61	1	started		\N
+62	1	DNA tag sequencing		\N
+63	1	small RNA sequencing		\N
+64	1	book		\N
+65	1	book review		\N
+66	1	conference report		\N
+67	1	editorial		\N
+68	1	letter		\N
+69	1	meeting report		\N
+70	1	news article		\N
+71	1	paper		\N
+72	1	personal communication		\N
+73	1	review		\N
+74	1	thesis		\N
+75	1	high		\N
+76	1	low		\N
+77	1	medium		\N
+78	1	unknown		\N
+79	1	needs processing		\N
+80	1	no processing		\N
+81	1	chip_seq		\N
+82	1	dna_seq		\N
+83	1	mrna_expression		\N
+84	1	small_rna_seq		\N
+85	1	Illumina		\N
+86	1	no treatment		\N
+87	1	admin		\N
+88	1	external		\N
+89	1	local		\N
 \.
 
 
@@ -2390,29 +3027,29 @@ COPY dbxref (dbxref_id, db_id, accession, version, description) FROM stdin;
 --
 
 COPY ecotype (ecotype_id, created_stamp, organism, description) FROM stdin;
-1	2009-08-17 17:51:31.350875	1	unspecified
-2	2009-08-17 17:51:31.350875	1	Col
-3	2009-08-17 17:51:31.350875	1	WS
-4	2009-08-17 17:51:31.350875	1	Ler
-5	2009-08-17 17:51:31.350875	1	C24
-6	2009-08-17 17:51:31.350875	1	Cvi
-7	2009-08-17 17:51:31.350875	2	unspecified
-8	2009-08-17 17:51:31.350875	3	unspecified
-9	2009-08-17 17:51:31.350875	4	unspecified
-10	2009-08-17 17:51:31.350875	5	unspecified
-11	2009-08-17 17:51:31.350875	6	unspecified
-12	2009-08-17 17:51:31.350875	7	unspecified
-13	2009-08-17 17:51:31.350875	8	unspecified
-14	2009-08-17 17:51:31.350875	8	B73
-15	2009-08-17 17:51:31.350875	8	Mo17
-16	2009-08-17 17:51:31.350875	10	unspecified
-17	2009-08-17 17:51:31.350875	11	unspecified
-18	2009-08-17 17:51:31.350875	9	unspecified
-19	2009-08-17 17:51:31.350875	9	indica
-20	2009-08-17 17:51:31.350875	9	japonica
-21	2009-08-17 17:51:31.350875	12	unspecified
-22	2009-08-17 17:51:31.350875	13	unspecified
-23	2009-08-17 17:51:31.350875	14	unspecified
+1	2009-08-24 17:10:58.599427	1	unspecified
+2	2009-08-24 17:10:58.599427	1	Col
+3	2009-08-24 17:10:58.599427	1	WS
+4	2009-08-24 17:10:58.599427	1	Ler
+5	2009-08-24 17:10:58.599427	1	C24
+6	2009-08-24 17:10:58.599427	1	Cvi
+7	2009-08-24 17:10:58.599427	2	unspecified
+8	2009-08-24 17:10:58.599427	3	unspecified
+9	2009-08-24 17:10:58.599427	4	unspecified
+10	2009-08-24 17:10:58.599427	5	unspecified
+11	2009-08-24 17:10:58.599427	6	unspecified
+12	2009-08-24 17:10:58.599427	7	unspecified
+13	2009-08-24 17:10:58.599427	8	unspecified
+14	2009-08-24 17:10:58.599427	8	B73
+15	2009-08-24 17:10:58.599427	8	Mo17
+16	2009-08-24 17:10:58.599427	10	unspecified
+17	2009-08-24 17:10:58.599427	11	unspecified
+18	2009-08-24 17:10:58.599427	9	unspecified
+19	2009-08-24 17:10:58.599427	9	indica
+20	2009-08-24 17:10:58.599427	9	japonica
+21	2009-08-24 17:10:58.599427	12	unspecified
+22	2009-08-24 17:10:58.599427	13	unspecified
+23	2009-08-24 17:10:58.599427	14	unspecified
 \.
 
 
@@ -2421,12 +3058,12 @@ COPY ecotype (ecotype_id, created_stamp, organism, description) FROM stdin;
 --
 
 COPY organisation (organisation_id, created_stamp, name, description) FROM stdin;
-1	2009-08-17 17:51:31.317211	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
-2	2009-08-17 17:51:31.317211	CRUK CRI	Cancer Research UK, Cambridge Research Institute
-3	2009-08-17 17:51:31.317211	Sainsbury	Sainsbury Laboratory
-4	2009-08-17 17:51:31.317211	JIC	John Innes Centre
-5	2009-08-17 17:51:31.317211	BGI	Beijing Genomics Institute
-6	2009-08-17 17:51:31.317211	CSHL	Cold Spring Harbor Laboratory
+1	2009-08-24 17:10:58.566006	DCB	David Baulcombe Lab, University of Cambridge, Dept. of Plant Sciences
+2	2009-08-24 17:10:58.566006	CRUK CRI	Cancer Research UK, Cambridge Research Institute
+3	2009-08-24 17:10:58.566006	Sainsbury	Sainsbury Laboratory
+4	2009-08-24 17:10:58.566006	JIC	John Innes Centre
+5	2009-08-24 17:10:58.566006	BGI	Beijing Genomics Institute
+6	2009-08-24 17:10:58.566006	CSHL	Cold Spring Harbor Laboratory
 \.
 
 
@@ -2465,28 +3102,28 @@ COPY organism_dbxref (organism_dbxref_id, organism_id, dbxref_id) FROM stdin;
 --
 
 COPY person (person_id, created_stamp, first_name, last_name, username, password, role, organisation) FROM stdin;
-1	2009-08-17 17:51:31.415933	Andy	Bassett	andy_bassett	andy_bassett	75	1
-2	2009-08-17 17:51:31.415933	David	Baulcombe	david_baulcombe	david_baulcombe	75	1
-3	2009-08-17 17:51:31.415933	Amy	Beeken	amy_beeken	amy_beeken	75	1
-4	2009-08-17 17:51:31.415933	Paola	Fedita	paola_fedita	paola_fedita	75	1
-5	2009-08-17 17:51:31.415933	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	75	1
-6	2009-08-17 17:51:31.415933	Jagger	Harvey	jagger_harvey	jagger_harvey	75	1
-7	2009-08-17 17:51:31.415933	Ericka	Havecker	ericka_havecker	ericka_havecker	75	1
-8	2009-08-17 17:51:31.415933	Ian	Henderson	ian_henderson	ian_henderson	75	1
-9	2009-08-17 17:51:31.415933	Charles	Melnyk	charles_melnyk	charles_melnyk	75	1
-10	2009-08-17 17:51:31.415933	Attila	Molnar	attila_molnar	attila_molnar	75	1
-11	2009-08-17 17:51:31.415933	Becky	Mosher	becky_mosher	becky_mosher	75	1
-12	2009-08-17 17:51:31.415933	Kanu	Patel	kanu_patel	kanu_patel	75	1
-13	2009-08-17 17:51:31.415933	Anna	Peters	anna_peters	anna_peters	75	1
-14	2009-08-17 17:51:31.415933	Kim	Rutherford	kim_rutherford	kim_rutherford	73	1
-15	2009-08-17 17:51:31.415933	Iain	Searle	iain_searle	iain_searle	75	1
-16	2009-08-17 17:51:31.415933	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	75	1
-17	2009-08-17 17:51:31.415933	Shuoya	Tang	shuoya_tang	shuoya_tang	75	1
-18	2009-08-17 17:51:31.415933	Laura	Taylor	laura_taylor	laura_taylor	75	1
-19	2009-08-17 17:51:31.415933	Craig	Thompson	craig_thompson	craig_thompson	75	1
-20	2009-08-17 17:51:31.415933	Natasha	Elina	natasha_elina	natasha_elina	75	1
-21	2009-08-17 17:51:31.415933	Krys	Kelly	krys_kelly	krys_kelly	75	1
-22	2009-08-17 17:51:31.415933	Hannes	V	hannes_v	hannes_v	75	1
+1	2009-08-24 17:10:58.664318	Andy	Bassett	andy_bassett	andy_bassett	89	1
+2	2009-08-24 17:10:58.664318	David	Baulcombe	david_baulcombe	david_baulcombe	89	1
+3	2009-08-24 17:10:58.664318	Amy	Beeken	amy_beeken	amy_beeken	89	1
+4	2009-08-24 17:10:58.664318	Paola	Fedita	paola_fedita	paola_fedita	89	1
+5	2009-08-24 17:10:58.664318	Susi	Heimstaedt	susi_heimstaedt	susi_heimstaedt	89	1
+6	2009-08-24 17:10:58.664318	Jagger	Harvey	jagger_harvey	jagger_harvey	89	1
+7	2009-08-24 17:10:58.664318	Ericka	Havecker	ericka_havecker	ericka_havecker	89	1
+8	2009-08-24 17:10:58.664318	Ian	Henderson	ian_henderson	ian_henderson	89	1
+9	2009-08-24 17:10:58.664318	Charles	Melnyk	charles_melnyk	charles_melnyk	89	1
+10	2009-08-24 17:10:58.664318	Attila	Molnar	attila_molnar	attila_molnar	89	1
+11	2009-08-24 17:10:58.664318	Becky	Mosher	becky_mosher	becky_mosher	89	1
+12	2009-08-24 17:10:58.664318	Kanu	Patel	kanu_patel	kanu_patel	89	1
+13	2009-08-24 17:10:58.664318	Anna	Peters	anna_peters	anna_peters	89	1
+14	2009-08-24 17:10:58.664318	Kim	Rutherford	kim_rutherford	kim_rutherford	87	1
+15	2009-08-24 17:10:58.664318	Iain	Searle	iain_searle	iain_searle	89	1
+16	2009-08-24 17:10:58.664318	Padubidri	Shivaprasad	padubidri_shivaprasad	padubidri_shivaprasad	89	1
+17	2009-08-24 17:10:58.664318	Shuoya	Tang	shuoya_tang	shuoya_tang	89	1
+18	2009-08-24 17:10:58.664318	Laura	Taylor	laura_taylor	laura_taylor	89	1
+19	2009-08-24 17:10:58.664318	Craig	Thompson	craig_thompson	craig_thompson	89	1
+20	2009-08-24 17:10:58.664318	Natasha	Elina	natasha_elina	natasha_elina	89	1
+21	2009-08-24 17:10:58.664318	Krys	Kelly	krys_kelly	krys_kelly	89	1
+22	2009-08-24 17:10:58.664318	Hannes	V	hannes_v	hannes_v	89	1
 \.
 
 
@@ -2495,13 +3132,13 @@ COPY person (person_id, created_stamp, first_name, last_name, username, password
 --
 
 COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name, file_length, generating_pipeprocess) FROM stdin;
-1	2009-08-17 17:51:35.012095	42	38	SL11/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa	85196121	1
-2	2009-08-17 17:51:35.012095	43	34	fastq/SL54.ID24_171007_FC5359.lane4.fq	308933804	2
-3	2009-08-17 17:51:35.012095	43	34	fastq/SL55.ID24_171007_FC5359.lane5.fq	305662338	3
-4	2009-08-17 17:51:35.012095	43	35	fastq/SL165.080905.306BFAAXX.s_5.fq	1026029170	4
-5	2009-08-17 17:51:35.012095	43	30	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	517055794	5
-6	2009-08-17 17:51:35.012095	43	35	fastq/SL236.090227.311F6AAXX.s_1.fq	1203596662	6
-7	2009-08-17 17:51:35.012095	43	34	fastq/SL285.090720.42L77AAXX.s_7.fq	912823970	7
+1	2009-08-24 17:11:00.805423	44	39	SL11/SL11.ID15_FC5372.lane2.reads.7_5_2008.fa	85196121	1
+2	2009-08-24 17:11:00.805423	45	35	fastq/SL54.ID24_171007_FC5359.lane4.fq	308933804	2
+3	2009-08-24 17:11:00.805423	45	35	fastq/SL55.ID24_171007_FC5359.lane5.fq	305662338	3
+4	2009-08-24 17:11:00.805423	45	36	fastq/SL165.080905.306BFAAXX.s_5.fq	1026029170	4
+5	2009-08-24 17:11:00.805423	45	31	fastq/SL234_BCF.090202.30W8NAAXX.s_1.fq	517055794	5
+6	2009-08-24 17:11:00.805423	45	36	fastq/SL236.090227.311F6AAXX.s_1.fq	1203596662	6
+7	2009-08-24 17:11:00.805423	45	35	fastq/SL285.090720.42L77AAXX.s_7.fq	912823970	7
 \.
 
 
@@ -2510,13 +3147,13 @@ COPY pipedata (pipedata_id, created_stamp, format_type, content_type, file_name,
 --
 
 COPY pipeprocess (pipeprocess_id, created_stamp, description, process_conf, status, job_identifier, time_queued, time_started, time_finished) FROM stdin;
-1	2009-08-17 17:51:35.012095	Sequencing by Sainsbury for: SL11	1	55	\N	\N	\N	\N
-2	2009-08-17 17:51:35.012095	Sequencing by Sainsbury for: SL54	1	55	\N	\N	\N	\N
-3	2009-08-17 17:51:35.012095	Sequencing by Sainsbury for: SL55	1	55	\N	\N	\N	\N
-4	2009-08-17 17:51:35.012095	Sequencing by CRUK CRI for: SL165_1	2	55	\N	\N	\N	\N
-5	2009-08-17 17:51:35.012095	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	55	\N	\N	\N	\N
-6	2009-08-17 17:51:35.012095	Sequencing by CRUK CRI for: SL236	2	55	\N	\N	\N	\N
-7	2009-08-17 17:51:35.012095	Sequencing by CRUK CRI for: SL285_B	2	55	\N	\N	\N	\N
+1	2009-08-24 17:11:00.805423	Sequencing by Sainsbury for: SL11	1	58	\N	\N	\N	\N
+2	2009-08-24 17:11:00.805423	Sequencing by Sainsbury for: SL54	1	58	\N	\N	\N	\N
+3	2009-08-24 17:11:00.805423	Sequencing by Sainsbury for: SL55	1	58	\N	\N	\N	\N
+4	2009-08-24 17:11:00.805423	Sequencing by CRUK CRI for: SL165_1	2	58	\N	\N	\N	\N
+5	2009-08-24 17:11:00.805423	Sequencing by CRUK CRI for: SL234_B, SL234_C, SL234_F	2	58	\N	\N	\N	\N
+6	2009-08-24 17:11:00.805423	Sequencing by CRUK CRI for: SL236	2	58	\N	\N	\N	\N
+7	2009-08-24 17:11:00.805423	Sequencing by CRUK CRI for: SL285_B	2	58	\N	\N	\N	\N
 \.
 
 
@@ -2529,17 +3166,25 @@ COPY pipeprocess_in_pipedata (pipeprocess_in_pipedata_id, created_stamp, pipepro
 
 
 --
+-- Data for Name: pipeprocess_pub; Type: TABLE DATA; Schema: public; Owner: kmr44
+--
+
+COPY pipeprocess_pub (pipeprocess_pub_id, pipeprocess_id, pub_id) FROM stdin;
+\.
+
+
+--
 -- Data for Name: pipeproject; Type: TABLE DATA; Schema: public; Owner: kmr44
 --
 
 COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner, funder) FROM stdin;
-1	2009-08-17 17:51:35.012095	P_SL11	P_SL11	60	7	\N
-2	2009-08-17 17:51:35.012095	P_SL54	P_SL54	59	1	\N
-3	2009-08-17 17:51:35.012095	P_SL55	P_SL55	59	1	\N
-4	2009-08-17 17:51:35.012095	P_SL165_1	P_SL165_1	60	1	\N
-5	2009-08-17 17:51:35.012095	P_SL234_BCF	P_SL234_BCF	60	7	\N
-6	2009-08-17 17:51:35.012095	P_SL236	P_SL236	60	10	\N
-7	2009-08-17 17:51:35.012095	P_SL285	P_SL285	59	1	\N
+1	2009-08-24 17:11:00.805423	P_SL11	P_SL11	63	7	\N
+2	2009-08-24 17:11:00.805423	P_SL54	P_SL54	62	1	\N
+3	2009-08-24 17:11:00.805423	P_SL55	P_SL55	62	1	\N
+4	2009-08-24 17:11:00.805423	P_SL165_1	P_SL165_1	63	1	\N
+5	2009-08-24 17:11:00.805423	P_SL234_BCF	P_SL234_BCF	63	7	\N
+6	2009-08-24 17:11:00.805423	P_SL236	P_SL236	63	10	\N
+7	2009-08-24 17:11:00.805423	P_SL285	P_SL285	62	1	\N
 \.
 
 
@@ -2548,45 +3193,47 @@ COPY pipeproject (pipeproject_id, created_stamp, name, description, type, owner,
 --
 
 COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) FROM stdin;
-1	2009-08-17 17:51:31.473771	\N	Sainsbury	7
-2	2009-08-17 17:51:31.473771	\N	CRI	7
-3	2009-08-17 17:51:31.473771	\N	CRI	6
-4	2009-08-17 17:51:31.473771	\N	BGI	7
-5	2009-08-17 17:51:31.473771	\N	CSHL	7
-6	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastqToFastaRunable	processing_type: trim	13
-7	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastqToFastaRunable	processing_type: remove_adapters	8
-8	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastqToFastaRunable	processing_type: remove_adapters	9
-9	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-10	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-11	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-12	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-13	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-14	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-15	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-16	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-17	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-18	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-19	2009-08-17 17:51:31.473771	SmallRNA::Runable::FastStatsRunable	\N	1
-20	2009-08-17 17:51:31.473771	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	12
-21	2009-08-17 17:51:31.473771	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	12
-22	2009-08-17 17:51:31.473771	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	12
-23	2009-08-17 17:51:31.473771	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	12
-24	2009-08-17 17:51:31.473771	SmallRNA::Runable::NonRedundantFastaRunable	\N	10
-25	2009-08-17 17:51:31.473771	SmallRNA::Runable::NonRedundantFastaRunable	\N	10
-26	2009-08-17 17:51:31.473771	SmallRNA::Runable::NonRedundantFastaRunable	\N	10
-27	2009-08-17 17:51:31.473771	SmallRNA::Runable::CreateIndexRunable	\N	4
-28	2009-08-17 17:51:31.473771	SmallRNA::Runable::CreateIndexRunable	\N	2
-29	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-30	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-31	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-32	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-33	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-34	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-35	2009-08-17 17:51:31.473771	SmallRNA::Runable::SSAHASearchRunable	component: genome	11
-36	2009-08-17 17:51:31.473771	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	3
-37	2009-08-17 17:51:31.473771	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	3
-38	2009-08-17 17:51:31.473771	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	3
-39	2009-08-17 17:51:31.473771	SmallRNA::Runable::GFF3ToGFF2Runable	\N	5
+1	2009-08-24 17:10:58.725942	\N	Sainsbury	8
+2	2009-08-24 17:10:58.725942	\N	CRI	8
+3	2009-08-24 17:10:58.725942	\N	CRI	7
+4	2009-08-24 17:10:58.725942	\N	BGI	8
+5	2009-08-24 17:10:58.725942	\N	CSHL	8
+6	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastqToFastaRunable	action: trim	14
+7	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastqToFastaRunable	action: remove_adapters	9
+8	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastqToFastaRunable	action: remove_adapters	10
+9	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+10	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+11	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+12	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+13	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+14	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+15	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+16	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+17	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+18	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+19	2009-08-24 17:10:58.725942	SmallRNA::Runable::FastStatsRunable	\N	2
+20	2009-08-24 17:10:58.725942	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	13
+21	2009-08-24 17:10:58.725942	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	13
+22	2009-08-24 17:10:58.725942	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	13
+23	2009-08-24 17:10:58.725942	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	13
+24	2009-08-24 17:10:58.725942	SmallRNA::Runable::FirstBaseCompSummaryRunable	\N	13
+25	2009-08-24 17:10:58.725942	SmallRNA::Runable::NonRedundantFastaRunable	\N	11
+26	2009-08-24 17:10:58.725942	SmallRNA::Runable::NonRedundantFastaRunable	\N	11
+27	2009-08-24 17:10:58.725942	SmallRNA::Runable::NonRedundantFastaRunable	\N	11
+28	2009-08-24 17:10:58.725942	SmallRNA::Runable::CreateIndexRunable	\N	5
+29	2009-08-24 17:10:58.725942	SmallRNA::Runable::CreateIndexRunable	\N	3
+30	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+31	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+32	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+33	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+34	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+35	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+36	2009-08-24 17:10:58.725942	SmallRNA::Runable::SSAHASearchRunable	component: genome	12
+37	2009-08-24 17:10:58.725942	SmallRNA::Runable::BWASearchRunable	component: genome	1
+38	2009-08-24 17:10:58.725942	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	4
+39	2009-08-24 17:10:58.725942	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	4
+40	2009-08-24 17:10:58.725942	SmallRNA::Runable::GenomeMatchingReadsRunable	\N	4
+41	2009-08-24 17:10:58.725942	SmallRNA::Runable::GFF3ToGFF2Runable	\N	6
 \.
 
 
@@ -2595,40 +3242,42 @@ COPY process_conf (process_conf_id, created_stamp, runable_name, detail, type) F
 --
 
 COPY process_conf_input (process_conf_input_id, created_stamp, process_conf, format_type, content_type, ecotype) FROM stdin;
-1	2009-08-17 17:51:31.473771	6	43	34	\N
-2	2009-08-17 17:51:31.473771	7	43	35	\N
-3	2009-08-17 17:51:31.473771	8	43	30	\N
-4	2009-08-17 17:51:31.473771	9	43	35	\N
-5	2009-08-17 17:51:31.473771	10	43	34	\N
-6	2009-08-17 17:51:31.473771	11	42	38	\N
-7	2009-08-17 17:51:31.473771	12	42	33	\N
-8	2009-08-17 17:51:31.473771	13	42	26	\N
-9	2009-08-17 17:51:31.473771	14	42	27	\N
-10	2009-08-17 17:51:31.473771	15	42	31	\N
-11	2009-08-17 17:51:31.473771	16	42	24	\N
-12	2009-08-17 17:51:31.473771	17	42	28	\N
-13	2009-08-17 17:51:31.473771	18	42	32	\N
-14	2009-08-17 17:51:31.473771	19	42	25	\N
-15	2009-08-17 17:51:31.473771	20	42	38	\N
-16	2009-08-17 17:51:31.473771	21	42	33	\N
-17	2009-08-17 17:51:31.473771	22	42	35	\N
-18	2009-08-17 17:51:31.473771	23	42	30	\N
-19	2009-08-17 17:51:31.473771	24	42	28	\N
-20	2009-08-17 17:51:31.473771	25	42	27	\N
-21	2009-08-17 17:51:31.473771	26	42	38	\N
-22	2009-08-17 17:51:31.473771	27	46	26	\N
-23	2009-08-17 17:51:31.473771	28	42	33	\N
-24	2009-08-17 17:51:31.473771	29	42	33	1
-25	2009-08-17 17:51:31.473771	30	42	33	12
-26	2009-08-17 17:51:31.473771	31	42	33	21
-27	2009-08-17 17:51:31.473771	32	42	33	18
-28	2009-08-17 17:51:31.473771	33	42	33	22
-29	2009-08-17 17:51:31.473771	34	42	33	7
-30	2009-08-17 17:51:31.473771	35	42	32	7
-31	2009-08-17 17:51:31.473771	36	46	26	\N
-32	2009-08-17 17:51:31.473771	37	46	25	\N
-33	2009-08-17 17:51:31.473771	38	46	24	\N
-34	2009-08-17 17:51:31.473771	39	46	\N	\N
+1	2009-08-24 17:10:58.725942	6	45	35	\N
+2	2009-08-24 17:10:58.725942	7	45	36	\N
+3	2009-08-24 17:10:58.725942	8	45	31	\N
+4	2009-08-24 17:10:58.725942	9	45	36	\N
+5	2009-08-24 17:10:58.725942	10	45	35	\N
+6	2009-08-24 17:10:58.725942	11	44	39	\N
+7	2009-08-24 17:10:58.725942	12	44	34	\N
+8	2009-08-24 17:10:58.725942	13	44	27	\N
+9	2009-08-24 17:10:58.725942	14	44	28	\N
+10	2009-08-24 17:10:58.725942	15	44	32	\N
+11	2009-08-24 17:10:58.725942	16	44	25	\N
+12	2009-08-24 17:10:58.725942	17	44	29	\N
+13	2009-08-24 17:10:58.725942	18	44	33	\N
+14	2009-08-24 17:10:58.725942	19	44	26	\N
+15	2009-08-24 17:10:58.725942	20	44	39	\N
+16	2009-08-24 17:10:58.725942	21	44	34	\N
+17	2009-08-24 17:10:58.725942	22	44	36	\N
+18	2009-08-24 17:10:58.725942	23	44	31	\N
+19	2009-08-24 17:10:58.725942	24	44	27	\N
+20	2009-08-24 17:10:58.725942	25	44	29	\N
+21	2009-08-24 17:10:58.725942	26	44	28	\N
+22	2009-08-24 17:10:58.725942	27	44	39	\N
+23	2009-08-24 17:10:58.725942	28	48	27	\N
+24	2009-08-24 17:10:58.725942	29	44	34	\N
+25	2009-08-24 17:10:58.725942	30	44	34	1
+26	2009-08-24 17:10:58.725942	31	44	34	12
+27	2009-08-24 17:10:58.725942	32	44	34	21
+28	2009-08-24 17:10:58.725942	33	44	34	18
+29	2009-08-24 17:10:58.725942	34	44	34	22
+30	2009-08-24 17:10:58.725942	35	44	34	7
+31	2009-08-24 17:10:58.725942	36	44	33	7
+32	2009-08-24 17:10:58.725942	37	44	34	1
+33	2009-08-24 17:10:58.725942	38	48	27	\N
+34	2009-08-24 17:10:58.725942	39	48	26	\N
+35	2009-08-24 17:10:58.725942	40	48	25	\N
+36	2009-08-24 17:10:58.725942	41	48	\N	\N
 \.
 
 
@@ -2645,7 +3294,7 @@ COPY protocol (protocol_id, name, description) FROM stdin;
 -- Data for Name: pub; Type: TABLE DATA; Schema: public; Owner: kmr44
 --
 
-COPY pub (pub_id, title, volumetitle, volume, series_name, issue, pyear, pages, miniref, type_id, is_obsolete, publisher, pubplace, uniquename) FROM stdin;
+COPY pub (pub_id, title, volumetitle, volume, series_name, issue, pyear, pages, miniref, uniquename, type_id, is_obsolete, publisher, pubplace) FROM stdin;
 \.
 
 
@@ -2662,15 +3311,23 @@ COPY pub_dbxref (pub_dbxref_id, pub_id, dbxref_id, is_current) FROM stdin;
 --
 
 COPY sample (sample_id, created_stamp, name, genotype, description, protocol, sample_type, molecule_type, treatment_type, fractionation_type, processing_requirement, tissue) FROM stdin;
-1	2009-08-17 17:51:35.012095	SL11	\N	AGO9 associated small RNAs Rep1 (mixed Col-0 floral + silique)	1	70	52	\N	\N	65	\N
-2	2009-08-17 17:51:35.012095	SL54	\N	Chlamy total DNA (mononuc)	1	67	51	\N	\N	65	\N
-3	2009-08-17 17:51:35.012095	SL55	\N	Chlamy methylated DNA IP (mononuc)	1	67	51	\N	\N	65	\N
-4	2009-08-17 17:51:35.012095	SL165_1	\N	Total sRNA mono-P	1	70	52	\N	\N	65	\N
-5	2009-08-17 17:51:35.012095	SL234_B	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode B	1	70	52	\N	\N	65	\N
-6	2009-08-17 17:51:35.012095	SL234_C	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode C	1	70	52	\N	\N	65	\N
-7	2009-08-17 17:51:35.012095	SL234_F	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode F	1	70	52	\N	\N	65	\N
-8	2009-08-17 17:51:35.012095	SL236	\N	grafting dcl2,3,4 to dcl2,3,4 (root)	1	70	52	\N	\N	65	\N
-9	2009-08-17 17:51:35.012095	SL285_B	\N	ChIP - H3K9Me1 - barcode B	1	67	51	\N	\N	65	\N
+1	2009-08-24 17:11:00.805423	SL11	\N	AGO9 associated small RNAs Rep1 (mixed Col-0 floral + silique)	1	84	55	\N	\N	79	\N
+2	2009-08-24 17:11:00.805423	SL54	\N	Chlamy total DNA (mononuc)	1	81	54	\N	\N	79	\N
+3	2009-08-24 17:11:00.805423	SL55	\N	Chlamy methylated DNA IP (mononuc)	1	81	54	\N	\N	79	\N
+4	2009-08-24 17:11:00.805423	SL165_1	\N	Total sRNA mono-P	1	84	55	\N	\N	79	\N
+5	2009-08-24 17:11:00.805423	SL234_B	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode B	1	84	55	\N	\N	79	\N
+6	2009-08-24 17:11:00.805423	SL234_C	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode C	1	84	55	\N	\N	79	\N
+7	2009-08-24 17:11:00.805423	SL234_F	\N	B: Ago4p:AGO4 IP C: AGO4p:AGO6 IP F: AGO4p:AGO9 IP  - barcode F	1	84	55	\N	\N	79	\N
+8	2009-08-24 17:11:00.805423	SL236	\N	grafting dcl2,3,4 to dcl2,3,4 (root)	1	84	55	\N	\N	79	\N
+9	2009-08-24 17:11:00.805423	SL285_B	\N	ChIP - H3K9Me1 - barcode B	1	81	54	\N	\N	79	\N
+\.
+
+
+--
+-- Data for Name: sample_dbxref; Type: TABLE DATA; Schema: public; Owner: kmr44
+--
+
+COPY sample_dbxref (sample_dbxref_id, sample_id, dbxref_id) FROM stdin;
 \.
 
 
@@ -2679,15 +3336,15 @@ COPY sample (sample_id, created_stamp, name, genotype, description, protocol, sa
 --
 
 COPY sample_ecotype (sample_ecotype_id, created_stamp, sample, ecotype) FROM stdin;
-1	2009-08-17 17:51:35.012095	1	1
-2	2009-08-17 17:51:35.012095	2	7
-3	2009-08-17 17:51:35.012095	3	7
-4	2009-08-17 17:51:35.012095	4	7
-5	2009-08-17 17:51:35.012095	5	1
-6	2009-08-17 17:51:35.012095	6	1
-7	2009-08-17 17:51:35.012095	7	1
-8	2009-08-17 17:51:35.012095	8	1
-9	2009-08-17 17:51:35.012095	9	7
+1	2009-08-24 17:11:00.805423	1	1
+2	2009-08-24 17:11:00.805423	2	7
+3	2009-08-24 17:11:00.805423	3	7
+4	2009-08-24 17:11:00.805423	4	7
+5	2009-08-24 17:11:00.805423	5	1
+6	2009-08-24 17:11:00.805423	6	1
+7	2009-08-24 17:11:00.805423	7	1
+8	2009-08-24 17:11:00.805423	8	1
+9	2009-08-24 17:11:00.805423	9	7
 \.
 
 
@@ -2696,13 +3353,13 @@ COPY sample_ecotype (sample_ecotype_id, created_stamp, sample, ecotype) FROM std
 --
 
 COPY sample_pipedata (sample_pipedata_id, created_stamp, sample, pipedata) FROM stdin;
-1	2009-08-17 17:51:35.012095	1	1
-2	2009-08-17 17:51:35.012095	2	2
-3	2009-08-17 17:51:35.012095	3	3
-4	2009-08-17 17:51:35.012095	4	4
-5	2009-08-17 17:51:35.012095	5	5
-6	2009-08-17 17:51:35.012095	8	6
-7	2009-08-17 17:51:35.012095	9	7
+1	2009-08-24 17:11:00.805423	1	1
+2	2009-08-24 17:11:00.805423	2	2
+3	2009-08-24 17:11:00.805423	3	3
+4	2009-08-24 17:11:00.805423	4	4
+5	2009-08-24 17:11:00.805423	5	5
+6	2009-08-24 17:11:00.805423	8	6
+7	2009-08-24 17:11:00.805423	9	7
 \.
 
 
@@ -2743,13 +3400,13 @@ COPY sequencing_sample (sequencing_sample_id, name) FROM stdin;
 --
 
 COPY sequencingrun (sequencingrun_id, created_stamp, identifier, sequencing_sample, initial_pipedata, sequencing_centre, initial_pipeprocess, submission_date, run_date, data_received_date, quality, sequencing_type, multiplexing_type) FROM stdin;
-1	2009-08-17 17:51:35.012095	Run_SL11	1	1	3	1	\N	\N	\N	64	71	54
-2	2009-08-17 17:51:35.012095	Run_SL54	2	2	3	2	\N	\N	\N	64	71	54
-3	2009-08-17 17:51:35.012095	Run_SL55	3	3	3	3	\N	\N	\N	64	71	54
-4	2009-08-17 17:51:35.012095	Run_SL165_1	4	4	2	4	2008-08-27	2008-09-11	2008-09-11	64	71	54
-5	2009-08-17 17:51:35.012095	Run_SL234_BCF	5	5	2	5	2009-01-20	2009-02-10	2009-02-10	64	71	53
-6	2009-08-17 17:51:35.012095	Run_SL236	6	6	2	6	2009-02-10	2009-03-09	2009-03-09	64	71	54
-7	2009-08-17 17:51:35.012095	Run_SL285	7	7	2	7	2009-07-14	2009-07-24	2009-07-24	64	71	53
+1	2009-08-24 17:11:00.805423	RUN_SL11	1	1	3	1	\N	\N	\N	78	85	57
+2	2009-08-24 17:11:00.805423	RUN_SL54	2	2	3	2	\N	\N	\N	78	85	57
+3	2009-08-24 17:11:00.805423	RUN_SL55	3	3	3	3	\N	\N	\N	78	85	57
+4	2009-08-24 17:11:00.805423	RUN_SL165_1	4	4	2	4	2008-08-27	2008-09-11	2008-09-11	78	85	57
+5	2009-08-24 17:11:00.805423	RUN_SL234_BCF	5	5	2	5	2009-01-20	2009-02-10	2009-02-10	78	85	56
+6	2009-08-24 17:11:00.805423	RUN_SL236	6	6	2	6	2009-02-10	2009-03-09	2009-03-09	78	85	57
+7	2009-08-24 17:11:00.805423	RUN_SL285	7	7	2	7	2009-07-14	2009-07-24	2009-07-24	78	85	56
 \.
 
 
@@ -2758,34 +3415,34 @@ COPY sequencingrun (sequencingrun_id, created_stamp, identifier, sequencing_samp
 --
 
 COPY tissue (tissue_id, created_stamp, organism, description) FROM stdin;
-1	2009-08-17 17:51:31.380955	1	unspecified
-2	2009-08-17 17:51:31.380955	1	unopened flowers (stage 0-12)
-3	2009-08-17 17:51:31.380955	1	open flowers (stage 13)
-4	2009-08-17 17:51:31.380955	1	young siliques (<7 dpf)
-5	2009-08-17 17:51:31.380955	1	mature siliques (>7 dpf)
-6	2009-08-17 17:51:31.380955	1	young leaves (<14 days)
-7	2009-08-17 17:51:31.380955	1	mature leaves (>14 days)
-8	2009-08-17 17:51:31.380955	1	vegetative meristem
-9	2009-08-17 17:51:31.380955	1	floral meristem
-10	2009-08-17 17:51:31.380955	1	roots (including meristem)
-11	2009-08-17 17:51:31.380955	1	seedlings (roots, cotyledons, leaves, and meristem)
-12	2009-08-17 17:51:31.380955	1	cauline leaves
-13	2009-08-17 17:51:31.380955	1	stem
-14	2009-08-17 17:51:31.380955	2	unspecified
-15	2009-08-17 17:51:31.380955	2	vegetative cells
-16	2009-08-17 17:51:31.380955	2	gametes
-17	2009-08-17 17:51:31.380955	3	unspecified
-18	2009-08-17 17:51:31.380955	4	unspecified
-19	2009-08-17 17:51:31.380955	5	unspecified
-20	2009-08-17 17:51:31.380955	6	unspecified
-21	2009-08-17 17:51:31.380955	7	unspecified
-22	2009-08-17 17:51:31.380955	8	unspecified
-23	2009-08-17 17:51:31.380955	10	unspecified
-24	2009-08-17 17:51:31.380955	11	unspecified
-25	2009-08-17 17:51:31.380955	9	unspecified
-26	2009-08-17 17:51:31.380955	12	unspecified
-27	2009-08-17 17:51:31.380955	13	unspecified
-28	2009-08-17 17:51:31.380955	14	unspecified
+1	2009-08-24 17:10:58.629369	1	unspecified
+2	2009-08-24 17:10:58.629369	1	unopened flowers (stage 0-12)
+3	2009-08-24 17:10:58.629369	1	open flowers (stage 13)
+4	2009-08-24 17:10:58.629369	1	young siliques (<7 dpf)
+5	2009-08-24 17:10:58.629369	1	mature siliques (>7 dpf)
+6	2009-08-24 17:10:58.629369	1	young leaves (<14 days)
+7	2009-08-24 17:10:58.629369	1	mature leaves (>14 days)
+8	2009-08-24 17:10:58.629369	1	vegetative meristem
+9	2009-08-24 17:10:58.629369	1	floral meristem
+10	2009-08-24 17:10:58.629369	1	roots (including meristem)
+11	2009-08-24 17:10:58.629369	1	seedlings (roots, cotyledons, leaves, and meristem)
+12	2009-08-24 17:10:58.629369	1	cauline leaves
+13	2009-08-24 17:10:58.629369	1	stem
+14	2009-08-24 17:10:58.629369	2	unspecified
+15	2009-08-24 17:10:58.629369	2	vegetative cells
+16	2009-08-24 17:10:58.629369	2	gametes
+17	2009-08-24 17:10:58.629369	3	unspecified
+18	2009-08-24 17:10:58.629369	4	unspecified
+19	2009-08-24 17:10:58.629369	5	unspecified
+20	2009-08-24 17:10:58.629369	6	unspecified
+21	2009-08-24 17:10:58.629369	7	unspecified
+22	2009-08-24 17:10:58.629369	8	unspecified
+23	2009-08-24 17:10:58.629369	10	unspecified
+24	2009-08-24 17:10:58.629369	11	unspecified
+25	2009-08-24 17:10:58.629369	9	unspecified
+26	2009-08-24 17:10:58.629369	12	unspecified
+27	2009-08-24 17:10:58.629369	13	unspecified
+28	2009-08-24 17:10:58.629369	14	unspecified
 \.
 
 
@@ -2854,6 +3511,38 @@ ALTER TABLE ONLY cv
 
 
 --
+-- Name: cvterm_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY cvterm
+    ADD CONSTRAINT cvterm_c1 UNIQUE (name, cv_id, is_obsolete);
+
+
+--
+-- Name: cvterm_c2; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY cvterm
+    ADD CONSTRAINT cvterm_c2 UNIQUE (dbxref_id);
+
+
+--
+-- Name: cvterm_dbxref_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY cvterm_dbxref
+    ADD CONSTRAINT cvterm_dbxref_c1 UNIQUE (cvterm_id, dbxref_id);
+
+
+--
+-- Name: cvterm_dbxref_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY cvterm_dbxref
+    ADD CONSTRAINT cvterm_dbxref_pkey PRIMARY KEY (cvterm_dbxref_id);
+
+
+--
 -- Name: cvterm_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
@@ -2862,11 +3551,27 @@ ALTER TABLE ONLY cvterm
 
 
 --
--- Name: dbxref_db_id_key; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+-- Name: db_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY db
+    ADD CONSTRAINT db_c1 UNIQUE (name);
+
+
+--
+-- Name: db_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY db
+    ADD CONSTRAINT db_pkey PRIMARY KEY (db_id);
+
+
+--
+-- Name: dbxref_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
 ALTER TABLE ONLY dbxref
-    ADD CONSTRAINT dbxref_db_id_key UNIQUE (db_id, accession, version);
+    ADD CONSTRAINT dbxref_c1 UNIQUE (db_id, accession, version);
 
 
 --
@@ -2894,19 +3599,35 @@ ALTER TABLE ONLY organisation
 
 
 --
--- Name: organism_full_name_constraint; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+-- Name: organism_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
 ALTER TABLE ONLY organism
-    ADD CONSTRAINT organism_full_name_constraint UNIQUE (genus, species);
+    ADD CONSTRAINT organism_c1 UNIQUE (genus, species);
 
 
 --
--- Name: organism_id_pk; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+-- Name: organism_dbxref_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY organism_dbxref
+    ADD CONSTRAINT organism_dbxref_c1 UNIQUE (organism_id, dbxref_id);
+
+
+--
+-- Name: organism_dbxref_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY organism_dbxref
+    ADD CONSTRAINT organism_dbxref_pkey PRIMARY KEY (organism_dbxref_id);
+
+
+--
+-- Name: organism_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
 ALTER TABLE ONLY organism
-    ADD CONSTRAINT organism_id_pk PRIMARY KEY (organism_id);
+    ADD CONSTRAINT organism_pkey PRIMARY KEY (organism_id);
 
 
 --
@@ -3014,6 +3735,30 @@ ALTER TABLE ONLY protocol
 
 
 --
+-- Name: pub_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY pub
+    ADD CONSTRAINT pub_c1 UNIQUE (uniquename);
+
+
+--
+-- Name: pub_dbxref_c1; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY pub_dbxref
+    ADD CONSTRAINT pub_dbxref_c1 UNIQUE (pub_id, dbxref_id);
+
+
+--
+-- Name: pub_dbxref_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+ALTER TABLE ONLY pub_dbxref
+    ADD CONSTRAINT pub_dbxref_pkey PRIMARY KEY (pub_dbxref_id);
+
+
+--
 -- Name: pub_pkey; Type: CONSTRAINT; Schema: public; Owner: kmr44; Tablespace: 
 --
 
@@ -3118,35 +3863,116 @@ ALTER TABLE ONLY tissue
 
 
 --
--- Name: $1; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+-- Name: INDEX cvterm_c1; Type: COMMENT; Schema: public; Owner: kmr44
 --
 
-ALTER TABLE ONLY pub_dbxref
-    ADD CONSTRAINT "$1" FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE;
-
-
---
--- Name: $1; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
---
-
-ALTER TABLE ONLY organism_dbxref
-    ADD CONSTRAINT "$1" FOREIGN KEY (organism_id) REFERENCES organism(organism_id) ON DELETE CASCADE;
-
-
---
--- Name: $2; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
---
-
-ALTER TABLE ONLY pub_dbxref
-    ADD CONSTRAINT "$2" FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
+COMMENT ON INDEX cvterm_c1 IS 'A name can mean different things in
+different contexts; for example "chromosome" in SO and GO. A name
+should be unique within an ontology or cv. A name may exist twice in a
+cv, in both obsolete and non-obsolete forms - these will be for
+different cvterms with different OBO identifiers; so GO documentation
+for more details on obsoletion. Note that occasionally multiple
+obsolete terms with the same name will exist in the same cv. If this
+is a possibility for the ontology under consideration (e.g. GO) then the
+ID should be appended to the name to ensure uniqueness.';
 
 
 --
--- Name: $2; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+-- Name: INDEX cvterm_c2; Type: COMMENT; Schema: public; Owner: kmr44
 --
 
-ALTER TABLE ONLY cvterm_dbxref
-    ADD CONSTRAINT "$2" FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
+COMMENT ON INDEX cvterm_c2 IS 'The OBO identifier is globally unique.';
+
+
+--
+-- Name: cvterm_dbxref_idx1; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX cvterm_dbxref_idx1 ON cvterm_dbxref USING btree (cvterm_id);
+
+
+--
+-- Name: cvterm_dbxref_idx2; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX cvterm_dbxref_idx2 ON cvterm_dbxref USING btree (dbxref_id);
+
+
+--
+-- Name: cvterm_idx1; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX cvterm_idx1 ON cvterm USING btree (cv_id);
+
+
+--
+-- Name: cvterm_idx2; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX cvterm_idx2 ON cvterm USING btree (name);
+
+
+--
+-- Name: cvterm_idx3; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX cvterm_idx3 ON cvterm USING btree (dbxref_id);
+
+
+--
+-- Name: dbxref_idx1; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX dbxref_idx1 ON dbxref USING btree (db_id);
+
+
+--
+-- Name: dbxref_idx2; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX dbxref_idx2 ON dbxref USING btree (accession);
+
+
+--
+-- Name: dbxref_idx3; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX dbxref_idx3 ON dbxref USING btree (version);
+
+
+--
+-- Name: organism_dbxref_idx1; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX organism_dbxref_idx1 ON organism_dbxref USING btree (organism_id);
+
+
+--
+-- Name: organism_dbxref_idx2; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX organism_dbxref_idx2 ON organism_dbxref USING btree (dbxref_id);
+
+
+--
+-- Name: pub_dbxref_idx1; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX pub_dbxref_idx1 ON pub_dbxref USING btree (pub_id);
+
+
+--
+-- Name: pub_dbxref_idx2; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX pub_dbxref_idx2 ON pub_dbxref USING btree (dbxref_id);
+
+
+--
+-- Name: pub_idx1; Type: INDEX; Schema: public; Owner: kmr44; Tablespace: 
+--
+
+CREATE INDEX pub_idx1 ON pub USING btree (type_id);
 
 
 --
@@ -3206,6 +4032,22 @@ ALTER TABLE ONLY cvterm
 
 
 --
+-- Name: cvterm_dbxref_cvterm_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY cvterm_dbxref
+    ADD CONSTRAINT cvterm_dbxref_cvterm_id_fkey FOREIGN KEY (cvterm_id) REFERENCES cvterm(cvterm_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: cvterm_dbxref_dbxref_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY cvterm_dbxref
+    ADD CONSTRAINT cvterm_dbxref_dbxref_id_fkey FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: cvterm_dbxref_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
 --
 
@@ -3214,11 +4056,35 @@ ALTER TABLE ONLY cvterm
 
 
 --
+-- Name: dbxref_db_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY dbxref
+    ADD CONSTRAINT dbxref_db_id_fkey FOREIGN KEY (db_id) REFERENCES db(db_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: ecotype_organism_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
 --
 
 ALTER TABLE ONLY ecotype
     ADD CONSTRAINT ecotype_organism_fkey FOREIGN KEY (organism) REFERENCES organism(organism_id);
+
+
+--
+-- Name: organism_dbxref_dbxref_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY organism_dbxref
+    ADD CONSTRAINT organism_dbxref_dbxref_id_fkey FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: organism_dbxref_organism_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY organism_dbxref
+    ADD CONSTRAINT organism_dbxref_organism_id_fkey FOREIGN KEY (organism_id) REFERENCES organism(organism_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -3283,6 +4149,22 @@ ALTER TABLE ONLY pipeprocess_in_pipedata
 
 ALTER TABLE ONLY pipeprocess
     ADD CONSTRAINT pipeprocess_process_conf_fkey FOREIGN KEY (process_conf) REFERENCES process_conf(process_conf_id);
+
+
+--
+-- Name: pipeprocess_pub_pipeprocess_fk; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY pipeprocess_pub
+    ADD CONSTRAINT pipeprocess_pub_pipeprocess_fk FOREIGN KEY (pipeprocess_id) REFERENCES pipeprocess(pipeprocess_id) ON DELETE CASCADE;
+
+
+--
+-- Name: pipeprocess_pub_pub_fk; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY pipeprocess_pub
+    ADD CONSTRAINT pipeprocess_pub_pub_fk FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE;
 
 
 --
@@ -3355,6 +4237,46 @@ ALTER TABLE ONLY process_conf_input
 
 ALTER TABLE ONLY process_conf
     ADD CONSTRAINT process_conf_type_fkey FOREIGN KEY (type) REFERENCES cvterm(cvterm_id);
+
+
+--
+-- Name: pub_dbxref_dbxref_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY pub_dbxref
+    ADD CONSTRAINT pub_dbxref_dbxref_id_fkey FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pub_dbxref_pub_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY pub_dbxref
+    ADD CONSTRAINT pub_dbxref_pub_id_fkey FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pub_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY pub
+    ADD CONSTRAINT pub_type_id_fkey FOREIGN KEY (type_id) REFERENCES cvterm(cvterm_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: sample_dbxref_dbxref_fk; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY sample_dbxref
+    ADD CONSTRAINT sample_dbxref_dbxref_fk FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
+
+
+--
+-- Name: sample_dbxref_sample_fk; Type: FK CONSTRAINT; Schema: public; Owner: kmr44
+--
+
+ALTER TABLE ONLY sample_dbxref
+    ADD CONSTRAINT sample_dbxref_sample_fk FOREIGN KEY (sample_id) REFERENCES sample(sample_id) ON DELETE CASCADE;
 
 
 --

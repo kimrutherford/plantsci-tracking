@@ -32,12 +32,12 @@ while (my $pipedata = $pipedata_rs->next()) {
   if ($pipedata->file_name() =~ /SL236/) {
     is(scalar($pipedata->next_pipeprocesses()), 2);
     is(($pipedata->next_pipeprocesses())[0]->description(),
-       'processing with conf: remove adapters processing_type: remove_adapters');
+       'processing with conf: remove adapters, action: remove_adapters');
   } else {
     if ($pipedata->file_name() =~ /SL234/) {
       is(scalar($pipedata->next_pipeprocesses()), 1);
       is(($pipedata->next_pipeprocesses())[0]->description(),
-         'processing with conf: remove adapters and de-multiplex processing_type: remove_adapters');
+         'processing with conf: remove adapters and de-multiplex, action: remove_adapters');
     }
   }
 }

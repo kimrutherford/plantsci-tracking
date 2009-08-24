@@ -65,7 +65,7 @@ sub long_description
   my $detail = $self->detail();
 
   if (defined $detail && length $detail > 0) {
-    $ret .= ", $detail\n";
+    $ret .= ", $detail";
   }
 
   my @inputs = $self->process_conf_inputs();
@@ -75,14 +75,14 @@ sub long_description
 
     $ret .= join '], [', map {
       my $description = '';
-      if (defined $_->format_type()) {
-        $description .= 'format: ' . $_->format_type()->name()
-      }
       if (defined $_->content_type()) {
+        $description .= $_->content_type()->name();
+      }
+      if (defined $_->format_type()) {
         if (length $description > 0) {
           $description .= ', ';
         }
-        $description .= 'content: ' . $_->content_type()->name();
+        $description .= $_->format_type()->name()
       }
       if (defined $_->ecotype()) {
         if (length $description > 0) {

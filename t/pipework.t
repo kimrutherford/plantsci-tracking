@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 108;
+use Test::More tests => 120;
 use DateTime;
 
 BEGIN {
@@ -46,7 +46,7 @@ for (my $i = 0; $i < 6; $i++) {
 
   # this is a bad way to test things as these numbers change each time a new
   # process is added
-  my %count_exp = (0 => 21, 1 => 49, 2 => 74, 3 => 93, 4 => 100, 5 => 100);
+  my %count_exp = (0 => 21, 1 => 50, 2 => 78, 3 => 98, 4 => 112, 5 => 112);
 
   is($pipeprocess_rs->count(), $count_exp{$i}, "process count for iteration: $i");
 
