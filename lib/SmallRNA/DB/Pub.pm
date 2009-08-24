@@ -100,6 +100,11 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("pub_id");
 __PACKAGE__->add_unique_constraint("pub_pkey", ["pub_id"]);
 __PACKAGE__->has_many(
+  "pipeprocess_pubs",
+  "SmallRNA::DB::PipeprocessPub",
+  { "foreign.pub_id" => "self.pub_id" },
+);
+__PACKAGE__->has_many(
   "pub_dbxrefs",
   "SmallRNA::DB::PubDbxref",
   { "foreign.pub_id" => "self.pub_id" },
@@ -107,8 +112,9 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ebp7oenslpZj/cOOkyaANw
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:W91m8X1ehK+awp4v2z+urQ
 
+__PACKAGE__->many_to_many(pipeprocesses => 'pipeprocess_pub', 'pipeprocess');
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

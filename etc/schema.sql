@@ -354,3 +354,13 @@ CREATE TABLE coded_sample (
 COMMENT ON TABLE coded_sample IS
   'This table records the many-to-many relationship between samples and '
   'sequencing runs and the type of the run (intial, re-run, replicate etc.)';
+CREATE TABLE pipeprocess_pub (
+       pipeprocess_pub_id integer NOT NULL,
+       pipeprocess_id integer NOT NULL,
+       pub_id integer NOT NULL
+);
+ALTER TABLE ONLY pipeprocess_pub
+    ADD CONSTRAINT pipeprocess_pub_pipeprocess_fk FOREIGN KEY (pipeprocess_id) REFERENCES pipeprocess(pipeprocess_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY pipeprocess_pub
+    ADD CONSTRAINT pipeprocess_pub_pub_fk FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE;
