@@ -84,6 +84,12 @@ sub long_description
         }
         $description .= 'content: ' . $_->content_type()->name();
       }
+      if (defined $_->ecotype()) {
+        if (length $description > 0) {
+          $description .= ', ';
+        }
+        $description .= $_->ecotype()->long_description();
+      }
       $description;
     } @inputs;
 
