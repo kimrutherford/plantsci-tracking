@@ -49,21 +49,17 @@ sub create_seq_sample : Local {
 
   my $sample = $schema->find_with_type('Sample', sample_id => $sample_id);
 
-  my $seq_sample = $schema->create_with_type('SequencingSample',
-                                             { name => 'SEQSAMP-' . $sample->name() });
-
   my $description = 'Dummy coded sample for ' . $sample->name() . ' - no barcode';
   my $initial_run_cvterm = $schema->find_with_type('Cvterm',
                                                    { name => 'initial run' });
   my $coded_sample = $schema->create_with_type('CodedSample',
                                                { description => $description,
                                                  coded_sample_type => $initial_run_cvterm,
-                                                 sample => $sample,
-                                                 sequencing_sample => $seq_sample });
+                                                 sample => $sample});
 
-  $c->res->redirect($c->uri_for("/new/object/sequencingrun",
+  $c->res->redirect($c->uri_for("/new/object/sequencing_sample",
                                 {
-                                  'sequencing_sample.id' => $seq_sample->sequencing_sample_id()
+                                  'coded_sample.id' => $coded_sample->coded_sample_id()
                                 }));
   $c->detach();
 }

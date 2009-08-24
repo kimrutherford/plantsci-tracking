@@ -66,6 +66,7 @@ sub _do_system
     } 
   }
 
+  die "command failed\n";
 }
 
 =head2
