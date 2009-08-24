@@ -103,7 +103,9 @@ sub run
       my $org_full_name = $target_organism->full_name();
       $org_full_name =~ s/ /_/g;
 
-      my $org_config = $c->{organisms}{$org_full_name};
+      my $database_conf = $self->config()->{databases};
+
+      my $org_config = $database_conf->{organisms}{$org_full_name};
 
       if (!defined $org_config) {
         croak("no configuration found for $org_full_name for process #",
@@ -118,7 +120,7 @@ sub run
         die "can't find configuration for component: $component\n";
       }
 
-      my $db_file_name = $c->{root} . '/' . $org_config->{database_files}{$component};
+      my $db_file_name = $database_conf->{root} . '/' . $org_config->{database_files}{$component};
 
       my $bwa_path = $c->{path};
 
