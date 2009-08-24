@@ -136,6 +136,11 @@ sub _init_form_field
 
   if (!$field_info->{is_collection}) {
     $info_ref = $class_name->relationship_info($field_db_column);
+    #to handle Chado style foreign keys like "type_id" (rather than "type")
+    if (!defined $info_ref) {
+      (my $field_without_id = $field_db_column) =~ s/_id//;
+      $info_ref = $class_name->relationship_info($field_without_id);
+    }
   }
 
   if (defined $info_ref) {
