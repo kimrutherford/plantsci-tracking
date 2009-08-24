@@ -52,8 +52,8 @@ __PACKAGE__->add_columns(
   },
 );
 __PACKAGE__->set_primary_key("organism_id");
-__PACKAGE__->add_unique_constraint("organism_full_name_constraint", ["genus", "species"]);
-__PACKAGE__->add_unique_constraint("organism_id_pk", ["organism_id"]);
+__PACKAGE__->add_unique_constraint("organism_pkey", ["organism_id"]);
+__PACKAGE__->add_unique_constraint("organism_c1", ["genus", "species"]);
 __PACKAGE__->has_many(
   "ecotypes",
   "SmallRNA::DB::Ecotype",
@@ -72,7 +72,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2td9Zkqe6IHSpFlQE5DlAA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LCgru7pcyY4VX/AZ8qu/cQ
 
 # the genus and species, used when displaying organisms
 sub full_name {

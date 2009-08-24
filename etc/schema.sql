@@ -28,149 +28,273 @@ DROP TABLE sample_dbxref CASCADE;
 DROP TABLE coded_sample CASCADE;
 DROP TABLE sequencing_sample CASCADE;
 DROP TABLE protocol CASCADE;
-DROP SEQUENCE cvterm_cvterm_id_seq CASCADE;
-DROP SEQUENCE cv_cv_id_seq CASCADE;
+DROP TABLE pipeprocess_pub CASCADE;
 
 \set ON_ERROR_STOP true
 
 
--- From chado:
-CREATE TABLE organism (
-       organism_id serial CONSTRAINT organism_id_pk PRIMARY KEY,
-       abbreviation character varying(255),
-       genus character varying(255) NOT NULL,
-       species character varying(255) NOT NULL,
-       common_name character varying(255),
-       comment text,
-       CONSTRAINT organism_full_name_constraint UNIQUE(genus, species)
+-- ================================================
+-- TABLE: db
+-- ================================================
+
+create table db (
+    db_id serial not null,
+    primary key (db_id),
+    name varchar(255) not null,
+--    contact_id int,
+--    foreign key (contact_id) references contact (contact_id) on delete cascade INITIALLY DEFERRED,
+    description varchar(255) null,
+    urlprefix varchar(255) null,
+    url varchar(255) null,
+    constraint db_c1 unique (name)
 );
 
-CREATE TABLE db (
-    db_id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    contact_id integer,
-    description character varying(255),
-    urlprefix character varying(255),
-    url character varying(255)
-);
+COMMENT ON TABLE db IS 'A database authority. Typical databases in
+bioinformatics are FlyBase, GO, UniProt, NCBI, MGI, etc. The authority
+is generally known by this shortened form, which is unique within the
+bioinformatics and biomedical realm.  To Do - add support for URIs,
+URNs (e.g. LSIDs). We can do this by treating the URL as a URI -
+however, some applications may expect this to be resolvable - to be
+decided.';
 
-CREATE TABLE dbxref (
-    dbxref_id integer NOT NULL,
-    db_id integer NOT NULL,
-    accession character varying(255) NOT NULL,
-    version character varying(255) DEFAULT ''::character varying NOT NULL,
-    description text
-);
+-- ================================================
+-- TABLE: dbxref
+-- ================================================
 
-CREATE SEQUENCE cv_cv_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+create table dbxref (
+    dbxref_id serial not null,
+    primary key (dbxref_id),
+    db_id int not null,
+    foreign key (db_id) references db (db_id) on delete cascade INITIALLY DEFERRED,
+    accession varchar(255) not null,
+    version varchar(255) not null default '',
+    description text,
+    constraint dbxref_c1 unique (db_id,accession,version)
+);
+create index dbxref_idx1 on dbxref (db_id);
+create index dbxref_idx2 on dbxref (accession);
+create index dbxref_idx3 on dbxref (version);
+
+COMMENT ON TABLE dbxref IS 'A unique, global, public, stable identifier. Not necessarily an external reference - can reference data items inside the particular chado instance being used. Typically a row in a table can be uniquely identified with a primary identifier (called dbxref_id); a table may also have secondary identifiers (in a linking table <T>_dbxref). A dbxref is generally written as <DB>:<ACCESSION> or as <DB>:<ACCESSION>:<VERSION>.';
+
+COMMENT ON COLUMN dbxref.accession IS 'The local part of the identifier. Guaranteed by the db authority to be unique for that db.';
+
 
 CREATE TABLE cv (
-    cv_id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    definition text
-);
-ALTER TABLE cv ALTER COLUMN cv_id SET DEFAULT nextval('cv_cv_id_seq'::regclass);
-ALTER TABLE ONLY cv
-    ADD CONSTRAINT cv_c1 UNIQUE (name);
-ALTER TABLE ONLY cv
-    ADD CONSTRAINT cv_pkey PRIMARY KEY (cv_id);
+                 cv_id serial not null,
+                 primary key (cv_id),
+                 name varchar(255) not null,
+                 definition text,
+                 constraint cv_c1 unique (name)
+                 );
 
--- cvterm table comes from chado
-CREATE SEQUENCE cvterm_cvterm_id_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+COMMENT ON TABLE cv IS 'A controlled vocabulary or ontology. A cv is
+composed of cvterms (AKA terms, classes, types, universals - relations
+and properties are also stored in cvterm) and the relationships
+between them.';
 
-CREATE TABLE cvterm (
-    cvterm_id integer NOT NULL,
-    cv_id integer NOT NULL,
-    name character varying(1024) NOT NULL,
-    definition text,
-    dbxref_id integer,
-    is_obsolete integer DEFAULT 0 NOT NULL,
-    is_relationshiptype integer DEFAULT 0 NOT NULL
-);
+COMMENT ON COLUMN cv.name IS 'The name of the ontology. This
+corresponds to the obo-format -namespace-. cv names uniquely identify
+the cv. In OBO file format, the cv.name is known as the namespace.';
 
-CREATE TABLE pub_dbxref (
-    pub_dbxref_id integer NOT NULL,
-    pub_id integer NOT NULL,
-    dbxref_id integer NOT NULL,
-    is_current boolean DEFAULT true NOT NULL
-);
+COMMENT ON COLUMN cv.definition IS 'A text description of the criteria for
+membership of this ontology.';
 
-CREATE TABLE cvterm_dbxref (
-    cvterm_dbxref_id integer NOT NULL,
-    cvterm_id integer NOT NULL,
-    dbxref_id integer NOT NULL,
-    is_for_definition integer DEFAULT 0 NOT NULL
-);
+-- ================================================
+-- TABLE: cvterm
+-- ================================================
+create table cvterm (
+                     cvterm_id serial not null,
+                     primary key (cvterm_id),
+                     cv_id int not null,
+                     foreign key (cv_id) references cv (cv_id) on delete cascade INITIALLY DEFERRED,
+                     name varchar(1024) not null,
+                     definition text,
+                     dbxref_id int not null,
+                     foreign key (dbxref_id) references dbxref (dbxref_id) on delete set null INITIALLY DEFERRED,
+                     is_obsolete int not null default 0,
+                     is_relationshiptype int not null default 0,
+                     constraint cvterm_c1 unique (name,cv_id,is_obsolete),
+                     constraint cvterm_c2 unique (dbxref_id)
+                   );
+create index cvterm_idx1 on cvterm (cv_id);
+create index cvterm_idx2 on cvterm (name);
+create index cvterm_idx3 on cvterm (dbxref_id);
 
-CREATE TABLE pub (
-    pub_id integer NOT NULL,
+COMMENT ON TABLE cvterm IS 'A term, class, universal or type within an
+ontology or controlled vocabulary.  This table is also used for
+relations and properties. cvterms constitute nodes in the graph
+defined by the collection of cvterms and cvterm_relationships.';
+
+COMMENT ON COLUMN cvterm.cv_id IS 'The cv or ontology or namespace to which
+this cvterm belongs.';
+
+COMMENT ON COLUMN cvterm.name IS 'A concise human-readable name or
+label for the cvterm. Uniquely identifies a cvterm within a cv.';
+
+COMMENT ON COLUMN cvterm.definition IS 'A human-readable text
+definition.';
+
+COMMENT ON COLUMN cvterm.dbxref_id IS 'Primary identifier dbxref - The
+unique global OBO identifier for this cvterm.  Note that a cvterm may
+have multiple secondary dbxrefs - see also table: cvterm_dbxref.';
+
+COMMENT ON COLUMN cvterm.is_obsolete IS 'Boolean 0=false,1=true; see
+GO documentation for details of obsoletion. Note that two terms with
+different primary dbxrefs may exist if one is obsolete.';
+
+COMMENT ON COLUMN cvterm.is_relationshiptype IS 'Boolean
+0=false,1=true relations or relationship types (also known as Typedefs
+in OBO format, or as properties or slots) form a cv/ontology in
+themselves. We use this flag to indicate whether this cvterm is an
+actual term/class/universal or a relation. Relations may be drawn from
+the OBO Relations ontology, but are not exclusively drawn from there.';
+
+COMMENT ON INDEX cvterm_c1 IS 'A name can mean different things in
+different contexts; for example "chromosome" in SO and GO. A name
+should be unique within an ontology or cv. A name may exist twice in a
+cv, in both obsolete and non-obsolete forms - these will be for
+different cvterms with different OBO identifiers; so GO documentation
+for more details on obsoletion. Note that occasionally multiple
+obsolete terms with the same name will exist in the same cv. If this
+is a possibility for the ontology under consideration (e.g. GO) then the
+ID should be appended to the name to ensure uniqueness.';
+
+COMMENT ON INDEX cvterm_c2 IS 'The OBO identifier is globally unique.';
+
+create table pub (
+    pub_id serial not null,
+    primary key (pub_id),
     title text,
     volumetitle text,
-    volume character varying(255),
-    series_name character varying(255),
-    issue character varying(255),
-    pyear character varying(255),
-    pages character varying(255),
-    miniref character varying(255),
-    type_id integer,
-    is_obsolete boolean DEFAULT false,
-    publisher character varying(255),
-    pubplace character varying(255),
-    uniquename text NOT NULL
+    volume varchar(255),
+    series_name varchar(255),
+    issue varchar(255),
+    pyear varchar(255),
+    pages varchar(255),
+    miniref varchar(255),
+    uniquename text not null,
+    type_id int not null,
+    foreign key (type_id) references cvterm (cvterm_id) on delete cascade INITIALLY DEFERRED,
+    is_obsolete boolean default 'false',
+    publisher varchar(255),
+    pubplace varchar(255),
+    constraint pub_c1 unique (uniquename)
+);
+CREATE INDEX pub_idx1 ON pub (type_id);
+
+COMMENT ON TABLE pub IS 'A documented provenance artefact - publications,
+documents, personal communication.';
+COMMENT ON COLUMN pub.title IS 'Descriptive general heading.';
+COMMENT ON COLUMN pub.volumetitle IS 'Title of part if one of a series.';
+COMMENT ON COLUMN pub.series_name IS 'Full name of (journal) series.';
+COMMENT ON COLUMN pub.pages IS 'Page number range[s], e.g. 457--459, viii + 664pp, lv--lvii.';
+COMMENT ON COLUMN pub.type_id IS  'The type of the publication (book, journal, poem, graffiti, etc). Uses pub cv.';
+
+
+-- ================================================
+-- TABLE: pub_dbxref
+-- ================================================
+
+create table pub_dbxref (
+    pub_dbxref_id serial not null,
+    primary key (pub_dbxref_id),
+    pub_id int not null,
+    foreign key (pub_id) references pub (pub_id) on delete cascade INITIALLY DEFERRED,
+    dbxref_id int not null,
+    foreign key (dbxref_id) references dbxref (dbxref_id) on delete cascade INITIALLY DEFERRED,
+    is_current boolean not null default 'true',
+    constraint pub_dbxref_c1 unique (pub_id,dbxref_id)
+);
+create index pub_dbxref_idx1 on pub_dbxref (pub_id);
+create index pub_dbxref_idx2 on pub_dbxref (dbxref_id);
+
+COMMENT ON TABLE pub_dbxref IS 'Handle links to repositories,
+e.g. Pubmed, Biosis, zoorec, OCLC, Medline, ISSN, coden...';
+
+
+-- ================================================
+-- TABLE: organism
+-- ================================================
+
+create table organism (
+	organism_id serial not null,
+	primary key (organism_id),
+	abbreviation varchar(255) null,
+	genus varchar(255) not null,
+	species varchar(255) not null,
+	common_name varchar(255) null,
+	comment text null,
+	constraint organism_c1 unique (genus,species)
 );
 
-CREATE TABLE organism_dbxref (
-    organism_dbxref_id integer NOT NULL,
-    organism_id integer NOT NULL,
-    dbxref_id integer NOT NULL
+COMMENT ON TABLE organism IS 'The organismal taxonomic
+classification. Note that phylogenies are represented using the
+phylogeny module, and taxonomies can be represented using the cvterm
+module or the phylogeny module.';
+
+COMMENT ON COLUMN organism.species IS 'A type of organism is always
+uniquely identified by genus and species. When mapping from the NCBI
+taxonomy names.dmp file, this column must be used where it
+is present, as the common_name column is not always unique (e.g. environmental
+samples). If a particular strain or subspecies is to be represented,
+this is appended onto the species name. Follows standard NCBI taxonomy
+pattern.';
+
+-- ================================================
+-- TABLE: organism_dbxref
+-- ================================================
+
+create table organism_dbxref (
+    organism_dbxref_id serial not null,
+    primary key (organism_dbxref_id),
+    organism_id int not null,
+    foreign key (organism_id) references organism (organism_id) on delete cascade INITIALLY DEFERRED,
+    dbxref_id int not null,
+    foreign key (dbxref_id) references dbxref (dbxref_id) on delete cascade INITIALLY DEFERRED,
+    constraint organism_dbxref_c1 unique (organism_id,dbxref_id)
 );
+create index organism_dbxref_idx1 on organism_dbxref (organism_id);
+create index organism_dbxref_idx2 on organism_dbxref (dbxref_id);
 
 
-ALTER TABLE ONLY pub
-    ADD CONSTRAINT pub_pkey PRIMARY KEY (pub_id);
+-- ================================================
+-- TABLE: cvterm_dbxref
+-- ================================================
+create table cvterm_dbxref (
+    cvterm_dbxref_id serial not null,
+    primary key (cvterm_dbxref_id),
+    cvterm_id int not null,
+    foreign key (cvterm_id) references cvterm (cvterm_id) on delete cascade INITIALLY DEFERRED,
+    dbxref_id int not null,
+    foreign key (dbxref_id) references dbxref (dbxref_id) on delete cascade INITIALLY DEFERRED,
+    is_for_definition int not null default 0,
+    constraint cvterm_dbxref_c1 unique (cvterm_id,dbxref_id)
+);
+create index cvterm_dbxref_idx1 on cvterm_dbxref (cvterm_id);
+create index cvterm_dbxref_idx2 on cvterm_dbxref (dbxref_id);
 
-ALTER TABLE ONLY dbxref
-    ADD CONSTRAINT dbxref_db_id_key UNIQUE (db_id, accession, version);
+COMMENT ON TABLE cvterm_dbxref IS 'In addition to the primary
+identifier (cvterm.dbxref_id) a cvterm can have zero or more secondary
+identifiers/dbxrefs, which may refer to records in external
+databases. The exact semantics of cvterm_dbxref are not fixed. For
+example: the dbxref could be a pubmed ID that is pertinent to the
+cvterm, or it could be an equivalent or similar term in another
+ontology. For example, GO cvterms are typically linked to InterPro
+IDs, even though the nature of the relationship between them is
+largely one of statistical association. The dbxref may be have data
+records attached in the same database instance, or it could be a
+"hanging" dbxref pointing to some external database. NOTE: If the
+desired objective is to link two cvterms together, and the nature of
+the relation is known and holds for all instances of the subject
+cvterm then consider instead using cvterm_relationship together with a
+well-defined relation.';
 
-ALTER TABLE ONLY dbxref
-    ADD CONSTRAINT dbxref_pkey PRIMARY KEY (dbxref_id);
+COMMENT ON COLUMN cvterm_dbxref.is_for_definition IS 'A
+cvterm.definition should be supported by one or more references. If
+this column is true, the dbxref is not for a term in an external database -
+it is a dbxref for provenance information for the definition.';
 
-ALTER TABLE ONLY cvterm ALTER COLUMN cvterm_id
-    SET DEFAULT nextval('cvterm_cvterm_id_seq'::regclass);
-
-ALTER TABLE ONLY cvterm
-    ADD CONSTRAINT cvterm_pkey PRIMARY KEY (cvterm_id);
-
-ALTER TABLE ONLY cvterm
-    ADD CONSTRAINT cvterm_cv_id_fkey FOREIGN KEY (cv_id) REFERENCES cv(cv_id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE ONLY cvterm
-    ADD CONSTRAINT cvterm_dbxref_id_fkey FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE ONLY pub_dbxref
-    ADD CONSTRAINT "$2" FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
-
-
-ALTER TABLE ONLY cvterm_dbxref
-    ADD CONSTRAINT "$2" FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
-
-
-ALTER TABLE ONLY pub_dbxref
-    ADD CONSTRAINT "$1" FOREIGN KEY (pub_id) REFERENCES pub(pub_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY organism_dbxref
-    ADD CONSTRAINT  organism_dbxref_organism_fk FOREIGN KEY (organism_id) REFERENCES organism(organism_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY organism_dbxref
-    ADD CONSTRAINT  organism_dbxref_dbxref_fk FOREIGN KEY (dbxref_id) REFERENCES dbxref(dbxref_id) ON DELETE CASCADE;
 
 
 CREATE TABLE organisation (

@@ -32,14 +32,16 @@ __PACKAGE__->add_columns(
     size => undef,
   },
   "dbxref_id",
-  { data_type => "integer", default_value => undef, is_nullable => 1, size => 4 },
+  { data_type => "integer", default_value => undef, is_nullable => 0, size => 4 },
   "is_obsolete",
   { data_type => "integer", default_value => 0, is_nullable => 0, size => 4 },
   "is_relationshiptype",
   { data_type => "integer", default_value => 0, is_nullable => 0, size => 4 },
 );
 __PACKAGE__->set_primary_key("cvterm_id");
+__PACKAGE__->add_unique_constraint("cvterm_c2", ["dbxref_id"]);
 __PACKAGE__->add_unique_constraint("cvterm_pkey", ["cvterm_id"]);
+__PACKAGE__->add_unique_constraint("cvterm_c1", ["name", "cv_id", "is_obsolete"]);
 __PACKAGE__->has_many(
   "barcode_sets",
   "SmallRNA::DB::BarcodeSet",
@@ -52,6 +54,11 @@ __PACKAGE__->has_many(
 );
 __PACKAGE__->belongs_to("cv", "SmallRNA::DB::Cv", { cv_id => "cv_id" });
 __PACKAGE__->belongs_to("dbxref", "SmallRNA::DB::Dbxref", { dbxref_id => "dbxref_id" });
+__PACKAGE__->has_many(
+  "cvterm_dbxrefs",
+  "SmallRNA::DB::CvtermDbxref",
+  { "foreign.cvterm_id" => "self.cvterm_id" },
+);
 __PACKAGE__->has_many(
   "people",
   "SmallRNA::DB::Person",
@@ -91,6 +98,11 @@ __PACKAGE__->has_many(
   "process_conf_input_content_types",
   "SmallRNA::DB::ProcessConfInput",
   { "foreign.content_type" => "self.cvterm_id" },
+);
+__PACKAGE__->has_many(
+  "pubs",
+  "SmallRNA::DB::Pub",
+  { "foreign.type_id" => "self.cvterm_id" },
 );
 __PACKAGE__->has_many(
   "sample_processing_requirements",
@@ -135,7 +147,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jtF9t1qVcmRCXjBKyNEzVg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5Qj+NG/XGbm+vRn6sd6G0A
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

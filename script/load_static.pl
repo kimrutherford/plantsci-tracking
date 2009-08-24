@@ -17,6 +17,8 @@ my $config = $c->config();
 my $schema = SmallRNA::DB->schema($config);
 my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
 
+my $pipeline_db = $schema->create_with_type('Db', { name => 'SmallRNA pipeline database' });
+
 my %terms = (
              'tracking file format types' =>
              {
@@ -190,13 +192,16 @@ $schema->txn_do(sub {
     my %cvterms = %{$terms{$term_cv_name}};
 
     for my $cvterm_name (sort keys %cvterms) {
+      my $dbxref = $schema->create_with_type('Dbxref', 
+                                             { accession => $cvterm_name,
+                                               db => $pipeline_db });
+
       my $definition = $cvterms{$cvterm_name};
-
       my $rs = $schema->resultset('Cvterm');
-
       my $obj = $rs->create({name => $cvterm_name,
                              definition => $definition,
-                             cv => $cv});
+                             cv => $cv,
+                             dbxref => $dbxref});
 
       $cvterm_objs{$cvterm_name} = $obj;
     }
