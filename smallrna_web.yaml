@@ -1,4 +1,4 @@
-# SmallRNA config file
+# SmallRNA config file  -*- conf -*-
 name: SmallRNA::Web
 long_name: SmallRNA Tracking
 pipeline_directory: /data/pipeline
