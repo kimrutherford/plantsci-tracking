@@ -213,6 +213,27 @@ class_info:
         editable: 1
   protocol:
     display_field: name
+  pub:
+    display_field: title
+    editable: 1
+    field_info_list:
+      - field_label: title
+        editable: 1
+      - field_label: issue
+        editable: 1
+      - field_label: pyear
+        editable: 1
+      - field_label: pages
+        editable: 1
+      - field_label: uniquename
+        default_value: |
+           use SmallRNA::DBLayer::Loader;
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Pub', 'uniquename', 'PIPELINE-PUB-');
+        editable: 1
+      - field_label: type
+        field_conf: type_id
+        values_constraint: 'cv->name = "tracking publication types"'
+        editable: 1
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:

@@ -179,7 +179,21 @@ my %terms = (
              {
                '5-prime' => "Bar code will be at 5' end of the read",
                '3-prime' => "Bar code will be at 3' end of the read",
-             }
+             },
+             'tracking publication types' =>
+               {
+                 'paper' => 'Publication type: paper',
+                 'book' => 'Publication type: book',
+                 'book review' => 'Publication type: book review',
+                 'conference report' => 'Publication type: conference report',
+                 'editorial' => 'Publication type: editorial',
+                 'letter' => 'Publication type: letter',
+                 'meeting report' => 'Publication type: meeting report',
+                 'news article' => 'Publication type: news article',
+                 'personal communication' => 'Publication type: personal communication',
+                 'review' => 'Publication type: review',
+                 'thesis' => 'Publication type: thesis',
+               },
             );
 
 my %cvterm_objs = ();
