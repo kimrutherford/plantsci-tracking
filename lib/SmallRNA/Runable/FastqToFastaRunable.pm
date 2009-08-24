@@ -170,7 +170,7 @@ sub run
 
   my $detail = $self->{_conf}->detail();
 
-  if ($detail =~ /^processing_type: (.*)/) {
+  if ($detail =~ /^action: (.*)/) {
     $processing_type = $1;
   }
 
