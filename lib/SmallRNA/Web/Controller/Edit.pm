@@ -235,7 +235,14 @@ sub _initialise_form
 
   my @elements = ();
 
-  my @field_infos = @{$c->config()->{class_info}->{$type}->{field_info_list}};
+  my $field_infos_ref = $c->config()->{class_info}->{$type}->{field_info_list};
+  my @field_infos;
+
+  if (defined $field_infos_ref) {
+    @field_infos = @$field_infos_ref;
+  } else {
+    @field_infos = ();
+  }
 
   for my $field_info (@field_infos) {
     if (!$field_info->{admin_only} ||
@@ -247,10 +254,23 @@ sub _initialise_form
   $form->default_args({elements => { Text => { size => 50 } } });
 
   $form->auto_fieldset(1);
+
+  my $separator_block;
+
+  if (@field_infos) {
+    $separator_block = { name => 'clear-div', type => 'Block',
+                         attributes => { style => 'clear: both;' } };
+  } else {
+    $separator_block = { 
+      name => 'clear-div', type => 'Block',
+      attributes => { style => 'clear: both;' },
+      content => qq([No editable fields configured for type "$type"]) 
+     };
+  }
+
   $form->elements([
                     @elements,
-                    { name => 'clear-div', type => 'Block',
-                      attributes => { style => 'clear: both;' } },
+                    $separator_block,
                     map { {
                       name => $_, type => 'Submit', value => ucfirst $_
                     } } @INPUT_BUTTON_NAMES,
