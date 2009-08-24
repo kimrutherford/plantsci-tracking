@@ -73,7 +73,7 @@ sub _do_system
  Usage   : SmallRNA::Process::BWASearchProcess(input_file_name => $in_file_name,
                                                output_sam_file_name =>
                                                  $out_sam_file_name,
-                                               bwa_path => $ssah_path,
+                                               bwa_path => $bwa_path,
                                                database_file_name =>
                                                  $database_file_name);
  Function: Run a BWA search for the given input file against a fasta database
