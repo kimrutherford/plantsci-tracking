@@ -42,6 +42,10 @@ class_info:
     display_field: name
   cvterm:
     display_field: name
+  dbxref:
+    display_field: accession
+  db:
+    display_field: name
   organisation:
     display_field: name
   organism:
