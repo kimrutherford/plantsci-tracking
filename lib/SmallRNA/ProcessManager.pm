@@ -3,9 +3,13 @@ package SmallRNA::ProcessManager;
 =head1 NAME
 
 SmallRNA::ProcessManager - An in-memory store of the ProcessConf
-                             configuration
+                           configuration
 
 =head1 SYNOPSIS
+
+The class contains the logic for creating new pipeprocesses based on
+the ProcessConfs in the database and the current contents of the
+pipeprocess and pipedata tables.
 
 =head1 AUTHOR
 
@@ -59,6 +63,9 @@ sub new
   return $self;
 }
 
+# Create a bit of SQL that constrains a Sample to have inputs that
+# match the given ProcessConfInput and which don't already have a Pipeprocess
+# that uses the given ProcessConf
 sub _make_bit
 {
   my ($conf, $input) = validate_pos(@_, 1, 1);
@@ -161,6 +168,7 @@ sub _find_pipedata
   }
 }
 
+# Create a all missing Pipeprocesses for the given sample
 sub _create_sample_proc
 {
   my ($schema, $sample, $process_conf, $existing_processes) =
@@ -197,8 +205,7 @@ sub _create_sample_proc
       description => $description,
       process_conf => $process_conf,
       status => $not_started_status
-     );
-
+    );
 
     my $pipeprocess = $schema->create_with_type('Pipeprocess',
                                                   {
@@ -221,8 +228,10 @@ sub _create_sample_proc
 =head2 create_new_pipeprocesses
 
  Usage   : my @pipeprocess = $manager->create_new_pipeprocesses();
- Function: Create and return all pipeprocesses that can be run given the
-           current process_conf table.  The pipeprocess table will be changed.
+ Function: Create new pipeprocess objects and return all pipeprocesses
+           that can be run given the current process_conf table.  We create a
+           new pipeprocess when there are pipedata objects that are valid inputs
+           for a ProcessConf and which don't have an existing pipe_process. 
  Args    : none
 
 =cut
