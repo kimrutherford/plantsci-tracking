@@ -7,18 +7,18 @@ $object
   <thead>
     <tr>
       <td>
-        &nbsp;
+        Description
       </td>
-      <td>
+      <td style="white-space: nowrap;">
         Number of sequences
       </td>
-      <td>
+      <td style="white-space: nowrap;">
         Total bases
       </td>
-      <td>
+      <td style="white-space: nowrap;">
         G+C bases
       </td>
-      <td>
+      <td style="white-space: nowrap;">
         G+C percentage
       </td>
     </tr>
@@ -97,7 +97,7 @@ for my $fast_stat_pipe_data (@pipe_datas) {
 
     push @stats, { fast_pipedata => $fast_stat_pipe_data,
                    data => \%fast_data,
-                   label => $fast_pipedata->content_type()->name(),
+                   label => $fast_pipedata->content_type()->definition(),
                    };
 
     close $file or die "can't close $file: $!\n";
