@@ -64,14 +64,14 @@ div#footer .sponsor {
 .page_description {
     background-color: #ddd;
     color: #227;
-    font-size: 110%;
+    font-size: 130%;
     font-weight: bold;
     padding: 2px 5px 1px 5px;
-
 }
 
 .field_list {
     padding-bottom: 20px;
+    margin: 10px 0px 5px 0px;
 }
 
 #front-page {
