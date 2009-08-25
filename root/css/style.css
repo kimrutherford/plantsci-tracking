@@ -86,7 +86,7 @@ table.list {
     border-style: outset;
     border-color: gray;
     border-collapse: collapse;
-    font-size: 70%;
+    font-size: 75%;
 }
 table.list thead tr td {
     padding: 3px;
