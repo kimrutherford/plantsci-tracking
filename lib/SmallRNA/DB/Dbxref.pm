@@ -73,6 +73,7 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.04005
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zu1XBCkF8N+BLHaYANiyWw
 
+__PACKAGE__->many_to_many(extra_cvterms => 'cvterm_dbxrefs', 'cvterm');
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;
