@@ -45,7 +45,7 @@ div#footer .sponsor {
     margin: 0px;
     border: 2px solid red;
     background-color: #fff;
-    clear: both;
+    clear: left;
 }
 
 .message {
@@ -53,14 +53,12 @@ div#footer .sponsor {
     margin: 0px;
     border: 2px solid green;
     background-color: #fff;
-    clear: both;
+    clear: left;
 }
 
 .content {
-    margin: 5px;
-    margin-top: 20px;
-    clear: both;
-    font-size: 90%;
+    margin: 20px;
+    clear: left;
 }
 
 .page_description {
@@ -76,6 +74,11 @@ div#footer .sponsor {
     padding-bottom: 20px;
 }
 
+#front-page {
+    font-size: 130%;
+    padding: 10px;
+}
+
 table.list {
     margin: 10px;
     border-width: 1px;
@@ -83,6 +86,7 @@ table.list {
     border-style: outset;
     border-color: gray;
     border-collapse: collapse;
+    font-size: 70%;
 }
 table.list thead tr td {
     padding: 3px;
@@ -133,11 +137,10 @@ table.list tr td {
 
 .infobox {
     padding: 8px 0px 8px 0px;
-    font-size: 95%
 }
 
 .infobox table.list {
-    font-size: 85%;
+    font-size: 95%;
 }
 
 .infobox .title {
@@ -153,6 +156,7 @@ table.list tr td {
 .actionlist {
     margin: 5px;
     border: 1px solid #999;
+    clear: right;
 }
 
 .actionlist .label {
@@ -234,9 +238,11 @@ fieldset .checkboxgroup > span {
 }
 
 #login {
+    padding: 10px;
     float: right;
 }
 #logout {
+    padding: 10px;
     float: right;
 }
 

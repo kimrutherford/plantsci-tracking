@@ -1,3 +1,4 @@
+<div id="front-page">
 <table>
   <tr>
     <td class="actionlist" width="50%" valign="top" rowspan="2">
@@ -108,3 +109,4 @@
     </td>
   </tr>
 </table>
+</div>
