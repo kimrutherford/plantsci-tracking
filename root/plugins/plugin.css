@@ -6,7 +6,7 @@
 }
 
 .ui-tabs .ui-tabs-nav li a { 
-  padding: .1em .2em;
+  padding: .1em .5em;
 }
 
 .infobox .ui-tabs { 
@@ -15,4 +15,8 @@
 
 .ui-tabs {
   border-color: white;
+}
+
+.ui-tabs .ui-tabs-nav {
+  font-size: 70%; 
 }

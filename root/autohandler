@@ -8,7 +8,7 @@ $message => undef
 <html lang="en">
   <head>
     <title><% $c->config()->{long_name} %> - <% $title %></title>
-    <link href="<% $c->uri_for('/css/smoothness/jquery-ui-1.7.2.custom.css') %>" type="text/css" 
+    <link href="<% $c->uri_for('/css/custom-theme/ui.all.css') %>" type="text/css" 
           rel="stylesheet" />	
     <link href="<% $c->uri_for('/css/style.css') %>" type="text/css" 
           rel="stylesheet" />
