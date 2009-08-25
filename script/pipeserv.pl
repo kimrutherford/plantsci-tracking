@@ -1,5 +1,16 @@
 #!/usr/bin/perl -w
 
+# This script periodically checks the status of jobs and data files in
+# the database looking for new pipeprocesses to start.  Most of the
+# hard work is done in the ProcessManager class.
+
+# There are two steps:
+#   1. Create new Pipeprocess objects in the database with status "not_started".
+#      This is done by ProcessManager::create_new_pipeprocesses().
+#   2. For each Pipeprocess in the database with a "not_started" status, queue
+#      a job with Torque and mark it as "queued" in the database
+# Repeat...
+
 use strict;
 
 use DateTime;
@@ -15,12 +26,17 @@ my $c = SmallRNA::Web->commandline();
 my $config = $c->config();
 
 my $schema = SmallRNA::DB->schema($config);
-
 my $pipedata_rs = $schema->resultset('Pipedata')->search();
 
 my $proc_manager = SmallRNA::ProcessManager->new(schema => $schema);
 
-$proc_manager->create_new_pipeprocesses();
+while (1) {
+
+warn "creating new Pipeprocess objects\n";
+
+my @pipeprocesses = $proc_manager->create_new_pipeprocesses();
+
+warn "created ", scalar(@pipeprocesses), "\n";
 
 my $queued_status = $schema->find_with_type('Cvterm', name => 'queued');
 
@@ -62,8 +78,6 @@ while (my $pipeprocess = $conf_rs->next()) {
 
     $pipeprocess->job_identifier($qsub_jobid);
     $pipeprocess->update();
-
-    sleep (1);
   };
 
   $schema->txn_do($code);
@@ -86,4 +100,8 @@ while (my $pipeprocess = $conf_rs->next()) {
       }
     }
   }
+}
+
+sleep (30);
+
 }
