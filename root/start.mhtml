@@ -1,53 +1,53 @@
 <div id="front-page">
-<table>
-  <tr>
-    <td class="actionlist" width="50%" valign="top" rowspan="2">
-      <div>
-        <div class="label">
-          View ...
+  <table>
+    <tr>
+      <td class="actionlist" width="50%" valign="top">
+        <div>
+          <div class="label">
+            View ...
+          </div>
+          <ul>
+            <li>
+              <a href="<% $c->uri_for('/view/list/person') %>">People</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/organisation') %>">Organisations</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/coded_sample') %>">Coded samples</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/pipedata') %>">Data files</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/pub') %>">Publications</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/pipeprocess') %>">Processes/jobs</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/process_conf') %>">Pipeline project configuration</a>
+            </li>
+          </ul>
         </div>
-        <ul>
-          <li>
-            <a href="<% $c->uri_for('/view/list/person') %>">People</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/organisation') %>">Organisations</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/coded_sample') %>">Coded samples</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/pipedata') %>">Data files</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/pub') %>">Publications</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/pipeprocess') %>">Processes/jobs</a>
-          </li>
-          <li>
-            <a href="<% $c->uri_for('/view/list/process_conf') %>">Pipeline project configuration</a>
-          </li>
-        </ul>
-      </div>
-    </td>
-    <td class="actionlist" width="50%" valign="top">
-      <div>
+      </td>
+% if ($c->user_exists()) {
+      <td class="actionlist" width="50%" valign="top">
         <div class="label">
           Add a ...
         </div>
@@ -61,7 +61,7 @@
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/coded_sample') %>">Sample
-              with barcode</a>
+                with barcode</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">Sequencing sample</a>
@@ -75,7 +75,7 @@
             <li>
               <a href="<% $c->uri_for('/new/object/pub') %>">Publication</a>
             </li>
-% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+%   if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
             <li>
               <a href="<% $c->uri_for('/new/object/process_conf') %>">
                 Pipeline process configuration
@@ -86,27 +86,16 @@
                 Pipeline process input configuration
               </a>
             </li>
-% }
+%   }
+            <li>
+              <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">
+                Sample to an existing sequencing run
+              </a>
+            </li>
           </ul>
         </div>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td class="actionlist" width="50%" valign="top">
-      <div class="label">
-        Actions
-      </div>
-      <div>
-        <ul>
-          <li>
-            <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">
-              Sample to an existing sequencing run
-            </a>
-          </li>
-        </ul>
-      </div>
-    </td>
-  </tr>
-</table>
+      </td>
+% }
+    </tr>
+  </table>
 </div>

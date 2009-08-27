@@ -15,7 +15,7 @@ $object
 });
 </script>
 
-% if ($editable) {
+% if ($editable && $c->user_exists()) {
 <div class="actionlist" style="float: right">
   <div class="label">
     Actions
