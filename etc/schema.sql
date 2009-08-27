@@ -3,6 +3,7 @@ DROP TABLE process_conf_input CASCADE;
 DROP TABLE process_conf CASCADE;
 DROP TABLE pipeprocess CASCADE;
 DROP TABLE pipedata CASCADE;
+DROP TABLE pipedata_property CASCADE;
 DROP TABLE sample CASCADE;
 DROP TABLE sample_pipeproject CASCADE;
 DROP TABLE pipeprocess_in_pipedata CASCADE;
