@@ -64,6 +64,7 @@ sub run
   my $all_count = 0;
   my $total_bases = 0;
   my $gc_count = 0;
+  my $n_count = 0;
 
   if (!-e $params{input_file_name}) {
     croak "can't find input file: $params{input_file_name}";
@@ -94,6 +95,7 @@ sub run
     $total_bases += length $sequence;
 
     $gc_count += $sequence =~ tr/[gcGC]//;
+    $n_count += $sequence =~ tr/[nN]//;
 
     if ($ENV{'SMALLRNA_PIPELINE_TEST'} && $all_count > 1000) {
       last;
@@ -118,7 +120,11 @@ sub run
   close $out or die "can't close $params{output_file_name}: $!\n";
 
   # this is for testing the stats
-  return { count => $all_count, gc_count => $gc_count };
+  return { 'sequence count' => $all_count, 
+           'base count' => $total_bases,
+           'gc content' => $gc_count,
+           'n content' => $n_count
+          };
 }
 
 1;

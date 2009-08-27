@@ -82,10 +82,21 @@ sub run
       $stats_term_name = 'fastq_stats';
     }
 
-    SmallRNA::Process::FastStatsProcess::run(input_file_name =>
-                                               "$data_dir/" . $input_file_name,
-                                             output_file_name =>
-                                               "$data_dir/" . $out_file_name);
+    my $results =
+      SmallRNA::Process::FastStatsProcess::run(input_file_name =>
+                                                 "$data_dir/" . $input_file_name,
+                                               output_file_name =>
+                                                 "$data_dir/" . $out_file_name);
+    
+    for my $prop_type_name (sort keys %$results) {
+      my $type_cvterm = $schema->find_with_type('Cvterm', name => $prop_type_name);
+      my $create_args = {
+        type => $type_cvterm,
+        value => $results->{$prop_type_name},
+        pipedata => $input_pipedata
+      };
+      $schema->create_with_type('PipedataProperty', $create_args);
+    }
 
     my @samples = $input_pipedata->samples();
 
@@ -95,6 +106,7 @@ sub run
                           content_type_name => $stats_term_name,
                           samples => \@samples);
   };
+
   $self->schema->txn_do($code);
 }
 
