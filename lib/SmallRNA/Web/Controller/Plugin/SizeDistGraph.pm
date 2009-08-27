@@ -149,7 +149,7 @@ sub sizedist : Path('/plugin/graph/sizedist') {
   my $schema = $c->schema();
   my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
   my ($counts_ref, $min, $max) = get_pipedata_counts($c, $pipedata);
-  my $cc = Chart::Clicker->new(width => 600, height => 400);
+  my $cc = Chart::Clicker->new(width => 800, height => 480);
 
   my %counts = %$counts_ref;
 
