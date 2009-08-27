@@ -25,19 +25,21 @@ $object
   </thead>
   <tbody>
 % my $row_count = 0;
+% use Number::Format;
+% my $fmt = Number::Format->new();
 % for my $stat (@stats) {
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
     <td>
       <% $stat->{label} %>
     </td>
     <td>
-      <% $stat->{data}->{number_of_sequences} %>
+      <% $fmt->format_number($stat->{data}->{number_of_sequences}) %>
     </td>
     <td>
-      <% $stat->{data}->{total_bases} %>
+      <% $fmt->format_number($stat->{data}->{total_bases}) %>
     </td>
     <td>
-      <% $stat->{data}->{gc_bases} %>
+      <% $fmt->format_number($stat->{data}->{gc_bases}) %>
     </td>
     <td>
       <% $stat->{data}->{gc_content} %>
