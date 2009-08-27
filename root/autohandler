@@ -64,13 +64,11 @@ $message => undef
 % }
 </div>
       <div class="content">
-% if ($c->request->path() ne '') {
         <div>
           <span class="page_description">
             <% $title %>
           </span>
         </div>
-% }
 % $m->call_next;
       </div>
     </div>
