@@ -421,6 +421,12 @@ CREATE TABLE pipedata (
        file_length bigint NOT NULL,
        generating_pipeprocess integer REFERENCES pipeprocess(pipeprocess_id)
 );
+CREATE TABLE pipedata_property (
+       pipedata_property_id serial CONSTRAINT pipedata_property_id_pk PRIMARY KEY,
+       pipedata integer REFERENCES pipedata(pipedata_id) NOT NULL,
+       type integer REFERENCES cvterm(cvterm_id) NOT NULL,
+       value text NOT NULL
+);
 CREATE TABLE pipeprocess_in_pipedata (
        pipeprocess_in_pipedata_id serial CONSTRAINT pipeprocess_in_pipedata_id_pk PRIMARY KEY,
        created_stamp timestamp NOT NULL DEFAULT now(),

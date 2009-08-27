@@ -194,6 +194,13 @@ my %terms = (
                  'review' => 'Publication type: review',
                  'thesis' => 'Publication type: thesis',
                },
+             'tracking pipedata property types' =>
+               {
+                 'sequence count' => 'Total number of sequences',
+                 'base count' => 'Total number of bases',
+                 'gc content' => 'Total G+C bases',
+                 'n content' => 'Total N bases',
+               }
             );
 
 my %cvterm_objs = ();

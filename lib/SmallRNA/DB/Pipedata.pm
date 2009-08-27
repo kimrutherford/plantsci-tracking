@@ -57,6 +57,11 @@ __PACKAGE__->belongs_to(
   { cvterm_id => "content_type" },
 );
 __PACKAGE__->has_many(
+  "pipedata_properties",
+  "SmallRNA::DB::PipedataProperty",
+  { "foreign.pipedata" => "self.pipedata_id" },
+);
+__PACKAGE__->has_many(
   "pipeprocess_in_pipedatas",
   "SmallRNA::DB::PipeprocessInPipedata",
   { "foreign.pipedata" => "self.pipedata_id" },
@@ -74,7 +79,7 @@ __PACKAGE__->has_many(
 
 
 # Created by DBIx::Class::Schema::Loader v0.04005
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:etXOraNBbcCdTjcTfVyRRA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fuoUtCeGn5UP7y9q2j5ZUQ
 
 __PACKAGE__->many_to_many(next_pipeprocesses => 'pipeprocess_in_pipedatas',
                           'pipeprocess');

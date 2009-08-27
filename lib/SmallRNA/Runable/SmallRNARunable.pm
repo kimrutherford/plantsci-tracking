@@ -78,6 +78,9 @@ sub input_files
            samples - a list of the sample(s) that this pipedata comes from, or
              empty list if we should use the samples from the input pipedata
              for the generating_pipeprocess
+           properties - a hash of property type (from the cvterm table) to
+             property value (any string), which will be stored in the
+             pipedata_property table
  Returns : nothing - either succeeds or calls die()
 
 =cut
@@ -89,7 +92,8 @@ sub store_pipedata
                               file_name => 1,
                               format_type_name => 1,
                               content_type_name => 1,
-                              samples => 0
+                              samples => 0,
+                              properties => 0,
                             });
 
   my $schema = $self->schema();
@@ -98,6 +102,12 @@ sub store_pipedata
     $schema->find_with_type('Cvterm', name => $params{format_type_name});
   my $content_term =
     $schema->find_with_type('Cvterm', name => $params{content_type_name});
+
+  my %pipedata_properties = ();
+
+  if (defined $params{properties}) {
+    %pipedata_properties = %{$params{properties}};
+  }
 
   my $file_name = $params{file_name};
 
@@ -125,13 +135,24 @@ sub store_pipedata
   if (defined $params{samples}) {
     if (@{$params{samples}} > 0) {
       $pipedata->add_to_samples(@{$params{samples}});
-      $pipedata->update();
     }
   } else {
     my @prev_pipedata =
       $params{generating_pipeprocess}->pipeprocess_in_pipedatas()->search_related('pipedata');
     my @prev_samples = map { $_->samples() } @prev_pipedata;
     $pipedata->add_to_samples(@prev_samples);
+  }
+
+  $pipedata->update();
+
+  for my $prop_type_name (sort keys %pipedata_properties) {
+    my $type_cvterm = $schema->find_with_type('Cvterm', name => $prop_type_name);
+    my $create_args = {
+      type => $type_cvterm,
+      value => $pipedata_properties{$prop_type_name},
+      pipedata => $pipedata
+    };
+    $schema->create_with_type('PipedataProperty', $create_args);
   }
 
   return $pipedata;
