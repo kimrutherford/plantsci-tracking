@@ -86,11 +86,13 @@ while (my $pipeprocess = $conf_rs->next()) {
     for (1..1000) {   # don't do it forever, in case there's a problem
       my $count = 0;
 
-      open PIPE, "qstat|" or die;
+      open PIPE, "qstat|" or die "can't open pipe to qstat: $?\n";
 
       while (defined (my $line = <PIPE>)) {
         $count++ if $line =~ / [QR] batch/;
       }
+
+      close PIPE or die "can't close pipe to qstat: $?\n";
 
       if ($count >= $ENV{'PIPESERV_MAX_JOBS'}) {
         warn "$count - sleeping\n";
