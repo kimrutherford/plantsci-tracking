@@ -21,6 +21,9 @@ $type
     list_title => 'Processes that use this data as input' &>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
     list_title => "The sample$plu that (ultimately) generated this data" &>
+  <& /view/collection.mhtml, object => $object,
+    collection_title => 'The properties stored for this data',
+    collection_name => 'pipedata_properties' &>
 </div>
 
 <%init>
