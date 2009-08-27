@@ -104,6 +104,7 @@ while (my $pipeprocess = $conf_rs->next()) {
   }
 }
 
-sleep (30);
-
+if (!$test_mode) {
+  sleep (30);
+}
 }
