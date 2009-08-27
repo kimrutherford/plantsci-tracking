@@ -32,8 +32,8 @@ for my $input (@inputs) {
     input_file_name => $input_file_name
   );
 
-  is($res->{count}, $input->{count});
-  is($res->{gc_count}, $input->{gc_count});
+  is($res->{'sequence count'}, $input->{count});
+  is($res->{'gc content'}, $input->{gc_count});
 
   my $expected_yaml = LoadFile($input->{expected_file_name});
   my $actual_yaml = LoadFile($output_file_name);
