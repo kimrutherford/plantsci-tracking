@@ -339,7 +339,7 @@ sub create_pipedata
   $sequencing_run->initial_pipedata($pipedata);
   $sequencing_run->initial_pipeprocess($pipeprocess);
 
-  $pipedata->add_to_samples(@samples);
+  map { $pipedata->add_to_samples($_); } @samples;
 
   $sequencing_run->update();
 
