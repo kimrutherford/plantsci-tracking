@@ -2,8 +2,7 @@
 $object
 </%args>
 
-<& /view/object/object_top.mhtml, object => $object, 
-  field_labels => [qw(identifier code)] &>
+<& /view/object/object_top.mhtml, object => $object &>
 
 <div id="collections">
   <& /view/collection.mhtml, object => $object, 

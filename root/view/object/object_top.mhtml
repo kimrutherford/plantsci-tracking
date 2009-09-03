@@ -1,6 +1,6 @@
 <%args>
 $object
-@field_labels
+@field_labels => ()
 </%args>
 
 <div>
@@ -28,5 +28,16 @@ my $plugins_ref = $c->config()->{plugins}{object_page}{$type};
 
 if (defined $plugins_ref) {
   @object_plugins = @{$plugins_ref};
+}
+
+if (!@field_labels) {
+  my %class_info = %{$c->config()->{class_info}->{$object->table()}};
+  my @field_info_list = @{$class_info{field_info_list}};
+
+  for my $field_info (@field_info_list) {
+    my $field_label = $field_info->{field_conf} || $field_info->{field_label};
+
+    push @field_labels, $field_label;
+  }
 }
 </%init>

@@ -181,6 +181,13 @@ class_info:
   barcode:
     display_field: long_identifier
     order_by: identifier
+    field_info_list:
+      - field_label: identifier
+        editable: 1
+      - field_label: code
+        editable: 1
+      - field_label: barcode_set
+        editable: 1
   barcode_set:
     display_field: name
   pipedata:
