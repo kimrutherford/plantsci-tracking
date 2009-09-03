@@ -1,0 +1,8 @@
+# params file for deploy.pl for use on node3 (the pipeline server)
+'pipeline-directory': /data/pipeline
+'pipeline-process-directory': results/node3_test_data
+'database-name': pipeline-node3-proto
+'database-host': hydrogen
+'database-user-name': kmr44
+'database-password': kmr
+
