@@ -108,7 +108,7 @@ sub run
 
   my @samse_files = ($params{database_file_name}, $temp_aln_file_name, $infile_name);
   my $samse_command =
-    "$params{bwa_path} samse -n 10000 @samse_files";
+    "$params{bwa_path} samse @samse_files";
 
   _do_system "$samse_command 2>> $log_file_name > $outfile_name";
 }
