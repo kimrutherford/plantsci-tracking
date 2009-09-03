@@ -1,8 +1,8 @@
 # SmallRNA config file  -*- conf -*-
 name: SmallRNA::Web
 long_name: SmallRNA Tracking
-pipeline_directory: /data/pipeline
-data_sub_directory: process
+pipeline_directory: ${pipeline-directory}
+data_sub_directory: ${pipeline-process-directory}
 authentication:
   default_realm: 'members'
   realms:
@@ -273,9 +273,9 @@ class_info:
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:
-     - "dbi:Pg:dbname=pipeline-dev-kmr44;host=hydrogen"
-     - 'kmr44'
-     - 'kmr'
+     - "dbi:Pg:dbname=${database-name};host=${database-host}"
+     - '${database-user-name}'
+     - '${database-password}'
 gbrowse:
   prefix: 'http://node3/cgi-bin/gbrowse/arabidopsis'
 plugins:
