@@ -5,6 +5,7 @@
 use strict;
 use warnings;
 use Carp;
+use v5.10;
 
 use Getopt::Long;
 use Pod::Usage;
@@ -15,7 +16,7 @@ my $TEMPLATE_FILE = $CONF_FILE . '.template';
 
 =head1 NAME
 
-deploy.pl - deploy a pipeline database
+pipeinit.pl - deploy a pipeline database
 
 =head1 SYNOPSIS
 
