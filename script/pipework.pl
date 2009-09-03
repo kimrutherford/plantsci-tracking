@@ -45,21 +45,28 @@ if (!defined $pipeprocess) {
   croak "error: can't find pipeprocess with id: $pipeprocess_id\n";
 }
 
-my $time_started = $pipeprocess->time_started();
-if (defined $time_started) {
-  croak "error: process already started at: $time_started\n";
-}
-
-$pipeprocess->time_started(DateTime->now());
-$pipeprocess->status($started_status);
-$pipeprocess->update();
-
 if (!$ENV{SMALLRNA_PIPELINE_TEST}) {
   POSIX::nice(19);
 }
 
-$schema->txn_do(sub { 
-                  SmallRNA::PipeWork::run_process(schema => $schema, 
+$schema->txn_do(sub {
+                  my $time_started = $pipeprocess->time_started();
+                  if (defined $time_started) {
+                    warn "error: process $pipeprocess_id already started at: $time_started\n";
+                  }
+
+                  if ($pipeprocess->status()->name() ne 'queued') {
+                    # already started - perhaps two pipeserv.pl processes are
+                    # running?
+                    warn 'pipeprocess ', $pipeprocess_id,
+                      " already started - exiting\n";
+                    exit(0);
+                  } else {
+                    $pipeprocess->time_started(DateTime->now());
+                    $pipeprocess->status($started_status);
+                    $pipeprocess->update();
+                  }
+                  SmallRNA::PipeWork::run_process(schema => $schema,
                                                   config => $config,
                                                   pipeprocess => $pipeprocess);
                 });
