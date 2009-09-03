@@ -21,6 +21,7 @@ BEGIN {
 
 use DateTime;
 use Carp;
+use POSIX qw(nice);
 
 use SmallRNA::Config;
 use SmallRNA::DB;
@@ -54,7 +55,6 @@ $pipeprocess->status($started_status);
 $pipeprocess->update();
 
 if (!$ENV{SMALLRNA_PIPELINE_TEST}) {
-  use POSIX ();
   POSIX::nice(19);
 }
 
