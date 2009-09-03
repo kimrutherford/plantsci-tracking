@@ -231,6 +231,13 @@ sub run
         $code_from_seq = '';
       }
 
+      if (!defined $code_from_seq) {
+        croak "internal error - code_from_seq not defined for input: $sequence\n"
+          . " input_file: $input_file_name\n"
+          . " regex: $process_re\n"
+          . " barcode position: $barcode_position\n";
+      }
+
       if (length $trimmed_seq < 15) {
         print $rej_file "$sequence\tIs too short ($seq_len)\n";
       } else {
