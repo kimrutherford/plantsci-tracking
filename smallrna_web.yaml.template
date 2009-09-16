@@ -287,6 +287,9 @@ plugins:
       - name: Size distribution graph
         path: /plugins/sizecomp.mhtml
         css_class: size_dist_graph
+      - name: Base distribution graph
+        path: /plugins/basedist.mhtml
+        css_class: base_dist_graph
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64
