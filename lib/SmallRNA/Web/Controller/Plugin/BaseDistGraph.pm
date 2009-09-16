@@ -115,10 +115,6 @@ sub sizedist : Path('/plugin/graph/basedist') {
   for my $base (qw(A T C G N)) {
     my $set = $positional_counts_ref->{$base};
 
-    use Data::Dumper;
-
-    warn Dumper([\@base_positions, $set]);
-
     my $series = Chart::Clicker::Data::Series->new(
       keys => [@base_positions],
       values => $set,
