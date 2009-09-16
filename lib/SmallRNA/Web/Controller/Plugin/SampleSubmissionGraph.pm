@@ -1,9 +1,9 @@
-package SmallRNA::Web::Controller::Plugin::BaseDistGraph;
+package SmallRNA::Web::Controller::Plugin::SampleSubmissionGraph;
 
 =head1 NAME
 
-SmallRNA::Web::Controller::Plugin::BaseDistGraph - Show a graph of base
-   distribution within reads
+SmallRNA::Web::Controller::Plugin::SampleSubmissionGraph
+  - draw a graph of the number of submissions per quarter
 
 =head1 SYNOPSIS
 
