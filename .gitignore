@@ -5,5 +5,4 @@ blib/
 pm_to_blib
 META.yml
 Makefile.old
-Makefile.PL
 smallrna_web.yaml
