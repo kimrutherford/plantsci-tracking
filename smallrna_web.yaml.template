@@ -294,6 +294,9 @@ plugins:
     - name: Samples submitted by quarter
       path: /plugins/sample_submissions.mhtml
       css_class: sample_submission_graph
+    - name: Cumulative number of sequences by month
+      path: /plugins/cumulative_reads_by_month.mhtml
+      css_class: cumulative_reads_by_month
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64

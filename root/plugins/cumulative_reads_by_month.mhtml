@@ -1,0 +1,7 @@
+<%doc>
+This component show a graph, by month, of total sequencing reads
+</%doc>
+
+<div id="total_reads_by_month">
+  <img src='<% $c->uri_for("/plugin/graph/cumulative_reads_by_month") %>'/>
+</div>
