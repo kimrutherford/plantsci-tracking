@@ -290,6 +290,10 @@ plugins:
       - name: Base distribution graph
         path: /plugins/basedist.mhtml
         css_class: base_dist_graph
+  front_page:
+    - name: Samples submitted by quarter
+      path: /plugins/sample_submissions.mhtml
+      css_class: sample_submission_graph
 programs:
   ssaha:
     path: /applications/ssaha_v31c_amd64/ssaha_v31c_amd64

@@ -3,18 +3,6 @@ $type
 $object
 </%args>
 
-<script type="text/javascript">
-  $(function() {
-     $(".sect .sect-title").click(function() {
-       $(this).next().toggle();
-       $(this).toggleClass('undisclosed-title');
-       $(this).toggleClass('disclosed-title');
-       $.sparkline_display_visible()
-       return false;
-  }).next().hide();
-});
-</script>
-
 % if ($editable && $c->user_exists()) {
 <div class="actionlist" style="float: right">
   <div class="label">

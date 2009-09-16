@@ -1,0 +1,7 @@
+<%doc>
+This component show a graph, by quarter, of sequencing submissions.
+</%doc>
+
+<div id="sample_submissions">
+  <img src='<% $c->uri_for("/plugin/graph/sample_submissions") %>'/>
+</div>
