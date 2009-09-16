@@ -3,7 +3,7 @@ $object
 </%args>
 
 <%doc>
-This component show composition statistics and graphs.
+This component shows composition statistics and graphs.
 </%doc>
 
 <script type="text/javascript">
