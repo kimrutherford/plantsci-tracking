@@ -26,14 +26,18 @@ $message => undef
 
 <script type="text/javascript">
   $(function() {
-     $(".sect .sect-title").click(function() {
+     title = $(".sect .sect-title");
+     title.click(function() {
        $(this).next().toggle();
        $(this).toggleClass('undisclosed-title');
        $(this).toggleClass('disclosed-title');
        $.sparkline_display_visible()
        return false;
-     }).is(".undisclosed-title").next().hide();
-});
+     });
+     if (title.is(".undisclosed-title")) {
+       title.next().hide();
+     }
+   });
 </script>
 
 <& /user.mhtml &>
