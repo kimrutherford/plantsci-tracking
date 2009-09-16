@@ -24,29 +24,7 @@ $message => undef
         <div id="heading_text"> <% $c->config->{long_name} %> </div> </a>
     </div>
 
-
-% if ($c->user_exists()) {
-    <div id="logout">
-      Logged in as: <% $c->user()->username() %>
-      <form name="logout" method="get" action="/logout">
-        <input id="submit" name="submit" type="submit" value="logout"/>
-      </form>
-    </div>
-
-% } else {
-    <div id="login">
-      <form name="login" method="get" action="/login">
-        <div>
-          User ID: <input id="username" name="username" maxlength="20" size="20"/>
-        </div>
-        <div>
-          Password: <input type=password id="password" name="password"/>
-        </div>
-        <input type="hidden" name="return_path" value="<% $c->req->uri() %>"/>
-        <input id="submit" name="submit" type="submit" value="login"/>
-      </form>
-    </div>
-% }
+<& /user.mhtml &>
 
 <div id="errorsDiv">
 % if (defined $error) {
