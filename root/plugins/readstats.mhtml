@@ -79,8 +79,6 @@ for my $fast_stat_pipe_data (@pipe_datas) {
     my %fast_data = ();
     my $fast_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
 
-  warn "opening $fast_file_name\n";
-
     open my $file, '<', $fast_file_name
       or die "can't open $fast_file_name: $!\n";
 
