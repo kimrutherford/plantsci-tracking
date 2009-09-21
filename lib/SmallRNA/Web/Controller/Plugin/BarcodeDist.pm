@@ -211,6 +211,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
 
   my $def = $cc->get_context('default');
 
+  $def->range_axis->format('%d');
   $def->domain_axis->tick_values(\@keys);
   $def->domain_axis->format(sub {
                              my $key = shift;
