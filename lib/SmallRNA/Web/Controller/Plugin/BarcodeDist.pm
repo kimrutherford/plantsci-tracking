@@ -66,7 +66,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
   my $schema = $c->schema();
   my $sequencingrun = $schema->find_with_type('Sequencingrun', 'sequencingrun_id', $object_id);
 
-  my $cc = Chart::Clicker->new(width => 600, height => 400);
+  my $cc = Chart::Clicker->new(width => 800, height => 400);
 
   my $fastq_pipedata = $sequencingrun->initial_pipedata();
 
