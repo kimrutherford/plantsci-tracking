@@ -47,7 +47,7 @@ use Chart::Clicker::Context;
 use Chart::Clicker::Data::DataSet;
 use Chart::Clicker::Data::Marker;
 use Chart::Clicker::Data::Series;
-use Chart::Clicker::Renderer::Pie;
+use Chart::Clicker::Renderer::StackedBar;
 use Geometry::Primitive::Rectangle;
 use Graphics::Color::RGB;
 
@@ -74,6 +74,15 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
                                                  { name => 'sequence count' });
   my $barcode_prop_type = $schema->find_with_type('Cvterm',
                                                  { name => 'multiplexing code' });
+
+  my %expected_barcode_ids = ();
+
+  my @barcoded_samples = $sequencingrun->sequencing_sample()->search_related('coded_samples');
+
+  for my $barcoded_sample (@barcoded_samples) {
+    my $barcode_id = $barcoded_sample->barcode()->identifier();
+    $expected_barcode_ids{$barcode_id}++;
+  }
 
   my $fq_seq_count =
     $fastq_pipedata->search_related('pipedata_properties',
@@ -116,9 +125,6 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
                                                        })->next()->value();
 
           $pipedata_info{$barcode_prop->value()} = $seq_count;
-
-          warn "barcode: ", $barcode_prop->value(), " $seq_count\n";
-
         } else {
           # we don't know the barcode for this pipedata
         }
@@ -128,14 +134,29 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
 
   my @series_list = ();
 
-  for my $code (keys %pipedata_info) {
-    my $series = Chart::Clicker::Data::Series->new(
-      keys => [1],  # dummy
-      values => [$pipedata_info{$code}],
-      name => "Code: $code"
-     );
+  my @keys = ();
+  my @non_expected_barcode_values = ();
+  my @expected_barcode_values = ();
 
-    push @series_list, $series;
+  # hacky, but keys must be numbers:
+  my %key_names = ();
+  my $key_index = 0;
+
+  for my $code_id (keys %pipedata_info) {
+    push @keys, $key_index;
+    $key_names{$key_index++} = $code_id;
+
+    my $expected_barcode_count = 0;
+    my $non_expected_barcode_count = 0;
+
+    if (exists $expected_barcode_ids{$code_id}) {
+      $expected_barcode_count = $pipedata_info{$code_id};
+    } else {
+      $non_expected_barcode_count = $pipedata_info{$code_id};
+    }
+
+    push @non_expected_barcode_values, $non_expected_barcode_count;
+    push @expected_barcode_values, $expected_barcode_count;
   }
 
   warn "total_reads_count: $total_reads_count\n";
@@ -146,31 +167,43 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
     if (defined $rejected_reads_count) {
       $unknown_barcode_count -= $rejected_reads_count;
 
-      my $series = Chart::Clicker::Data::Series->new(
-        keys => [1],  # dummy
-        values => [$rejected_reads_count],
-        name => "Rejected"
-      );
-
-      push @series_list, $series;
-
-      warn "rejected_reads_count: $rejected_reads_count\n";
+      push @non_expected_barcode_values, $rejected_reads_count;
+      push @expected_barcode_values, 0;
+      push @keys, $key_index;
+      $key_names{$key_index++} = 'Rejected';
     }
 
     for my $code_count (values %pipedata_info) {
       $unknown_barcode_count -= $code_count;
     }
 
-    my $series = Chart::Clicker::Data::Series->new(
-      keys => [1],              # dummy
-      values => [$unknown_barcode_count],
-      name => "Unknown"
+    push @non_expected_barcode_values, $unknown_barcode_count;
+    push @expected_barcode_values, 0;
+    push @keys, $key_index;
+    $key_names{$key_index++} = 'Unknown';
+  }
+
+  # hack to pad the left and right
+  unshift @keys, -1;
+  unshift @expected_barcode_values, 0;
+  unshift @non_expected_barcode_values, 0;
+  push @keys, $key_index;
+  push @expected_barcode_values, 0;
+  push @non_expected_barcode_values, 0;
+
+  push @series_list,
+    Chart::Clicker::Data::Series->new(
+      keys => [@keys],
+      values => [@expected_barcode_values],
+      name => 'Expected barcodes'
     );
 
-    warn "unknown: $unknown_barcode_count\n";
-
-    push @series_list, $series;
-  }
+  push @series_list,
+    Chart::Clicker::Data::Series->new(
+      keys => [@keys],
+      values => [@non_expected_barcode_values],
+      name => 'Other reads'
+    );
 
   my $ds = Chart::Clicker::Data::DataSet->new(series => [ @series_list ]);
 
@@ -178,14 +211,18 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
 
   my $def = $cc->get_context('default');
 
-  my $pie = Chart::Clicker::Renderer::Pie->new(opacity => .6);
-  $def->renderer($pie);
+  $def->domain_axis->tick_values(\@keys);
+  $def->domain_axis->format(sub {
+                             my $key = shift;
+                             if (exists $key_names{$key}) {
+                               return $key_names{$key};
+                             } else {
+                               return '';
+                             }
+                           });
 
-  my $range_axis = $def->range_axis;
-  $range_axis->hidden(1);
-  $range_axis->tick_values([0]);
-  my $domain_axis = $def->domain_axis;
-  $domain_axis->hidden(1);
+  my $bar = Chart::Clicker::Renderer::StackedBar->new(opacity => .6);
+  $def->renderer($bar);
 
   $c->stash->{graphics_primitive_driver_args} = { format => 'png' };
   $c->stash->{graphics_primitive_content_type} = 'image/png';
