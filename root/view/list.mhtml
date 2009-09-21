@@ -2,7 +2,7 @@
 $type
 $rs
 $list_title
-$disclosed => 0  # true will make the list default to visible
+$disclosed => 1  # true will make the list default to visible
 @columns => ()
 </%args>
 

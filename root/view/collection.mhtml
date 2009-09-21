@@ -2,7 +2,7 @@
 $object
 $collection_name
 $collection_title => undef
-$disclosed => 0
+$disclosed => 1
 </%args>
 
 % if ($error) {
