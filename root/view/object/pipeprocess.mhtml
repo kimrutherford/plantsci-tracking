@@ -10,9 +10,9 @@ $type
 
 <div id="collections">
   <& /view/list.mhtml, type => 'pipedata', rs => $input_pipedata_rs,
-    list_title => 'Input data' &>
+    list_title => 'Input data', disclosed => 1 &>
   <& /view/collection.mhtml, object => $object, collection_name => 'pipedatas',
-    collection_title => 'Output data' &>
+    collection_title => 'Output data', disclosed => 1 &>
 </div>
 
 <%init>
