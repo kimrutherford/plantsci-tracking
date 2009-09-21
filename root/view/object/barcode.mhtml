@@ -7,6 +7,7 @@ $object
 <div id="collections">
   <& /view/collection.mhtml, object => $object, 
     collection_title => 'Samples using this barcode',
-    collection_name => 'coded_samples' &>
+    collection_name => 'coded_samples',
+    disclosed => 1 &>
 </div>
   

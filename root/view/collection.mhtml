@@ -2,12 +2,14 @@
 $object
 $collection_name
 $collection_title => undef
+$disclosed => 0
 </%args>
 
 % if ($error) {
   <% $error %>
 % } else {
-  <& list.mhtml, type => $collection_table_name, rs => $rs, list_title => $collection_title &>
+  <& list.mhtml, type => $collection_table_name, rs => $rs,
+     list_title => $collection_title, disclosed => $disclosed &>
 % }
 
 <%init>

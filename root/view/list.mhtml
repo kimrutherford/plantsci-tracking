@@ -2,12 +2,13 @@
 $type
 $rs
 $list_title
+$disclosed => 0  # true will make the list default to visible
 @columns => ()
 </%args>
 
 <div class="sect">
 % if ($list_title ne '') {
-<span class="sect-title undisclosed-title"><a href="#"> <% $list_title %> </a> </span>
+<span class="sect-title <% $disclosed_style %>"><a href="#"> <% $list_title %> </a> </span>
 % }
 <div class="sect-content">
 % if (@field_labels == 0) {
@@ -77,6 +78,12 @@ while (my $obj = $rs->next()) {
     $first = 0;
   }
   push @rows, $obj;
+}
+
+my $disclosed_style = 'undisclosed-title';
+
+if ($disclosed) {
+  $disclosed_style = 'disclosed-title';
 }
 
 </%init>

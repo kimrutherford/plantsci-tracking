@@ -15,7 +15,7 @@ $type
 </div>
 
 <div id="collections">
-  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
+  <& /view/list.mhtml, type => 'sample', rs => $samples_rs, disclosed => 1,
     list_title => "The sample$sample_plu for this project" &>
 </div>
 

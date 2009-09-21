@@ -7,6 +7,6 @@ $object
 
 <div id="collections">
   <& /view/collection.mhtml, object => $object, collection_title => 'Projects',
-    collection_name => 'pipeprojects' &>
+    collection_name => 'pipeprojects', disclosed => 1 &>
 </div>
   
