@@ -3,12 +3,10 @@ $object
 $type
 </%args>
 
-<div>
-<& /view/field_list.mhtml, object => $object, field_labels =>
-  [qw(identifier initial_pipedata sequencing_centre initial_pipeprocess 
+<& /view/object/object_top.mhtml, object => $object,
+  field_labels => [qw(identifier initial_pipedata sequencing_centre initial_pipeprocess
       submission_date run_date data_received_date quality sequencing_type
       multiplexing_type sequencing_sample)] &>
-</div>
 
 <div id="collections">
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,

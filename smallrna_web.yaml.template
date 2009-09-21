@@ -290,6 +290,11 @@ plugins:
       - name: Base distribution graph
         path: /plugins/basedist.mhtml
         css_class: base_dist_graph
+    sequencingrun:
+      - name: Multiplexing barcode distribution graph
+        path: /plugins/barcode_dist.mhtml
+        css_class: barcode_dist
+        predicate: '$object->'
   front_page:
     - name: Samples submitted by quarter
       path: /plugins/sample_submissions.mhtml
