@@ -93,8 +93,6 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
                                                     })->next();
 
     if (defined $barcode_prop) {
-      warn $pipedata->file_name(), "\n";
-
       my $seq_count = $pipedata->search_related('pipedata_properties',
                                                   {
                                                     type => $seq_count_prop_type->cvterm_id()
@@ -105,9 +103,6 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
       #
     }
   }
-
-#  use Data::Dumper;
-#  die Dumper([\%pipedata_info]);
 
   my @series_list = ();
 
