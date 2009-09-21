@@ -28,8 +28,12 @@ $type
     list_title => "The ecotype$ecotype_plu for this sample" &>
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
     list_title => "The sequencing run$seqruns_plu for this sample" &>
+  <& /view/list.mhtml, type => 'sequencing_sample', rs => $sequencing_samples_rs,
+    list_title => "The sequencing sample$sequencing_samples_plu containing this sample" &>
+% if ($coded_samples_count > 0) {
   <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
     list_title => "The bar-coded sample$coded_samples_plu created from this sample" &>
+% }
   <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
     list_title => "The file$pipedata_plu for this sample" &>
 </div>
@@ -51,6 +55,9 @@ my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
 my $coded_samples_rs = $object->coded_samples()->search({ barcode => { '!=' => undef }});
 my $coded_samples_count = $coded_samples_rs->count();
 my $coded_samples_plu = ($coded_samples_count != 1) ? 's' : '';
+my $sequencing_samples_rs = $object->coded_samples->search_related('sequencing_sample');
+my $sequencing_samples_count = $sequencing_samples_rs->count();
+my $sequencing_samples_plu = ($sequencing_samples_count != 1) ? 's' : '';
 my $pipedatas_rs = $object->pipedatas();
 my $pipedatas_count = $pipedatas_rs->count();
 my $pipedata_plu = ($pipedatas_count != 1) ? 's' : '';
