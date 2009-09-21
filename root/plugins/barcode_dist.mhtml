@@ -7,6 +7,7 @@ This component creates a pie chart showing which barcodes were returned from a
 sequencing run.
 </%doc>
 
+% if ($object->multiplexing_type()->name() eq 'multiplexed') {
 <div class="sect">
 <span class="sect-title disclosed-title">
   <a href="#">Barcode distribution</a>
@@ -15,3 +16,4 @@ sequencing run.
   <img src='<% $c->uri_for("/plugin/graph/barcode_dist", $object->sequencingrun_id()) %>'/>
 </div>
 </div>
+% }
