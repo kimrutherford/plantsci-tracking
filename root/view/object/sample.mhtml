@@ -27,15 +27,17 @@ $type
   <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
     list_title => "The ecotype$ecotype_plu for this sample" &>
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
-    list_title => "The sequencing run$seqruns_plu for this sample" &>
+    list_title => "The sequencing run$seqruns_plu for this sample", disclosed => 0 &>
   <& /view/list.mhtml, type => 'sequencing_sample', rs => $sequencing_samples_rs,
-    list_title => "The sequencing sample$sequencing_samples_plu containing this sample" &>
+    list_title => "The sequencing sample$sequencing_samples_plu containing this sample",
+    disclosed => 0 &>
 % if ($coded_samples_count > 0) {
   <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
-    list_title => "The bar-coded sample$coded_samples_plu created from this sample" &>
+    list_title => "The bar-coded sample$coded_samples_plu created from this sample",
+    disclosed => 0 &>
 % }
   <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
-    list_title => "The file$pipedata_plu for this sample" &>
+    list_title => "The file$pipedata_plu for this sample", disclosed => 0 &>
 </div>
   
 <%init>
