@@ -3,7 +3,7 @@ $object
 </%args>
 
 <%doc>
-This component create a graph of composition at each base position along a
+This component creates a graph of composition at each base position along a
 read for a FASTA or FASTQ file. 
 </%doc>
 
