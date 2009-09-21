@@ -66,7 +66,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
   my $schema = $c->schema();
   my $sequencingrun = $schema->find_with_type('Sequencingrun', 'sequencingrun_id', $object_id);
 
-  my $cc = Chart::Clicker->new(width => 400, height => 300);
+  my $cc = Chart::Clicker->new(width => 600, height => 400);
 
   my $fastq_pipedata = $sequencingrun->initial_pipedata();
 
@@ -80,27 +80,49 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
                                       { type => $seq_count_prop_type->cvterm_id() })
       ->next()->value();
 
+  # all pipedatas that are generated from the fastq file of this sequencingrun
   my @demultiplex_pipedatas =
     $fastq_pipedata->pipeprocess_in_pipedatas()->search_related('pipeprocess')
       ->search_related('pipedatas');
 
   my %pipedata_info = ();
 
+  my $total_reads_count = undef;
+  my $rejected_reads_count = undef;
+
   for my $pipedata (@demultiplex_pipedatas) {
-    my $barcode_prop = $pipedata->search_related('pipedata_properties',
-                                                   {
-                                                     type => $barcode_prop_type->cvterm_id()
-                                                    })->next();
-
-    if (defined $barcode_prop) {
-      my $seq_count = $pipedata->search_related('pipedata_properties',
-                                                  {
-                                                    type => $seq_count_prop_type->cvterm_id()
-                                                   })->next()->value();
-
-      $pipedata_info{$barcode_prop->value()} = $seq_count;
+    if ($pipedata->content_type()->name() eq 'multiplexed_srna_reads') {
+      $total_reads_count = $pipedata->search_related('pipedata_properties',
+                                                       {
+                                                         type => $seq_count_prop_type->cvterm_id()
+                                                       })->next()->value();
     } else {
-      #
+      if ($pipedata->content_type()->name() eq 'remove_adapter_rejects') {
+        $rejected_reads_count = $pipedata->search_related('pipedata_properties',
+                                                            {
+                                                              type => $seq_count_prop_type->cvterm_id()
+                                                            })->next()->value();
+
+      } else {
+        my $barcode_prop = $pipedata->search_related('pipedata_properties',
+                                                       {
+                                                         type => $barcode_prop_type->cvterm_id()
+                                                        })->next();
+
+        if (defined $barcode_prop) {
+          my $seq_count = $pipedata->search_related('pipedata_properties',
+                                                      {
+                                                        type => $seq_count_prop_type->cvterm_id()
+                                                       })->next()->value();
+
+          $pipedata_info{$barcode_prop->value()} = $seq_count;
+
+          warn "barcode: ", $barcode_prop->value(), " $seq_count\n";
+
+        } else {
+          # we don't know the barcode for this pipedata
+        }
+      }
     }
   }
 
@@ -112,6 +134,40 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
       values => [$pipedata_info{$code}],
       name => "Code: $code"
      );
+
+    push @series_list, $series;
+  }
+
+  warn "total_reads_count: $total_reads_count\n";
+
+  if (defined $total_reads_count) {
+    my $unknown_barcode_count = $total_reads_count;
+
+    if (defined $rejected_reads_count) {
+      $unknown_barcode_count -= $rejected_reads_count;
+
+      my $series = Chart::Clicker::Data::Series->new(
+        keys => [1],  # dummy
+        values => [$rejected_reads_count],
+        name => "Rejected"
+      );
+
+      push @series_list, $series;
+
+      warn "rejected_reads_count: $rejected_reads_count\n";
+    }
+
+    for my $code_count (values %pipedata_info) {
+      $unknown_barcode_count -= $code_count;
+    }
+
+    my $series = Chart::Clicker::Data::Series->new(
+      keys => [1],              # dummy
+      values => [$unknown_barcode_count],
+      name => "Unknown"
+    );
+
+    warn "unknown: $unknown_barcode_count\n";
 
     push @series_list, $series;
   }
