@@ -11,4 +11,12 @@ $object
     collection_title => "The coded samples for this sequencing sample" &>
   <& /view/collection.mhtml, object => $object, collection_name => 'sequencingruns',
     collection_title => "The sequencing runs for this sequencing sample" &>
+  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
+    list_title => "The sample$samples_plu in this sequencing sample" &>
 </div>
+
+<%init>
+my $samples_rs = $object->coded_samples()->search_related('sample');
+my $samples_count = $samples_rs->count();
+my $samples_plu = ($samples_count != 1) ? 's' : '';
+</%init>
