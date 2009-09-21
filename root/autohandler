@@ -25,19 +25,25 @@ $message => undef
     </div>
 
 <script type="text/javascript">
-  $(function() {
-     title = $(".sect .sect-title");
-     title.click(function() {
-       $(this).next().toggle();
-       $(this).toggleClass('undisclosed-title');
-       $(this).toggleClass('disclosed-title');
-       $.sparkline_display_visible()
-       return false;
-     });
-     if (title.is(".undisclosed-title")) {
-       title.next().hide();
-     }
-   });
+    $(document).ready(function() {
+        $(".sect .sect-title").each(function(i) {
+              $(this).click(function() {
+                      $(this).next().toggle();
+                      $(this).toggleClass('undisclosed-title');
+                      $(this).toggleClass('disclosed-title');
+                      $.sparkline_display_visible();
+                      return false;
+                  }
+              );
+              if ($(this).is(".undisclosed-title")) {
+                  $(this).next().hide();
+              } else {
+                  $(this).next().show();
+              }
+            }
+          )
+        }
+    );
 </script>
 
 <& /user.mhtml &>
