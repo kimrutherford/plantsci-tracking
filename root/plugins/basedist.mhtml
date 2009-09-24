@@ -39,6 +39,8 @@ read for a FASTA or FASTQ file.
 </div>
 
 <%init>
+use Tie::IxHash;
+
 my $schema = $c->schema();
 my $fastq_stats_content_type = $schema->find_with_type('Cvterm', 'name', 'fastq_stats');
 my $fasta_stats_content_type = $schema->find_with_type('Cvterm', 'name', 'fasta_stats');
@@ -46,7 +48,10 @@ my @pipedatas = $object->pipedatas()->search({ -or =>
   [content_type => $fasta_stats_content_type->cvterm_id(), 
    content_type => $fastq_stats_content_type->cvterm_id()]
 });
-my %graphs = ();
+
+tie my %graphs, 'Tie::IxHash';
+
+%graphs = ();
 
 sub get_sparkline_values
 {
