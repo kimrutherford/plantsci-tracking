@@ -6,6 +6,11 @@ $object
 <table class="list">
   <thead>
     <tr>
+% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+      <td>
+        Content type
+      </td>
+% }
       <td>
         Description
       </td>
@@ -29,6 +34,11 @@ $object
 % my $fmt = Number::Format->new();
 % for my $stat (@stats) {
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
+% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+    <td>
+      <% $stat->{content_type} %>
+    </td>
+% }
     <td>
       <% $stat->{label} %>
     </td>
