@@ -50,6 +50,7 @@ use Chart::Clicker::Data::Series;
 use Chart::Clicker::Renderer::StackedBar;
 use Geometry::Primitive::Rectangle;
 use Graphics::Color::RGB;
+use Graphics::Primitive::Font;
 
 =head2 barcode_dist
 
@@ -212,6 +213,16 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
   my $def = $cc->get_context('default');
 
   $def->range_axis->format('%d');
+  $def->range_axis->label('Count');
+
+  # doesn't seem to work:
+  my $font = Graphics::Primitive::Font->new({
+    family => 'Arial',
+    size => 11,
+    slant => 'normal'
+  });
+  $def->domain_axis->label_font($font);
+
   $def->domain_axis->tick_values(\@keys);
   $def->domain_axis->format(sub {
                              my $key = shift;
