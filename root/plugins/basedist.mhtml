@@ -24,16 +24,22 @@ read for a FASTA or FASTQ file.
 </span>
 <div class="sect-content" id="basedist-tabs">
   <ul>
-%   while (my ($type, $pipedata) = each %graphs) {
+%   for my $graph_name (@graph_names) {
+%     my $pipedata = $graphs{$graph_name};
+%     if (defined $pipedata) {
     <li><a href="#basedist-tabs-<% $pipedata->pipedata_id() %>">
-        <% $type %>
+        <% $graph_name %>
     </a></li>
+%     }
 %   }
   </ul>
-%   while (my ($type, $pipedata) = each %graphs) {
+%   for my $graph_name (@graph_names) {
+%     my $pipedata = $graphs{$graph_name};
+%     if (defined $pipedata) {
   <div id="basedist-tabs-<% $pipedata->pipedata_id() %>">
     <img src='<% $c->uri_for("/plugin/graph/basedist", $pipedata->pipedata_id()) %>'/>
   </div>
+%     }
 %   }
 </div>
 </div>
@@ -78,12 +84,15 @@ sub get_sparkline_values
   return join ',', @total_counts;
 }
 
+my @graph_names = ('Raw sequence reads', 'Reads after trimming', 
+                   'Non-redundant reads', 'Genome aligned reads'); 
+
 for my $pipedata (@pipedatas) {
   my @input_pipedatas = $pipedata->generating_pipeprocess()->input_pipedatas();
   if (@input_pipedatas) {
     my $content_type_name = $input_pipedatas[0]->content_type()->name();
     if ($content_type_name eq 'raw_srna_reads' || $content_type_name eq 'raw_genomic_dna_reads') {
-      $graphs{'All reads'} = $pipedata;
+      $graphs{'Raw sequence reads'} = $pipedata;
     } else {
       if ($content_type_name eq 'srna_reads' || $content_type_name  eq 'genomic_dna_tags') {
         $graphs{'Reads after trimming'} = $pipedata;
