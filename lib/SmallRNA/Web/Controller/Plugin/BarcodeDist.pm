@@ -67,7 +67,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
   my $schema = $c->schema();
   my $sequencingrun = $schema->find_with_type('Sequencingrun', 'sequencingrun_id', $object_id);
 
-  my $cc = Chart::Clicker->new(width => 800, height => 400);
+  my $cc = Chart::Clicker->new(width => 700, height => 400);
 
   my $fastq_pipedata = $sequencingrun->initial_pipedata();
 
@@ -178,19 +178,11 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
       $unknown_barcode_count -= $code_count;
     }
 
-    push @non_expected_barcode_values, $unknown_barcode_count;
-    push @expected_barcode_values, 0;
-    push @keys, $key_index;
-    $key_names{$key_index++} = 'Unknown';
+    # push @non_expected_barcode_values, $unknown_barcode_count;
+    # push @expected_barcode_values, 0;
+    # push @keys, $key_index;
+    # $key_names{$key_index++} = 'Unknown';
   }
-
-  # hack to pad the left and right
-  unshift @keys, -1;
-  unshift @expected_barcode_values, 0;
-  unshift @non_expected_barcode_values, 0;
-  push @keys, $key_index;
-  push @expected_barcode_values, 0;
-  push @non_expected_barcode_values, 0;
 
   push @series_list,
     Chart::Clicker::Data::Series->new(
@@ -232,6 +224,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
                                return '';
                              }
                            });
+  $def->domain_axis->fudge_amount(0.08);
 
   my $bar = Chart::Clicker::Renderer::StackedBar->new(opacity => .6);
   $def->renderer($bar);
