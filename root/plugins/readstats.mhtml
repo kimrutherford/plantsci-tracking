@@ -98,9 +98,15 @@ for my $fast_stat_pipe_data (@pipe_datas) {
     push @stats, { fast_pipedata => $fast_stat_pipe_data,
                    data => \%fast_data,
                    label => $fast_pipedata->content_type()->definition(),
+                   content_type => $fast_pipedata->content_type()->name(),
                    };
 
     close $file or die "can't close $file: $!\n";
   }
 }
+
+@stats = sort { 
+  $b->{data}->{number_of_sequences} <=> $a->{data}->{number_of_sequences} 
+} @stats;
+
 </%init>
