@@ -105,11 +105,15 @@ for my $fast_stat_pipe_data (@pipe_datas) {
       $fast_data{gc_content} = 'N/A'
     }
 
-    push @stats, { fast_pipedata => $fast_stat_pipe_data,
-                   data => \%fast_data,
-                   label => $fast_pipedata->content_type()->definition(),
-                   content_type => $fast_pipedata->content_type()->name(),
-                   };
+    my $content_type_def = $fast_pipedata->content_type()->definition();
+
+    if (!grep { $_->{label} eq $content_type_def} @stats) {
+      push @stats, { fast_pipedata => $fast_stat_pipe_data,
+                     data => \%fast_data,
+                     label => $content_type_def,
+                     content_type => $fast_pipedata->content_type()->name(),
+                     };
+    }
 
     close $file or die "can't close $file: $!\n";
   }
