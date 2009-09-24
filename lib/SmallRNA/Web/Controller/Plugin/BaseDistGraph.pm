@@ -106,7 +106,7 @@ sub sizedist : Path('/plugin/graph/basedist') {
   my $schema = $c->schema();
   my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
   my ($positional_counts_ref, $max_read_length) = _get_base_counts($c, $pipedata);
-  my $cc = Chart::Clicker->new(width => 800, height => 480);
+  my $cc = Chart::Clicker->new(width => 100 + 20 * $max_read_length, height => 480);
 
   my @series_list = ();
 
