@@ -88,7 +88,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
   my $fq_seq_count =
     $fastq_pipedata->search_related('pipedata_properties',
                                       { type => $seq_count_prop_type->cvterm_id() })
-      ->next()->value();
+      ->single()->value();
 
   # all pipedatas that are generated from the fastq file of this sequencingrun
   my @demultiplex_pipedatas =
@@ -105,25 +105,25 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
       $total_reads_count = $pipedata->search_related('pipedata_properties',
                                                        {
                                                          type => $seq_count_prop_type->cvterm_id()
-                                                       })->next()->value();
+                                                       })->single()->value();
     } else {
       if ($pipedata->content_type()->name() eq 'remove_adapter_rejects') {
         $rejected_reads_count = $pipedata->search_related('pipedata_properties',
                                                             {
                                                               type => $seq_count_prop_type->cvterm_id()
-                                                            })->next()->value();
+                                                            })->single()->value();
 
       } else {
         my $barcode_prop = $pipedata->search_related('pipedata_properties',
                                                        {
                                                          type => $barcode_prop_type->cvterm_id()
-                                                        })->next();
+                                                        })->single();
 
         if (defined $barcode_prop) {
           my $seq_count = $pipedata->search_related('pipedata_properties',
                                                       {
                                                         type => $seq_count_prop_type->cvterm_id()
-                                                       })->next()->value();
+                                                       })->single()->value();
 
           $pipedata_info{$barcode_prop->value()} = $seq_count;
         } else {
