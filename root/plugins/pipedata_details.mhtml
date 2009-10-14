@@ -2,19 +2,20 @@
 $object
 </%args>
 
+% if (keys %top_n_mers) {
 <div class="sect">
   <span class="sect-title disclosed-title">
     <a href="#">Data file details</a>
   </span>
   <div class="sect-content">
-    <table>
+    <table class="list">
       <thead>
         <tr>
           <td>n-mer</td>
           <td>count</td>
         </tr>
       </thead>
-      <tbody style="font-size: 80%">
+      <tbody>
 % for my $n_mer (@sorted_n_mers) {
         <tr>
           <td><pre><% $n_mer %></pre></td>
@@ -25,6 +26,7 @@ $object
     </table>
   </div>
 </div>
+% }
 
 
 <%init>
@@ -52,7 +54,12 @@ if (defined $fasta_stats_pipedata) {
   $fasta_stats_map = LoadFile($fasta_stats_file_name);
 }
 
-my %top_n_mers = %{$fasta_stats_map->{'top_n-mers'}};
+my $top_n_mers_ref = $fasta_stats_map->{'top_n-mers'};
+my %top_n_mers = ();
+
+if (defined $top_n_mers_ref) {
+  %top_n_mers = %{$fasta_stats_map->{'top_n-mers'}};
+}
 
 my @sorted_n_mers = sort {
     $top_n_mers{$b} <=> $top_n_mers{$a}
