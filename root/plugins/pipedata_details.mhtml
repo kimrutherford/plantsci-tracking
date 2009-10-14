@@ -17,7 +17,7 @@ $object
       <tbody style="font-size: 80%">
 % for my $n_mer (@sorted_n_mers) {
         <tr>
-          <td><% $n_mer %></td>
+          <td><pre><% $n_mer %></pre></td>
           <td><% $top_n_mers{$n_mer} %></td>
         </tr>
 % }
