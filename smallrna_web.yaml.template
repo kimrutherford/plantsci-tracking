@@ -217,6 +217,7 @@ class_info:
   sequencing_sample:
     editable: 1
     display_field: name
+    order_by: "substring(name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
       - field_label: name
         default_value: |
