@@ -5,7 +5,7 @@ $type
 
 <div>
 <& /view/field_list.mhtml, object => $object, field_labels =>
-  [qw(name description type owner funder)] &>
+  [qw(name description owner funder)] &>
 </div>
 
 <div>
