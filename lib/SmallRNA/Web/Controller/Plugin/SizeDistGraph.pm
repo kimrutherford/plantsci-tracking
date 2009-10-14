@@ -83,10 +83,10 @@ sub _minmax
 =cut
 sub get_pipedata_counts
 {
-  my $c = shift;
+  my $config = shift;
   my $pipedata = shift;
 
-  my $data_directory = $c->config()->data_directory();
+  my $data_directory = $config->data_directory();
   my $file_name = $data_directory . '/' . $pipedata->file_name();
 
   my %res = ();
@@ -148,7 +148,7 @@ sub sizedist : Path('/plugin/graph/sizedist') {
 
   my $schema = $c->schema();
   my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
-  my ($counts_ref, $min, $max) = get_pipedata_counts($c, $pipedata);
+  my ($counts_ref, $min, $max) = get_pipedata_counts($c->config(), $pipedata);
   my $cc = Chart::Clicker->new(width => 800, height => 480);
 
   my %counts = %$counts_ref;

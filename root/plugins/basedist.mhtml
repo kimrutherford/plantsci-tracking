@@ -65,7 +65,7 @@ sub get_sparkline_values
   my $pipedata = shift;
 
   my ($counts_ref, $min, $max) = 
-    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c, $pipedata); 
+    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $pipedata); 
 
   my %counts = %$counts_ref;
   my @lengths = (15 .. $max);

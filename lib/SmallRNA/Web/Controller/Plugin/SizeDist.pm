@@ -44,22 +44,14 @@ use base 'Catalyst::Controller';
 
 use SmallRNA::Web::Controller::Plugin::SizeDistGraph;
 
-=head2 sizedist
+sub _get_results_string
+{
+  my $schema = shift;
+  my $config = shift;
+  my $pipedata = shift;
 
- Usage   : Called as a Catalyst action
- Function: Given a pipedata_id of a first_base_summary pipedata, return a size
-           distribution as a TSV file
- Args    : pipedata_id - the id of the pipedata containing the stats in
-                         first_base_summary format
-
-=cut
-sub sizedist : Path('/plugin/sizedist/tsv') {
-  my ($self, $c, $pipedata_id) = @_;
-
-  my $schema = $c->schema();
-  my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
   my ($counts_ref, $min, $max) =
-    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c, $pipedata);
+    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($config, $pipedata);
 
   my %counts = %$counts_ref;
   my @lengths = ($min .. $max);
@@ -81,6 +73,28 @@ sub sizedist : Path('/plugin/sizedist/tsv') {
   }
 
   $results .= "Total:\t" . (join "\t", @totals[@lengths]) . "\n";
+
+
+}
+
+
+=head2 sizedist
+
+ Usage   : Called as a Catalyst action
+ Function: Given a pipedata_id of a first_base_summary pipedata, return a size
+           distribution as a TSV file
+ Args    : pipedata_id - the id of the pipedata containing the stats in
+                         first_base_summary format
+
+=cut
+sub sizedist : Path('/plugin/sizedist/tsv') {
+  my ($self, $c, $pipedata_id) = @_;
+
+  my $schema = $c->schema();
+
+  my $pipedata = $schema->find_with_type('Pipedata', 'pipedata_id', $pipedata_id);
+
+  my $results = _get_results_string($schema, $c->config(), $pipedata);
 
   $c->res->content_type('text/plain');
   $c->res->body($results);
