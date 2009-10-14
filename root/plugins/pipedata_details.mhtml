@@ -34,31 +34,31 @@ use YAML qw(LoadFile);
 
 my $pipedata = $object;
 my $schema = $c->schema();
-my $fasta_stats_cvterm = $schema->find_with_type('Cvterm', {
-                                                     name => 'fasta_stats' });
-my @fasta_stats = $pipedata->next_pipeprocesses()
+my $fast_stats_cvterm = $schema->find_with_type('Cvterm', {
+                                                     name => 'fast_stats' });
+my @fast_stats = $pipedata->next_pipeprocesses()
            ->search_related('pipedatas', {
-                            content_type => $fasta_stats_cvterm->cvterm_id() });
+                            content_type => $fast_stats_cvterm->cvterm_id() });
 
-if (@fasta_stats > 1) {
-  die "there should be 0 or 1 fasta_stats pipedatas for pipedata with id: ",
+if (@fast_stats > 1) {
+  die "there should be 0 or 1 fast_stats pipedatas for pipedata with id: ",
     $pipedata->pipedata_id();
 }
 
-my $fasta_stats_pipedata = $fasta_stats[0];
-my $fasta_stats_map;
+my $fast_stats_pipedata = $fast_stats[0];
+my $fast_stats_map;
 
-if (defined $fasta_stats_pipedata) {
-  my $fasta_stats_file_name = $c->config()->data_directory() .
-            '/' . $fasta_stats_pipedata->file_name();
-  $fasta_stats_map = LoadFile($fasta_stats_file_name);
+if (defined $fast_stats_pipedata) {
+  my $fast_stats_file_name = $c->config()->data_directory() .
+            '/' . $fast_stats_pipedata->file_name();
+  $fast_stats_map = LoadFile($fast_stats_file_name);
 }
 
-my $top_n_mers_ref = $fasta_stats_map->{'top_n-mers'};
+my $top_n_mers_ref = $fast_stats_map->{'top_n-mers'};
 my %top_n_mers = ();
 
 if (defined $top_n_mers_ref) {
-  %top_n_mers = %{$fasta_stats_map->{'top_n-mers'}};
+  %top_n_mers = %{$fast_stats_map->{'top_n-mers'}};
 }
 
 my @sorted_n_mers = sort {

@@ -4,7 +4,7 @@ $object
 
 <%doc>
 This component creates a graph of composition at each base position along a
-read for a FASTA or FASTQ file. 
+read for a FASTA or FASTQ file.
 </%doc>
 
 <script type="text/javascript">
@@ -14,7 +14,7 @@ read for a FASTA or FASTQ file.
 
     $(function() {
         $('.basedistsparkline').sparkline('html', {type: 'bar', barSpacing: 0,
-                  barWidth: 1, barColor: '#d00'}); 
+                  barWidth: 1, barColor: '#d00'});
     });
 </script>
 
@@ -48,12 +48,10 @@ read for a FASTA or FASTQ file.
 use Tie::IxHash;
 
 my $schema = $c->schema();
-my $fastq_stats_content_type = $schema->find_with_type('Cvterm', 'name', 'fastq_stats');
-my $fasta_stats_content_type = $schema->find_with_type('Cvterm', 'name', 'fasta_stats');
-my @pipedatas = $object->pipedatas()->search({ -or => 
-  [content_type => $fasta_stats_content_type->cvterm_id(), 
-   content_type => $fastq_stats_content_type->cvterm_id()]
-});
+my $fast_stats_content_type = $schema->find_with_type('Cvterm', 'name', 'fast_stats');
+my @pipedatas = $object->pipedatas()->search({
+                  content_type => $fast_stats_content_type->cvterm_id(),
+                });
 
 tie my %graphs, 'Tie::IxHash';
 
@@ -64,8 +62,8 @@ sub get_sparkline_values
   my $c = shift;
   my $pipedata = shift;
 
-  my ($counts_ref, $min, $max) = 
-    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $pipedata); 
+  my ($counts_ref, $min, $max) =
+    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $pipedata);
 
   my %counts = %$counts_ref;
   my @lengths = (15 .. $max);
@@ -84,8 +82,8 @@ sub get_sparkline_values
   return join ',', @total_counts;
 }
 
-my @graph_names = ('Raw sequence reads', 'Reads after trimming', 
-                   'Non-redundant reads', 'Genome aligned reads'); 
+my @graph_names = ('Raw sequence reads', 'Reads after trimming',
+                   'Non-redundant reads', 'Genome aligned reads');
 
 for my $pipedata (@pipedatas) {
   my @input_pipedatas = $pipedata->generating_pipeprocess()->input_pipedatas();

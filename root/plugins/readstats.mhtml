@@ -66,13 +66,9 @@ $object
 
 <%init>
 my $schema = $c->schema();
-my $fasta_type = $schema->find_with_type('Cvterm', 'name', 'fasta_stats');
-my $fastq_type = $schema->find_with_type('Cvterm', 'name', 'fastq_stats');
+my $fast_stats_type = $schema->find_with_type('Cvterm', 'name', 'fast_stats');
 
-my $query = {
-              -or => [ content_type => $fasta_type->cvterm_id(),
-                       content_type => $fastq_type->cvterm_id() ]
-            };
+my $query = { content_type => $fast_stats_type->cvterm_id() };
 my @pipe_datas = $object->pipedatas()->search($query);
 my $pipe_data_id = undef;
 
