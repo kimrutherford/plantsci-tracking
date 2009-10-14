@@ -24,7 +24,8 @@ This component shows composition statistics and graphs.
 <div class="sect-content" id="tabs">
   <ul>
     <li><a href="#tabs-stats">Sequence statistics</a></li>
-%   while (my ($type, $pipedata) = each %graphs) {
+%   while (my ($type, $data) = each %graphs) {
+%     my $pipedata = $data->{pipedata};
 %     my $sparkline_vals = get_sparkline_values($c, $pipedata);
     <li><a href="#tabs-<% $pipedata->pipedata_id() %>">
         <% $type %>
@@ -35,9 +36,18 @@ This component shows composition statistics and graphs.
   <div id="tabs-stats">
     <& /plugins/readstats.mhtml, object => $object &>
   </div>
-%   while (my ($type, $pipedata) = each %graphs) {
-  <div id="tabs-<% $pipedata->pipedata_id() %>">
+%   while (my ($type, $data) = each %graphs) {
+%     my $pipedata = $data->{pipedata};
+%     my $definition = $data->{definition};
+%     my $pipedata_id = $pipedata->pipedata_id();
+  <div id="tabs-<% $pipedata_id %>">
+    <div><% $definition %></div>
     <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipedata->pipedata_id()) %>'/>
+    <div>
+      <a href='<% $c->uri_for("/plugin/sizedist/tsv", $pipedata_id) %>'>
+        <span style="font-size: 75%">Download raw numbers ...</span>
+      </a>
+    </div>
   </div>
 %   }
 </div>
@@ -64,7 +74,6 @@ sub get_sparkline_values
 
   for my $length (@lengths) {
     for my $base (qw(A T C G)) {
-
       if (defined $counts{$length}{$base}) {
         $total_counts[$length] += $counts{$length}{$base};
       }
@@ -77,15 +86,40 @@ sub get_sparkline_values
 for my $pipedata (@pipedatas) {
   my @input_pipedatas = $pipedata->generating_pipeprocess()->input_pipedatas();
   if (@input_pipedatas) {
-    my $content_type_name = $input_pipedatas[0]->content_type()->name();
+    my $content_type = $input_pipedatas[0]->content_type();
+    my $content_type_name = $content_type->name();
+    my $content_type_def = $content_type->definition();
     if ($content_type_name eq 'srna_reads') {
-      $graphs{'All reads'} = $pipedata;
+      $graphs{'All reads'} = {
+        pipedata => $pipedata,
+        definition => $content_type_def,
+      }
     } else {
-      if ($content_type_name eq 'non_redundant_srna_reads') {
-        $graphs{'Non-redundant reads'} = $pipedata;
+      if ($content_type_name =~ /^redundant_genome_aligned/) {
+        $graphs{'Redundant genome aligned reads'} = {
+           pipedata => $pipedata,
+           definition => $content_type_def,
+        }
       } else {
-        if ($content_type_name eq 'genome_aligned_srna_reads') {
-          $graphs{'Genome aligned reads'} = $pipedata;
+        if ($content_type_name eq 'non_redundant_srna_reads') {
+          $graphs{'Non-redundant reads'} = {
+            pipedata => $pipedata,
+            definition => $content_type_def,
+          }
+        } else {
+          if ($content_type_name eq 'genome_aligned_srna_reads') {
+            $graphs{'Genome aligned reads'} = {
+              pipedata => $pipedata,
+              definition => $content_type_def,
+            }
+          } else {
+            if ($content_type_name eq 'non_genome_aligned_srna_reads') {
+              $graphs{'Reads that did not align'} = {
+                pipedata => $pipedata,
+                definition => $content_type_def,
+              }
+            }
+          }
         }
       }
     }
