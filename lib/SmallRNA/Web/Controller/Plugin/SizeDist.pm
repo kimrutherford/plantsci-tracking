@@ -64,12 +64,23 @@ sub sizedist : Path('/plugin/sizedist/tsv') {
   my %counts = %$counts_ref;
   my @lengths = ($min .. $max);
 
-  my $results = (join "\t", @lengths) . "\n";
+  my $results = "\t" . (join "\t", @lengths) . "\n";
 
-  for my $base (qw(A T C G)) {
-    my @set = map { $counts{$_}{$base} || 0 } @lengths;
-    $results .= (join "\t", @set) . "\n";
+  my @totals = ();
+
+  for my $base (qw(A T C G N)) {
+    $results .= "$base";
+    my @set = ();
+    for my $len (@lengths) {
+      my $count = $counts{$len}{$base} || 0;
+      push @set, $count;
+      $totals[$len] += $count;
+      $results .= "\t$count";
+    }
+    $results .= "\n";
   }
+
+  $results .= "Total:\t" . (join "\t", @totals[@lengths]) . "\n";
 
   $c->res->content_type('text/plain');
   $c->res->body($results);
