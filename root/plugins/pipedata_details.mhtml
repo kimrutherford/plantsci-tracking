@@ -1,0 +1,61 @@
+<%args>
+$object
+</%args>
+
+<div class="sect">
+  <span class="sect-title disclosed-title">
+    <a href="#">Data file details</a>
+  </span>
+  <div class="sect-content">
+    <table>
+      <thead>
+        <tr>
+          <td>n-mer</td>
+          <td>count</td>
+        </tr>
+      </thead>
+      <tbody style="font-size: 80%">
+% for my $n_mer (@sorted_n_mers) {
+        <tr>
+          <td><% $n_mer %></td>
+          <td><% $top_n_mers{$n_mer} %></td>
+        </tr>
+% }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<%init>
+use YAML qw(LoadFile);
+
+my $pipedata = $object;
+my $schema = $c->schema();
+my $fasta_stats_cvterm = $schema->find_with_type('Cvterm', {
+                                                     name => 'fasta_stats' });
+my @fasta_stats = $pipedata->next_pipeprocesses()
+           ->search_related('pipedatas', {
+                            content_type => $fasta_stats_cvterm->cvterm_id() });
+
+if (@fasta_stats > 1) {
+  die "there should be 0 or 1 fasta_stats pipedatas for pipedata with id: ",
+    $pipedata->pipedata_id();
+}
+
+my $fasta_stats_pipedata = $fasta_stats[0];
+my $fasta_stats_map;
+
+if (defined $fasta_stats_pipedata) {
+  my $fasta_stats_file_name = $c->config()->data_directory() .
+            '/' . $fasta_stats_pipedata->file_name();
+  $fasta_stats_map = LoadFile($fasta_stats_file_name);
+}
+
+my %top_n_mers = %{$fasta_stats_map->{'top_n-mers'}};
+
+my @sorted_n_mers = sort {
+    $top_n_mers{$b} <=> $top_n_mers{$a}
+  } keys %top_n_mers;
+
+</%init>

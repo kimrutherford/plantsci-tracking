@@ -3,15 +3,15 @@ $object
 $type
 </%args>
 
-<div>
-<& /view/field_list.mhtml, object => $object,
-     field_labels => [qw(file_name file_length format_type content_type)] &>
-</div>
+<&| /view/object/object_top.mhtml, object => $object, 
+   field_labels => [qw(file_name file_length format_type content_type)] &>
 
-<div>
-  <a href="/data/<% $object->file_name()%>">
-    <img src="<% $c->uri_for('/static/images/download.png') %>"/>View/download file contents</a>
-</div>
+  <div>
+    <a href="/data/<% $object->file_name()%>">
+      <img src="<% $c->uri_for('/static/images/download.png') %>"/>View/download file contents
+    </a>
+  </div>
+</&>
 
 
 <div id="collections">

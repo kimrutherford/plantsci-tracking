@@ -291,7 +291,9 @@ plugins:
       - name: Multiplexing barcode distribution graph
         path: /plugins/barcode_dist.mhtml
         css_class: barcode_dist
-        predicate: '$object->'
+    pipedata:
+      - name: Data file details
+        path: /plugins/pipedata_details.mhtml
   front_page:
     - name: Samples submitted by quarter
       path: /plugins/sample_submissions.mhtml
