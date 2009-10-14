@@ -97,7 +97,7 @@ sub _get_base_counts
            distribution graph, store it in the stash then forward to
            SmallRNA::Web::View::Graph
  Args    : pipedata_id - the id of the pipedata containing the stats in
-                         fasta_stats or fastq_stats format
+                         fast_stats format
 
 =cut
 sub sizedist : Path('/plugin/graph/basedist') {
