@@ -24,11 +24,13 @@ This component shows composition statistics and graphs.
 <div class="sect-content" id="tabs">
   <ul>
     <li><a href="#tabs-stats">Sequence statistics</a></li>
-%   while (my ($type, $data) = each %graphs) {
+%   for my $graph_name (@graph_names) {
+%     my $data = $graphs{$graph_name};
+%     next unless defined $data;
 %     my $pipedata = $data->{pipedata};
 %     my $sparkline_vals = get_sparkline_values($c, $pipedata);
     <li><a href="#tabs-<% $pipedata->pipedata_id() %>">
-        <% $type %>
+        <% $graph_name %>
         <span class="inlinesparkline"><% $sparkline_vals %></span>
     </a></li>
 %   }
@@ -36,10 +38,15 @@ This component shows composition statistics and graphs.
   <div id="tabs-stats">
     <& /plugins/readstats.mhtml, object => $object &>
   </div>
-%   while (my ($type, $data) = each %graphs) {
-%     my $pipedata = $data->{pipedata};
-%     my $definition = $data->{definition};
-%     my $pipedata_id = $pipedata->pipedata_id();
+<%perl>
+   for my $graph_name (@graph_names) {
+     warn " graph: $graph_name\n";
+     my $data = $graphs{$graph_name};
+     next unless defined $data;
+     my $pipedata = $data->{pipedata};
+     my $definition = $data->{definition};
+     my $pipedata_id = $pipedata->pipedata_id();
+</%perl>
   <div id="tabs-<% $pipedata_id %>">
     <div><% $definition %></div>
     <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipedata->pipedata_id()) %>'/>
@@ -49,7 +56,10 @@ This component shows composition statistics and graphs.
       </a>
     </div>
   </div>
-%   }
+<%perl>
+   }
+</%perl>
+
 </div>
 </div>
 
@@ -58,6 +68,14 @@ my $schema = $c->schema();
 my $content_type = $schema->find_with_type('Cvterm', 'name', 'first_base_summary');
 my @pipedatas = $object->pipedatas()->search({content_type => $content_type->cvterm_id()});
 my %graphs = ();
+
+my @graph_names = ('All reads after trimming',
+                   'Size filtered reads',
+                   'Non-redundant reads',
+                   'Genome aligned reads',
+                   'Redundant genome aligned reads',
+                   'Reads that did not align',
+                  );
 
 sub get_sparkline_values
 {
@@ -90,7 +108,7 @@ for my $pipedata (@pipedatas) {
     my $content_type_name = $content_type->name();
     my $content_type_def = $content_type->definition();
     if ($content_type_name eq 'srna_reads') {
-      $graphs{'All reads'} = {
+      $graphs{'All reads after trimming'} = {
         pipedata => $pipedata,
         definition => $content_type_def,
       }
@@ -117,6 +135,13 @@ for my $pipedata (@pipedatas) {
               $graphs{'Reads that did not align'} = {
                 pipedata => $pipedata,
                 definition => $content_type_def,
+              }
+            } else {
+              if ($content_type_name eq 'filtered_srna_reads') {
+                $graphs{'Size filtered reads'} = {
+                  pipedata => $pipedata,
+                  definition => $content_type_def,
+                }
               }
             }
           }
