@@ -92,13 +92,19 @@ for my $pipedata (@pipedatas) {
     if ($content_type_name eq 'raw_srna_reads' || $content_type_name eq 'raw_genomic_dna_reads') {
       $graphs{'Raw sequence reads'} = $pipedata;
     } else {
-      if ($content_type_name eq 'srna_reads' || $content_type_name  eq 'genomic_dna_tags') {
+      if ($content_type_name eq 'srna_reads'
+          || $content_type_name eq 'genomic_dna_tags'
+          || $content_type_name eq 'genomic_dna_reads') {
         $graphs{'Reads after trimming'} = $pipedata;
       } else {
-        if ($content_type_name eq 'non_redundant_srna_reads' || $content_type_name  eq 'non_redundant_genomic_dna_tags') {
+        if ($content_type_name eq 'non_redundant_srna_reads'
+            || $content_type_name  eq 'non_redundant_genomic_dna_tags'
+            || $content_type_name  eq 'non_redundant_genomic_dna_reads') {
           $graphs{'Non-redundant reads'} = $pipedata;
         } else {
-          if ($content_type_name eq 'genome_aligned_srna_reads') {
+          if ($content_type_name eq 'genome_aligned_srna_reads'
+              || $content_type_name eq 'genome_aligned_genomic_dna_tags'
+              || $content_type_name eq 'genome_aligned_genomic_dna_reads') {
             $graphs{'Genome aligned reads'} = $pipedata;
           }
         }
