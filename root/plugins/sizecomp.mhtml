@@ -98,7 +98,7 @@ sub get_sparkline_values
     }
   }
 
-  return join ',', @total_counts;
+  return join ',', map { $_ || 0 } @total_counts;
 }
 
 for my $pipedata (@pipedatas) {
@@ -107,7 +107,9 @@ for my $pipedata (@pipedatas) {
     my $content_type = $input_pipedatas[0]->content_type();
     my $content_type_name = $content_type->name();
     my $content_type_def = $content_type->definition();
-    if ($content_type_name eq 'srna_reads') {
+    if ($content_type_name eq 'srna_reads'
+        || $content_type_name eq 'genomic_dna_reads'
+        || $content_type_name eq 'genomic_dna_tags') {
       $graphs{'All reads after trimming'} = {
         pipedata => $pipedata,
         definition => $content_type_def,
