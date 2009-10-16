@@ -31,7 +31,7 @@ This component shows composition statistics and graphs.
 %     my $sparkline_vals = get_sparkline_values($c, $pipedata);
     <li><a href="#tabs-<% $pipedata->pipedata_id() %>">
         <% $graph_name %>
-        <span class="inlinesparkline"><% $sparkline_vals %></span>
+% #        <span class="inlinesparkline"><% $sparkline_vals %></span>
     </a></li>
 %   }
   </ul>
