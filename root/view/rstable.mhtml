@@ -1,0 +1,95 @@
+<%args>
+$rs
+$title
+$disclosed => 1  # true will make the list default to visible
+@columns => ()  # ( { name => "Column Display Name 1", conf => "some_column_name" },
+                #     name => "Column Display Name 2", conf => "$some/$perl" } )
+</%args>
+
+<div class="sect">
+% if ($title ne '') {
+<span class="sect-title <% $disclosed_style %>"><a href="#"> <% $title %> </a> </span>
+% }
+<div class="sect-content">
+% if (@rows == 0) {
+    [none]
+% } else {
+  <table class="list">
+    <thead>
+      <tr>
+%   for my $col (@columns) {
+        <td><span class="field_label"><% ucfirst $col->{name} %></span></td>
+%   }
+      </tr>
+    </thead>
+
+%   my $row_count = 0;
+%   for my $object (@rows) {
+    <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
+%     for my $col (@columns) {
+        <td><& rsfield.mhtml, object => $object, col => $col &></td>
+%     }
+    </tr>
+%     $row_count++;
+%   }
+  </table>
+% }
+
+</div>
+</div>
+<%init>
+my @rows = ();
+my $first = 1;
+
+my %field_infos = ();
+
+my $type = undef;
+
+if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
+  %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
+}
+
+# sub _column_conf_from_name
+# {
+#   my $column_db_name = shift;
+
+#   return undef if $column_db_name eq 'created_stamp' or $column_db_name eq "${type}_id";
+
+#   my $column_heading = undef;
+#   my $field_info = $field_infos{$column_db_name};
+#   if (defined $field_info) {
+#     next if $field_info->{is_collection};
+#     if (defined $field_info->{display_title}) {
+#       $column_heading = $field_info->{display_title};
+#     }
+#   }
+
+#   if (!defined $column_heading) {
+#     $column_heading = $column_db_name
+#     $column_heading =~ s/_/ /g;
+#   }
+
+#   return { name => $column_heading, conf => $column_db_name };
+# }
+
+while (my $obj = $rs->next()) {
+  if ($first) {
+    $type = $obj->table();
+
+    if (!@columns) {
+#      @columns = map { _column_conf_from_name($_) || () } $obj->columns();
+    }
+
+    $first = 0;
+  }
+
+  push @rows, $obj;
+}
+
+my $disclosed_style = 'undisclosed-title';
+
+if ($disclosed) {
+  $disclosed_style = 'disclosed-title';
+}
+
+</%init>
