@@ -348,9 +348,9 @@ plugins:
       - name: Data file details
         path: /plugins/pipedata_details.mhtml
   front_page:
-    - name: Samples submitted by quarter
+    - name: Sequencing samples (number of lanes) submitted by quarter, grouped by date the data was received
       path: /plugins/sample_submissions.mhtml
       css_class: sample_submission_graph
-    - name: Cumulative number of sequences by month
+    - name: Cumulative number of sequences by month, grouped by date the data was received
       path: /plugins/cumulative_reads_by_month.mhtml
       css_class: cumulative_reads_by_month

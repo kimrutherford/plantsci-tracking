@@ -96,7 +96,7 @@ sub cumulative_reads_by_month : Path('/plugin/graph/cumulative_reads_by_month') 
 
   my $query = <<'END';
 SELECT SUM(value::INTEGER) AS count,
-       EXTRACT(YEAR FROM submission_date) || '_' || EXTRACT(MONTH FROM submission_date) AS month
+       EXTRACT(YEAR FROM data_received_date) || '_' || EXTRACT(MONTH FROM data_received_date) AS month
   FROM sequencingrun, pipedata, pipedata_property, cvterm
  WHERE initial_pipedata = pipedata.pipedata_id
    AND pipedata.pipedata_id = pipedata_property.pipedata
