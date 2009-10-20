@@ -59,6 +59,8 @@ use SmallRNA::DB;
                             'attribute': this is a plain attribute field
                             'key_field': this is the attribute field that is the
                                natural primary key for this class
+           $ref_display_key - the display key of the referenced object
+                              (or undef)
 
 =cut
 sub get_field_value
@@ -92,8 +94,9 @@ sub get_field_value
 
   if ($field_label eq "${type}_id") {
     $field_type = 'table_id';
-    return ($object->$field_db_column(), $field_type);
-  } else {
+    return ($object->$field_db_column(), $field_type, undef);
+  }
+
     $field_db_column =~ s/_id$//;
 
     my $field_value = $object->$field_db_column();
@@ -122,7 +125,7 @@ sub get_field_value
 
         return ($field_value, 'foreign_key', $primary_key_name);
       } else {
-        return (undef, 'foreign_key');
+        return (undef, 'foreign_key', undef);
       }
     } else {
       my $display_key_field = $c->config()->{class_info}->{$type}->{display_field};
@@ -131,8 +134,7 @@ sub get_field_value
         $field_type = 'key_field';
       }
     }
-    return ($field_value, $field_type);
-  }
+    return ($field_value, $field_type, undef);
 }
 
 1;
