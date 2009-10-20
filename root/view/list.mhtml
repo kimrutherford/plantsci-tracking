@@ -1,5 +1,4 @@
 <%args>
-$type
 $rs
 $list_title
 $disclosed => 1  # true will make the list default to visible
@@ -46,12 +45,16 @@ my $first = 1;
 
 my %field_infos = ();
 
-if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
-  %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
-}
+my $type = undef;
 
 while (my $obj = $rs->next()) {
   if ($first) {
+    $type = $obj->table();
+
+    if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
+      %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
+    }
+
     if (!@columns) {
       @columns = $obj->columns();
     }
