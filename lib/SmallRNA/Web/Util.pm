@@ -90,11 +90,8 @@ sub get_field_value
     }
   }
 
-  my $field_type = 'attribute';
-
   if ($field_label eq "${type}_id") {
-    $field_type = 'table_id';
-    return ($object->$field_db_column(), $field_type, undef);
+    return ($object->$field_db_column(), 'table_id', undef);
   }
 
     $field_db_column =~ s/_id$//;
@@ -131,10 +128,11 @@ sub get_field_value
       my $display_key_field = $c->config()->{class_info}->{$type}->{display_field};
 
       if (defined $display_key_field && $field_label eq $display_key_field) {
-        $field_type = 'key_field';
+        return ($field_value, 'key_field', undef);
+      } else {
+        return ($field_value, 'attribute', undef);
       }
     }
-    return ($field_value, $field_type, undef);
 }
 
 1;
