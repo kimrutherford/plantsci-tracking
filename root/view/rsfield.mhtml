@@ -7,7 +7,7 @@ it will be rendered as a 'details' link.
 
 <%args>
 $object
-$col
+$col_conf
 </%args>
 
 <span class="field_value">
@@ -49,10 +49,10 @@ my $type = $object->table();
 
 my ($field_value, $field_type, $ref_display_key, $referenced_object) = ();
 
-if ($col->{conf} =~ /[\$\-<>\';]/) {
+if ($col_conf->{source} =~ /[\$\-<>\';]/) {
   # Perl code
   $field_type = 'attribute';
-  $field_value = eval $col->{conf};
+  $field_value = eval $col_conf->{source};
   if ($@) {
     $field_value = $@;
     warn "$@\n";
@@ -60,7 +60,7 @@ if ($col->{conf} =~ /[\$\-<>\';]/) {
 } else {
   # a field name
   ($field_value, $field_type, $ref_display_key) =
-    SmallRNA::Web::Util::get_field_value($c, $object, $col->{conf});
+    SmallRNA::Web::Util::get_field_value($c, $object, $col_conf->{source});
 
   my $type = $object->table();
 
@@ -75,14 +75,14 @@ if ($col->{conf} =~ /[\$\-<>\';]/) {
 
 my $formatted_field_value;
 
-if (defined $field_value && defined $col->{format}) {
-  if ($col->{format} eq 'integer') {
+if (defined $field_value && defined $col_conf->{format}) {
+  if ($col_conf->{format} eq 'integer') {
     $formatted_field_value = $fmt->format_number($field_value);
   } else {
-    if ($col->{format} =~ /\%/) {
-      $formatted_field_value = sprintf $col->{format}, $field_value;
+    if ($col_conf->{format} =~ /\%/) {
+      $formatted_field_value = sprintf $col_conf->{format}, $field_value;
     } else {
-      die "unknown column format: ", $col->{format}, "\n";
+      die "unknown column format: ", $col_conf->{format}, "\n";
     }
   }
 } else {

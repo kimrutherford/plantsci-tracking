@@ -2,8 +2,8 @@
 $rs
 $title
 $disclosed => 1  # true will make the list default to visible
-@columns => ()  # ( { name => "Column Display Name 1", conf => "some_column_name" },
-                #     name => "Column Display Name 2", conf => "$some/$perl" } )
+@column_confs => ()  # ( { name => "Display Name 1", conf => "some_column_name" },
+                     #     name => "Display Name 2", conf => "$some/$perl" } )
 </%args>
 
 <div class="sect">
@@ -17,8 +17,8 @@ $disclosed => 1  # true will make the list default to visible
   <table class="list">
     <thead>
       <tr>
-%   for my $col (@columns) {
-        <td><span class="field_label"><% ucfirst $col->{name} %></span></td>
+%   for my $col_conf (@column_confs) {
+        <td><span class="field_label"><% ucfirst $col_conf->{name} %></span></td>
 %   }
       </tr>
     </thead>
@@ -26,9 +26,11 @@ $disclosed => 1  # true will make the list default to visible
 %   my $row_count = 0;
 %   for my $object (@rows) {
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
-%     for my $col (@columns) {
-%       my $align_attr = (defined $col->{format} && $col->{format} eq 'integer' ? 'right' : 'left');
-        <td align="<% $align_attr %>"><& rsfield.mhtml, object => $object, col => $col &></td>
+%     for my $col_conf (@column_confs) {
+%       my $align_attr = (defined $col_conf->{format} && $col_conf->{format} eq 'integer' ? 'right' : 'left');
+        <td align="<% $align_attr %>">
+          <& rsfield.mhtml, object => $object, col_conf => $col_conf &>
+        </td>
 %     }
     </tr>
 %     $row_count++;
@@ -77,8 +79,8 @@ while (my $obj = $rs->next()) {
   if ($first) {
     $type = $obj->table();
 
-    if (!@columns) {
-#      @columns = map { _column_conf_from_name($_) || () } $obj->columns();
+    if (!@column_confs) {
+#      @column_confs = map { _column_conf_from_name($_) || () } $obj->columns();
     }
 
     $first = 0;

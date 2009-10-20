@@ -274,49 +274,49 @@ reports:
     object_type: sample
     columns:
       - name: Sample name
-        conf: name
+        source: name
       - name: Raw reads
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("raw_srna_reads", "sequence count") ||
            $object->get_pipedata_property("multiplexed_srna_reads", "sequence count") ||
            $object->get_pipedata_property("raw_genomic_dna_reads", "sequence count") ||
            $object->get_pipedata_property("raw_genomic_dna_tags", "sequence count")
       - name: Reads after trimming
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("srna_reads", "sequence count") ||
            $object->get_pipedata_property("genomic_dna_reads", "sequence count") ||
            $object->get_pipedata_property("genomic_dna_tags", "sequence count")
       - name: Remove adapter rejects
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("remove_adapter_rejects", "sequence count")
       - name: Filtered reads
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("filtered_srna_reads", "sequence count")
       - name: Non redundant reads
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("non_redundant_srna_reads", "sequence count") ||
            $object->get_pipedata_property("non_redundant_genomic_dna_reads", "sequence count") ||
            $object->get_pipedata_property("non_redundant_genomic_dna_tags", "sequence count")
       - name: Non genome aligned reads
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("non_genome_aligned_srna_reads", "sequence count") ||
            $object->get_pipedata_property("non_genome_aligned_genomic_dna_reads", "sequence count") ||
            $object->get_pipedata_property("non_genome_aligned_genomic_dna_tags", "sequence count")
       - name: Genome aligned reads
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("genome_aligned_srna_reads", "sequence count") ||
            $object->get_pipedata_property("genome_aligned_genomic_dna_reads", "sequence count") ||
            $object->get_pipedata_property("genome_aligned_genomic_dna_tags", "sequence count")
       - name: Redundant genome aligned reads
         format: integer
-        conf: |
+        source: |
            $object->get_pipedata_property("redundant_genome_aligned_srna_reads", "sequence count") ||
            $object->get_pipedata_property("redundant_genome_aligned_genomic_dna_reads", "sequence count") ||
            $object->get_pipedata_property("redundant_genome_aligned_genomic_dna_tags", "sequence count")

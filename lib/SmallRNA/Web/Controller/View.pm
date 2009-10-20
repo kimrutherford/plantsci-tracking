@@ -184,7 +184,7 @@ sub report : Local {
     my $params = { order_by => $self->_get_order_by_field($c, $type) };
 
     $st->{rs} = $c->schema->resultset($class_name)->search(undef, $params);
-    $st->{columns} = $report_conf->{columns};
+    $st->{column_confs} = $report_conf->{columns};
  
     $st->{page} = $c->req->param('page') || 1;
     $st->{numrows} = $c->req->param('numrows') || 20;
