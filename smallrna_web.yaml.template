@@ -272,11 +272,10 @@ reports:
   sample_read_counts:
     description: Sample counts and percentages
     object_type: sample
-    conf: 'SmallRNA::DB::Sample::gen_stats_sql("srna_read", "sequence_count", "srna_read_sequence_count")'
     columns:
       - name: Sample name
         conf: name
-      - name: srna_reads
+      - name: Reads after trimming
         conf: |
            $object->get_pipedata_property("srna_reads", "sequence count") ||
            $object->get_pipedata_property("genomic_dna_reads", "sequence count") ||
