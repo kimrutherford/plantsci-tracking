@@ -27,7 +27,8 @@ $disclosed => 1  # true will make the list default to visible
 %   for my $object (@rows) {
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
 %     for my $col (@columns) {
-        <td><& rsfield.mhtml, object => $object, col => $col &></td>
+%       my $align_attr = (defined $col->{format} && $col->{format} eq 'integer' ? 'right' : 'left');
+        <td align="<% $align_attr %>"><& rsfield.mhtml, object => $object, col => $col &></td>
 %     }
     </tr>
 %     $row_count++;

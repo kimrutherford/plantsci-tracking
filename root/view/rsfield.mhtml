@@ -31,7 +31,7 @@ $col
       </a>
     </span>
 %     } else {
-    <% $field_value %>
+    <% $formatted_field_value %>
 %     }
   </span>
 %   }
@@ -42,6 +42,9 @@ $col
 use SmallRNA::DB;
 use SmallRNA::Web::Util;
 
+use Number::Format;
+
+my $fmt = Number::Format->new();
 my $type = $object->table();
 
 my ($field_value, $field_type, $ref_display_key, $referenced_object) = ();
@@ -52,6 +55,7 @@ if ($col->{conf} =~ /[\$\-<>\';]/) {
   $field_value = eval $col->{conf};
   if ($@) {
     $field_value = $@;
+    warn "$@\n";
   }
 } else {
   # a field name
@@ -68,4 +72,21 @@ if ($col->{conf} =~ /[\$\-<>\';]/) {
     $field_value = '';
   }
 }
+
+my $formatted_field_value;
+
+if (defined $field_value && defined $col->{format}) {
+  if ($col->{format} eq 'integer') {
+    $formatted_field_value = $fmt->format_number($field_value);
+  } else {
+    if ($col->{format} =~ /\%/) {
+      $formatted_field_value = sprintf $col->{format}, $field_value;
+    } else {
+      die "unknown column format: ", $col->{format}, "\n";
+    }
+  }
+} else {
+  $formatted_field_value = $field_value;
+}
+
 </%init>
