@@ -27,9 +27,9 @@ This component shows composition statistics and graphs.
 %   for my $graph_name (@graph_names) {
 %     my $data = $graphs{$graph_name};
 %     next unless defined $data;
-%     my $pipedata = $data->{pipedata};
-%     my $sparkline_vals = get_sparkline_values($c, $pipedata);
-    <li><a href="#tabs-<% $pipedata->pipedata_id() %>">
+%     my $stats_pipedata = $data->{pipedata};
+%     my $sparkline_vals = get_sparkline_values($c, $stats_pipedata);
+    <li><a href="#tabs-<% $stats_pipedata->pipedata_id() %>">
         <% $graph_name %>
 % #        <span class="inlinesparkline"><% $sparkline_vals %></span>
     </a></li>
@@ -43,16 +43,23 @@ This component shows composition statistics and graphs.
      warn " graph: $graph_name\n";
      my $data = $graphs{$graph_name};
      next unless defined $data;
-     my $pipedata = $data->{pipedata};
+     my $stats_pipedata = $data->{pipedata};
+     my $input_pipedata = $data->{input_pipedata};
      my $definition = $data->{definition};
-     my $pipedata_id = $pipedata->pipedata_id();
+     my $stats_pipedata_id = $stats_pipedata->pipedata_id();
 </%perl>
-  <div id="tabs-<% $pipedata_id %>">
+  <div id="tabs-<% $stats_pipedata_id %>">
     <div><% $definition %></div>
-    <img src='<% $c->uri_for("/plugin/graph/sizedist", $pipedata->pipedata_id()) %>'/>
+    <img src='<% $c->uri_for("/plugin/graph/sizedist", $stats_pipedata->pipedata_id()) %>'/>
     <div>
-      <a href='<% $c->uri_for("/plugin/sizedist/tsv", $pipedata_id) %>'>
+      <a href='<% $c->uri_for("/plugin/sizedist/tsv", $stats_pipedata_id) %>'>
         <span style="font-size: 75%">Download raw numbers ...</span>
+      </a>
+    </div>
+    <div>
+      <a href='<% $c->uri_for("/view/object/pipedata", $input_pipedata->pipedata_id()) %>'>
+        <span style="font-size: 75%">View details of the data file for this
+        graph ...</span>
       </a>
     </div>
   </div>
@@ -80,10 +87,10 @@ my @graph_names = ('All reads after trimming',
 sub get_sparkline_values
 {
   my $c = shift;
-  my $pipedata = shift;
+  my $stats_pipedata = shift;
 
   my ($counts_ref, $min, $max) = 
-    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $pipedata); 
+    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $stats_pipedata); 
 
   my %counts = %$counts_ref;
   my @lengths = (15 .. $max);
@@ -101,9 +108,10 @@ sub get_sparkline_values
   return join ',', map { $_ || 0 } @total_counts;
 }
 
-for my $pipedata (@pipedatas) {
-  my @input_pipedatas = $pipedata->generating_pipeprocess()->input_pipedatas();
+for my $stats_pipedata (@pipedatas) {
+  my @input_pipedatas = $stats_pipedata->generating_pipeprocess()->input_pipedatas();
   if (@input_pipedatas) {
+    my $input_pipedata = $input_pipedatas[0];
     my $content_type = $input_pipedatas[0]->content_type();
     my $content_type_name = $content_type->name();
     my $content_type_def = $content_type->definition();
@@ -111,37 +119,43 @@ for my $pipedata (@pipedatas) {
         || $content_type_name eq 'genomic_dna_reads'
         || $content_type_name eq 'genomic_dna_tags') {
       $graphs{'All reads after trimming'} = {
-        pipedata => $pipedata,
+        pipedata => $stats_pipedata,
+        input_pipedata => $input_pipedata,
         definition => $content_type_def,
       }
     } else {
       if ($content_type_name =~ /^redundant_genome_aligned/) {
         $graphs{'Redundant genome aligned reads'} = {
-           pipedata => $pipedata,
+           pipedata => $stats_pipedata,
+           input_pipedata => $input_pipedata,
            definition => $content_type_def,
         }
       } else {
         if ($content_type_name eq 'non_redundant_srna_reads') {
           $graphs{'Non-redundant reads'} = {
-            pipedata => $pipedata,
+            pipedata => $stats_pipedata,
+            input_pipedata => $input_pipedata,
             definition => $content_type_def,
           }
         } else {
           if ($content_type_name eq 'genome_aligned_srna_reads') {
             $graphs{'Genome aligned reads'} = {
-              pipedata => $pipedata,
+              pipedata => $stats_pipedata,
+              input_pipedata => $input_pipedata,
               definition => $content_type_def,
             }
           } else {
             if ($content_type_name eq 'non_genome_aligned_srna_reads') {
               $graphs{'Reads that did not align'} = {
-                pipedata => $pipedata,
+                pipedata => $stats_pipedata,
+                input_pipedata => $input_pipedata,
                 definition => $content_type_def,
               }
             } else {
               if ($content_type_name eq 'filtered_srna_reads') {
                 $graphs{'Size filtered reads'} = {
-                  pipedata => $pipedata,
+                  pipedata => $stats_pipedata,
+                  input_pipedata => $input_pipedata,
                   definition => $content_type_def,
                 }
               }
