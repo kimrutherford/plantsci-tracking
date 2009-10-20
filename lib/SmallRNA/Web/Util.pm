@@ -94,45 +94,45 @@ sub get_field_value
     return ($object->$field_db_column(), 'table_id', undef);
   }
 
-    $field_db_column =~ s/_id$//;
+  $field_db_column =~ s/_id$//;
 
-    my $field_value = $object->$field_db_column();
+  my $field_value = $object->$field_db_column();
 
-    my $info_ref = $parent_class_name->relationship_info($field_db_column);
+  my $info_ref = $parent_class_name->relationship_info($field_db_column);
 
-    if (!defined $info_ref) {
-      my $short_field = $field_db_column;
-      $short_field =~ s/_id//;
-      $info_ref = $parent_class_name->relationship_info($short_field);
-    }
+  if (!defined $info_ref) {
+    my $short_field = $field_db_column;
+    $short_field =~ s/_id//;
+    $info_ref = $parent_class_name->relationship_info($short_field);
+  }
 
-    if (defined $info_ref) {
-      my %info = %{$info_ref};
-      my $referenced_object = $object->$field_db_column();
+  if (defined $info_ref) {
+    my %info = %{$info_ref};
+    my $referenced_object = $object->$field_db_column();
 
-      if (defined $referenced_object) {
-        my $referenced_class_name = $info{class};
-        my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
+    if (defined $referenced_object) {
+      my $referenced_class_name = $info{class};
+      my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
 
-        my $primary_key_name = $c->config()->{class_info}->{$referenced_table}->{display_field};
+      my $primary_key_name = $c->config()->{class_info}->{$referenced_table}->{display_field};
 
-        if (!defined $primary_key_name) {
-          die "no class_info/display_field configuration for $referenced_table\n";
-        }
-
-        return ($field_value, 'foreign_key', $primary_key_name);
-      } else {
-        return (undef, 'foreign_key', undef);
+      if (!defined $primary_key_name) {
+        die "no class_info/display_field configuration for $referenced_table\n";
       }
+
+      return ($field_value, 'foreign_key', $primary_key_name);
     } else {
-      my $display_key_field = $c->config()->{class_info}->{$type}->{display_field};
-
-      if (defined $display_key_field && $field_label eq $display_key_field) {
-        return ($field_value, 'key_field', undef);
-      } else {
-        return ($field_value, 'attribute', undef);
-      }
+      return (undef, 'foreign_key', undef);
     }
+  } else {
+    my $display_key_field = $c->config()->{class_info}->{$type}->{display_field};
+
+    if (defined $display_key_field && $field_label eq $display_key_field) {
+      return ($field_value, 'key_field', undef);
+    } else {
+      return ($field_value, 'attribute', undef);
+    }
+  }
 }
 
 1;
