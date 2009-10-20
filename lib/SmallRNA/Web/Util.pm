@@ -43,7 +43,7 @@ use SmallRNA::DB;
 
 =head2
 
- Usage   : my ($field_value, $field_type, $ref_display_key) =
+ Usage   : my ($field_value, $field_type) =
              SmallRNA::Web::Util::get_field_value($c, $object, $field_label);
  Function: Get the real value of a field, for display.  The value may be
            straight from the database column, or may be created with Perl code
@@ -59,8 +59,6 @@ use SmallRNA::DB;
                             'attribute': this is a plain attribute field
                             'key_field': this is the attribute field that is the
                                natural primary key for this class
-           $ref_display_key - the natural primary key (display key) of the
-                              referenced object
 
 =cut
 sub get_field_value
