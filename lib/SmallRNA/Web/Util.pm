@@ -44,13 +44,25 @@ use SmallRNA::DB;
 =head2
 
  Usage   : my ($field_value, $field_type) =
-             SmallRNA::Web::Util::get_field_value($c, $object, $field_label);
+             SmallRNA::Web::Util::get_field_value($c, $object, $col_conf);
  Function: Get the real value of a field, for display.  The value may be
            straight from the database column, or may be created with Perl code
-           in the field_conf key of the configuration.
+           in the source key of the configuration.
  Args    : $c - the Catalyst context
            $object - the object
-           $field_label - the field label to use to look up the configuration
+           $col_conf - configuration of this column
+                       eg.  { name => 'Sample name',
+                              conf => 'name',   # the name field of the sample
+                            }
+                       or   { name => 'Half size',
+                              conf => { perl => '$object->size() / 2' },  # Perl code
+                              format => '%6.2f'              # format with sprintf
+                            }
+                       or   { name => 'Big count',
+                              conf => { perl => '$object->count() + 100' },
+                              format => integer   # format as integer and right align
+                            }
+                       
  Return  : $field_value - the value of the field or display or use.  If it is a
                           foreign key the whole object that is returned
            $field_type - can be:
@@ -67,34 +79,44 @@ sub get_field_value
 {
   my $c = shift;
   my $object = shift;
-  my $field_label = shift;
-
-  die "field_label undefined\n" unless defined $field_label;
+  my $col_conf = shift;
 
   my $type = $object->table();
 
+  if (defined $col_conf->{source} && $col_conf->{source} =~ /[\$\-<>\';]/) {
+    # Perl code
+    my $field_value = eval $col_conf->{source};
+    if ($@) {
+      $field_value = $@;
+      warn "$@\n";
+    }
+
+    return ($field_value, 'attribute', undef);
+  }
+
+  my $name = $col_conf->{name};
+
   my $parent_class_name = SmallRNA::DB::class_name_of_table($type);
 
-  my $field_info = undef;
+  my $field_db_column = $name;
 
-  if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
-    $field_info = $c->config()->{class_info}->{$type}->{field_infos}->{$field_label};
+  my $source = $col_conf->{source};
+  if (defined $source) {
+    $field_db_column = $source;
   }
 
-  my $field_db_column = $field_label;
-
-  if (defined $field_info) {
-    my $field_conf = $field_info->{field_conf};
-    if (defined $field_conf) {
-      $field_db_column = $field_conf;
-    }
-  }
-
-  if ($field_label eq "${type}_id") {
+  if ($name eq "${type}_id") {
     return ($object->$field_db_column(), 'table_id', undef);
   }
 
   $field_db_column =~ s/_id$//;
+
+  use Data::Dumper;
+
+  warn "$field_db_column $name - ",  Dumper([$col_conf]);
+
+  die unless defined $name;
+
 
   my $field_value = $object->$field_db_column();
 
@@ -127,7 +149,7 @@ sub get_field_value
   } else {
     my $display_key_field = $c->config()->{class_info}->{$type}->{display_field};
 
-    if (defined $display_key_field && $field_label eq $display_key_field) {
+    if (defined $display_key_field && $name eq $display_key_field) {
       return ($field_value, 'key_field', undef);
     } else {
       return ($field_value, 'attribute', undef);

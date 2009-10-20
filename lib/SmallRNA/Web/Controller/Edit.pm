@@ -112,7 +112,7 @@ sub _init_form_field
   my $object = shift;
   my $type = shift;
 
-  my $field_label = $field_info->{field_label};
+  my $field_label = $field_info->{name};
 
   my $display_field_label = $field_label;
   $display_field_label =~ s/_/ /g;
@@ -121,8 +121,8 @@ sub _init_form_field
 
   my $field_db_column = $field_label;
 
-  if (defined $field_info->{field_conf}) {
-    $field_db_column = $field_info->{field_conf};
+  if (defined $field_info->{conf}) {
+    $field_db_column = $field_info->{conf};
   }
 
   my $elem = {
@@ -312,8 +312,8 @@ sub _create_object {
 
     my $field_db_column = $name;
 
-    if (defined $field_info{field_conf}) {
-      $field_db_column = $field_info{field_conf};
+    if (defined $field_info{conf}) {
+      $field_db_column = $field_info{conf};
     }
 
     my $value = $form_params{$name};
@@ -379,8 +379,8 @@ sub _update_object {
 
     my $field_db_column = $name;
 
-    if (defined $field_info{field_conf}) {
-      $field_db_column = $field_info{field_conf};
+    if (defined $field_info{conf}) {
+      $field_db_column = $field_info{conf};
     }
 
     my $value = $form_params{$name};

@@ -19,7 +19,7 @@ $col_conf
 %   if ($field_type eq 'foreign_key' && $field_value && defined $ref_display_key) {
   <span class="ref_field">
   <a href='<% $c->uri_for("/view/object", $referenced_object->table(), SmallRNA::DB::id_of_object($field_value)) %>'>
-    <& field.mhtml, object => $referenced_object, field_label => $ref_display_key &>
+    <& field.mhtml, object => $referenced_object, col_conf => { name => $ref_display_key } &>
   </a>
   </span>
 %   } else {
@@ -47,22 +47,12 @@ use Number::Format;
 my $fmt = Number::Format->new();
 my $type = $object->table();
 
-my ($field_value, $field_type, $ref_display_key, $referenced_object) = ();
-
-if ($col_conf->{source} =~ /[\$\-<>\';]/) {
-  # Perl code
-  $field_type = 'attribute';
-  $field_value = eval $col_conf->{source};
-  if ($@) {
-    $field_value = $@;
-    warn "$@\n";
-  }
-} else {
-  # a field name
-  ($field_value, $field_type, $ref_display_key) =
-    SmallRNA::Web::Util::get_field_value($c, $object, $col_conf->{source});
+my ($field_value, $field_type, $ref_display_key) =
+  SmallRNA::Web::Util::get_field_value($c, $object, $col_conf->{source});
 
   my $type = $object->table();
+
+  my $referenced_object = undef;
 
   if ($field_type eq 'foreign_key') {
     $referenced_object = $field_value;
@@ -71,7 +61,7 @@ if ($col_conf->{source} =~ /[\$\-<>\';]/) {
   if (!defined $field_value) {
     $field_value = '';
   }
-}
+
 
 my $formatted_field_value;
 

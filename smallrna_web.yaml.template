@@ -26,16 +26,16 @@ authentication:
 #   The field_info_list, if provided is used to decide which columns to
 #   display when listing a class or showing an object.
 #   Field flags:
-#     - field_label: the description to display for the field
+#     - name: the description to display for the field
 #     - editable: if set and true, the field is editable
-#     - field_conf:
+#     - conf:
 #        - if set, and the value matches /^\w[\w\d]+$/, use this value instead
-#          of the field_label as the database column to retrieve the data from
+#          of the name as the database column to retrieve the data from
 #        - if set, and the value does not match /^\w[\w\d]+$/, evaluate as
 #          perl code for each object / row to be displayed.  During evaluation,
 #          $object will be set to the current row.  Any HTML characters will be
 #          passed through to the user.  These fields cannot be edited 
-#        - if not set, the field_label is used to choose the database
+#        - if not set, the name is used to choose the database
 #          column that holds the value for this field
 class_info:
   cv:
@@ -60,62 +60,60 @@ class_info:
       - first_name
       - last_name
     field_info_list:
-      - field_label: username
+      - name: username
         editable: 1
-      - field_label: organisation
+      - name: organisation
         editable: 1
-      - field_label: first_name
+      - name: first_name
         editable: 1
-      - field_label: last_name
+      - name: last_name
         editable: 1
+      - name: test
+        source: "$object->username() . ' foo!'"
   sample:
     editable: 1
     display_field: name
     # hack to put the samples in a sensible order:
     order_by: "substring(name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
-      - field_label: name
+      - name: name
         default_value: |
            use SmallRNA::DBLayer::Loader;
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Sample', 'name', 'SL');
         editable: 1
-      - field_label: description
+      - name: description
         editable: 1
-      - field_label: genotype
+      - name: genotype
         editable: 1
-      - field_label: protocol
+      - name: protocol
         editable: 1
-      - field_label: sample_type
+      - name: sample_type
         editable: 1
         values_constraint: 'cv->name = "tracking sample types"'
-      - field_label: molecule
-        field_conf: molecule_type
+      - name: molecule_type
         editable: 1
         values_constraint: 'cv->name = "tracking molecule types"'
-      - field_label: treatment
-        field_conf: treatment_type
+      - name: treatment_type
         editable: 1
         values_constraint: 'cv->name = "tracking treatment types"'
-      - field_label: fractionation
-        field_conf: fractionation_type
+      - name: fractionation_type
         editable: 1
         values_constraint: 'cv->name = "tracking fractionation types"'
-      - field_label: tissue
+      - name: tissue
         editable: 1
-      - field_label: processing requirement
-        field_conf: processing_requirement
+      - name: processing_requirement
         values_constraint: 'cv->name = "tracking sample processing requirements"'
         editable: 1
-      - field_label: ecotypes
+      - name: ecotypes
         referenced_class: Ecotype
         editable: 1
         is_collection: 1
-      - field_label: projects
-        field_conf: pipeprojects
+      - name: projects
+        source: pipeprojects
         referenced_class: Pipeproject
         editable: 1
         is_collection: 1
-      - field_label: pipedatas
+      - name: pipedatas
         referenced_class: Pipedata
         editable: 1
         is_collection: 1
@@ -130,18 +128,18 @@ class_info:
     editable: 1
     display_field: name
     field_info_list:
-      - field_label: name
+      - name: name
         default_value: |
            use SmallRNA::DBLayer::Loader;
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Pipeproject', 'name', 'PROJ');
         editable: 1
-      - field_label: description
+      - name: description
         editable: 1
-      - field_label: owner
+      - name: owner
         editable: 1
-      - field_label: funder
+      - name: funder
         editable: 1
-      - field_label: samples
+      - name: samples
         referenced_class: Sample
         editable: 1
         is_collection: 1
@@ -150,27 +148,27 @@ class_info:
     display_field: long_description
     order_by: type
     field_info_list:
-      - field_label: type
+      - name: type
         values_constraint: 'cv->name = "tracking analysis types"'
         editable: 1
-      - field_label: detail
+      - name: detail
         editable: 1
-      - field_label: runable_name
+      - name: runable_name
         editable: 1
   process_conf_input:
     editable: 1
     display_field: description
     order_by: process_conf
     field_info_list:
-      - field_label: content_type
+      - name: content_type
         values_constraint: 'cv->name = "tracking file content types"'
         editable: 1 
-      - field_label: format_type
+      - name: format_type
         values_constraint: 'cv->name = "tracking file format types"'
         editable: 1
-      - field_label: ecotype
+      - name: ecotype
         editable: 1
-      - field_label: process_conf
+      - name: process_conf
         editable: 1
   pipeprocess:
     display_field: description
@@ -179,11 +177,11 @@ class_info:
     display_field: long_identifier
     order_by: identifier
     field_info_list:
-      - field_label: identifier
+      - name: identifier
         editable: 1
-      - field_label: code
+      - name: code
         editable: 1
-      - field_label: barcode_set
+      - name: barcode_set
         editable: 1
   barcode_set:
     display_field: name
@@ -193,25 +191,25 @@ class_info:
     editable: 1
     display_field: identifier
     field_info_list:
-      - field_label: identifier
+      - name: identifier
         default_value: |
            use SmallRNA::DBLayer::Loader;
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Sequencingrun', 'identifier', 'RUN-');
         editable: 1
-      - field_label: Sequencing centre
-        field_conf: sequencing_centre
+      - name: Sequencing centre
+        source: sequencing_centre
         editable: 1
-      - field_label: Sequencing type 
-        field_conf: sequencing_type
+      - name: Sequencing type 
+        source: sequencing_type
         values_constraint: 'cv->name = "tracking sequencing method"'
         editable: 1
-      - field_label: Sequencing sample
-        field_conf: sequencing_sample
+      - name: Sequencing sample
+        source: sequencing_sample
         editable: 1
-      - field_label: quality
+      - name: quality
         editable: 1
         values_constraint: 'cv->name = "tracking quality values"'
-      - field_label: multiplexing_type
+      - name: multiplexing_type
         editable: 1
         values_constraint: 'cv->name = "tracking multiplexing types"'
   sequencing_sample:
@@ -219,12 +217,12 @@ class_info:
     display_field: name
     order_by: "substring(name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
-      - field_label: name
+      - name: name
         default_value: |
            use SmallRNA::DBLayer::Loader;
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 'name', 'SEQSAMP-');
         editable: 1
-      - field_label: coded_samples
+      - name: coded_samples
         referenced_class: CodedSample
         editable: 1
         is_collection: 1
@@ -232,18 +230,18 @@ class_info:
     editable: 1
     display_field: description
     field_info_list:
-      - field_label: description
+      - name: description
         editable: 1
-      - field_label: run type
-        field_conf: coded_sample_type
+      - name: run type
+        source: coded_sample_type
         values_constraint: 'cv->name = "tracking coded sample types"'
         editable: 1
-      - field_label: sample
+      - name: sample
         editable: 1
-      - field_label: barcode
+      - name: barcode
         editable: 1
-      - field_label: sequencing sample
-        field_conf: sequencing_sample
+      - name: sequencing sample
+        source: sequencing_sample
         editable: 1
   protocol:
     display_field: name
@@ -251,21 +249,21 @@ class_info:
     display_field: title
     editable: 1
     field_info_list:
-      - field_label: title
+      - name: title
         editable: 1
-      - field_label: issue
+      - name: issue
         editable: 1
-      - field_label: pyear
+      - name: pyear
         editable: 1
-      - field_label: pages
+      - name: pages
         editable: 1
-      - field_label: uniquename
+      - name: uniquename
         default_value: |
            use SmallRNA::DBLayer::Loader;
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Pub', 'uniquename', 'PIPELINE-PUB-');
         editable: 1
-      - field_label: type
-        field_conf: type_id
+      - name: type
+        source: type_id
         values_constraint: 'cv->name = "tracking publication types"'
         editable: 1
 reports:

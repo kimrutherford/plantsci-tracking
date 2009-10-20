@@ -14,7 +14,7 @@ $object
 %     $display_column_name = $1;
 %   }
 <td><span class="field_label"><% $display_column_name %></span>:</td>
-<td><& ../field.mhtml, object => $object, field_label => $column_name &></td>
+<td><& ../field.mhtml, object => $object, col_conf => { name => $column_name } &></td>
 </tr>
 % }
 </table>

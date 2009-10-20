@@ -7,7 +7,7 @@ it will be rendered as a 'details' link.
 
 <%args>
 $object
-$field_label
+$col_conf
 </%args>
 
 <span class="field_value">
@@ -19,7 +19,7 @@ $field_label
 %   if ($field_type eq 'foreign_key' && $field_value && defined $ref_display_key) {
   <span class="ref_field">
   <a href='<% $c->uri_for("/view/object", $referenced_object->table(), SmallRNA::DB::id_of_object($field_value)) %>'>
-    <& field.mhtml, object => $referenced_object, field_label => $ref_display_key &>
+    <& field.mhtml, object => $referenced_object, col_conf => { name => $ref_display_key } &>
   </a>
   </span>
 %   } else {
@@ -42,10 +42,13 @@ $field_label
 use SmallRNA::DB;
 use SmallRNA::Web::Util;
 
-die "field_label undefined\n" unless defined $field_label;
+  use Data::Dumper;
+
+  warn " in field: ",  Dumper([$col_conf]);
+
 
 my ($field_value, $field_type, $ref_display_key) =
-  SmallRNA::Web::Util::get_field_value($c, $object, $field_label);
+  SmallRNA::Web::Util::get_field_value($c, $object, $col_conf);
 
 my $type = $object->table();
 
