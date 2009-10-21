@@ -167,9 +167,7 @@ table.list tr td {
 
 .actionlist ul {
     padding: 8px;
-    margin: 2px;
-    list-style: none;
-    list-style-type: none;
+    margin: 1em;
 }
 
 
