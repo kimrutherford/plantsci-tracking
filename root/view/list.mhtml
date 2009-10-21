@@ -10,7 +10,7 @@ $disclosed => 1  # true will make the list default to visible
 <span class="sect-title <% $disclosed_style %>"><a href="#"> <% $list_title %> </a> </span>
 % }
 <div class="sect-content">
-% if (@column_confs == 0) {
+% if (@rows == 0) {
     [none]
 % } else {
   <table class="list">
@@ -47,6 +47,10 @@ my $type = undef;
 while (my $obj = $rs->next()) {
   if ($first) {
     $type = $obj->table();
+
+    if (@column_confs == 0) {
+      @column_confs = SmallRNA::Web::Util::get_column_confs_from_object($c->config(), $obj);
+    }
 
     for my $col_conf (@column_confs) {
       my $column_name = $col_conf->{name};

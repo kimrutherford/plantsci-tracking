@@ -150,4 +150,42 @@ sub get_field_value
   }
 }
 
+=head2
+
+ Usage   : my @column_confs = 
+             SmallRNA::Web::Util::get_column_confs_from_object($config, $object)
+ Function: Return the column configuration for displaying the given object, from
+           the configuration file (if columns are configured for this type) or
+           by creating a default configuration
+ Args    : $c - the Catalyst context
+           $object - the object
+ Return  : column configurations in the same format as described in 
+           get_field_value() above
+
+=cut
+sub get_column_confs_from_object
+{
+  my $config = shift;
+  my $object = shift;
+
+  my $table = $object->table();
+
+  my @column_confs = grep {
+                         !$_->{is_collection}
+                     } @{$config->{class_info}->{$table}->{field_info_list}};
+
+  if (!@column_confs) {
+    for my $column_name ($object->columns()) {
+      next if $column_name eq 'created_stamp';
+      if ($column_name =~ /(.*)_id$/) {
+        next if $1 eq $table;
+      }
+      push @column_confs, { name => $column_name };
+    }
+  }
+
+  return @column_confs;
+}
+
+
 1;

@@ -8,7 +8,7 @@ $disclosed => 1
 % if ($error) {
   <% $error %>
 % } else {
-  <& list.mhtml, type => $collection_table_name, rs => $rs,
+  <& list.mhtml, rs => $rs,
      list_title => $collection_title, disclosed => $disclosed &>
 % }
 

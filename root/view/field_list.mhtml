@@ -7,6 +7,7 @@ $object
   <table>
 % for my $field_label (@field_labels) {
 %   my $col_conf = $field_infos{$field_label};
+%   $col_conf = { name => $field_label } if !defined $col_conf;
     <tr>
       <td><% $_get_display_name_code->($field_label) %>:</td>
       <td><& /view/field.mhtml, object => $object, col_conf => $col_conf &></td>
@@ -16,8 +17,6 @@ $object
 </div>
 
 <%init>
-
-warn " field_labels: @field_labels\n";
 
 my $type = $object->table();
 
@@ -31,12 +30,6 @@ my $_get_display_name_code = sub {
   my $field_label = shift;
 
   my $display_field_label = undef;
-
-  if (defined $field_infos{$field_label}) {
-    if (defined $field_infos{$field_label}->{display_title}) {
-      $display_field_label = $field_infos{$field_label}->{display_title};
-    }
-  }
 
   if (!defined $display_field_label) {
     ($display_field_label = $field_label) =~ s/_/ /g;
