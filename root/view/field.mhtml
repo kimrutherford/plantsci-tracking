@@ -31,7 +31,7 @@ $col_conf
       </a>
     </span>
 %     } else {
-    <% $field_value %>
+    <% format_field_value($col_conf, $field_value) %>
 %     }
   </span>
 %   }
@@ -42,10 +42,31 @@ $col_conf
 use SmallRNA::DB;
 use SmallRNA::Web::Util;
 
-  use Data::Dumper;
+use Number::Format;
 
-  warn " in field: ",  Dumper([$col_conf]);
+sub format_field_value
+{
+  my $col_conf = shift;
+  my $field_value = shift;
 
+  my $fmt = Number::Format->new();
+
+  if (defined $field_value && defined $col_conf->{format}) {
+    if ($col_conf->{format} eq 'integer') {
+      if ($field_value =~ /^\d+$/) {
+        return $fmt->format_number($field_value);
+      }
+    } else {
+      if ($col_conf->{format} =~ /\%/) {
+        return sprintf $col_conf->{format}, $field_value;
+      } else {
+        die "unknown column format: ", $col_conf->{format}, "\n";
+      }
+    }
+  }
+
+  return $field_value;
+}
 
 my ($field_value, $field_type, $ref_display_key) =
   SmallRNA::Web::Util::get_field_value($c, $object, $col_conf);
