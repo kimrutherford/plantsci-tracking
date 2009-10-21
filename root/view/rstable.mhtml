@@ -41,10 +41,6 @@ my %field_infos = ();
 
 my $type = undef;
 
-if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
-  %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
-}
-
 # sub _column_conf_from_name
 # {
 #   my $column_db_name = shift;
@@ -72,9 +68,10 @@ while (my $obj = $rs->next()) {
   if ($first) {
     $type = $obj->table();
 
-    if (!@column_confs) {
-#      @column_confs = map { _column_conf_from_name($_) || () } $obj->columns();
-    }
+if (defined $c->config()->{class_info}->{$type}->{field_infos}) {
+  %field_infos = %{$c->config()->{class_info}->{$type}->{field_infos}};
+}
+
 
     $first = 0;
   }
