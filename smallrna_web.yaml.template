@@ -276,48 +276,35 @@ report_list:
       - name: Raw reads
         format: integer
         source: |
-           $object->get_pipedata_property("raw_srna_reads", "sequence count") ||
-           $object->get_pipedata_property("multiplexed_srna_reads", "sequence count") ||
-           $object->get_pipedata_property("raw_genomic_dna_reads", "sequence count") ||
-           $object->get_pipedata_property("raw_genomic_dna_tags", "sequence count")
+           $object->get_pipedata_property("raw_reads", "sequence count")
       - name: Reads after trimming
         format: integer
         source: |
-           $object->get_pipedata_property("srna_reads", "sequence count") ||
-           $object->get_pipedata_property("genomic_dna_reads", "sequence count") ||
-           $object->get_pipedata_property("genomic_dna_tags", "sequence count")
+           $object->get_pipedata_property("trimmed_reads", "sequence count")
       - name: Remove adapter rejects
         format: integer
         source: |
-           $object->get_pipedata_property("remove_adapter_rejects", "sequence count")
+           $object->get_pipedata_property("trim_rejects", "sequence count")
       - name: Filtered reads
         format: integer
         source: |
-           $object->get_pipedata_property("filtered_srna_reads", "sequence count")
+           $object->get_pipedata_property("filtered_trimmed_reads", "sequence count")
       - name: Non redundant reads
         format: integer
         source: |
-           $object->get_pipedata_property("non_redundant_srna_reads", "sequence count") ||
-           $object->get_pipedata_property("non_redundant_genomic_dna_reads", "sequence count") ||
-           $object->get_pipedata_property("non_redundant_genomic_dna_tags", "sequence count")
-      - name: Non genome aligned reads
+           $object->get_pipedata_property("non_redundant_reads", "sequence count")
+      - name: Non aligned reads
         format: integer
         source: |
-           $object->get_pipedata_property("non_genome_aligned_srna_reads", "sequence count") ||
-           $object->get_pipedata_property("non_genome_aligned_genomic_dna_reads", "sequence count") ||
-           $object->get_pipedata_property("non_genome_aligned_genomic_dna_tags", "sequence count")
-      - name: Genome aligned reads
+           $object->get_pipedata_property("non_aligned_reads", "sequence count")
+      - name: Aligned reads
         format: integer
         source: |
-           $object->get_pipedata_property("genome_aligned_srna_reads", "sequence count") ||
-           $object->get_pipedata_property("genome_aligned_genomic_dna_reads", "sequence count") ||
-           $object->get_pipedata_property("genome_aligned_genomic_dna_tags", "sequence count")
-      - name: Redundant genome aligned reads
+           $object->get_pipedata_property("aligned_reads", "sequence count")
+      - name: Redundant aligned reads
         format: integer
         source: |
-           $object->get_pipedata_property("redundant_genome_aligned_srna_reads", "sequence count") ||
-           $object->get_pipedata_property("redundant_genome_aligned_genomic_dna_reads", "sequence count") ||
-           $object->get_pipedata_property("redundant_genome_aligned_genomic_dna_tags", "sequence count")
+           $object->get_pipedata_property("redundant_aligned_reads", "sequence count")
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:

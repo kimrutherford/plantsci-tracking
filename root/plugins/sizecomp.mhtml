@@ -115,44 +115,42 @@ for my $stats_pipedata (@pipedatas) {
     my $content_type = $input_pipedatas[0]->content_type();
     my $content_type_name = $content_type->name();
     my $content_type_def = $content_type->definition();
-    if ($content_type_name eq 'srna_reads'
-        || $content_type_name eq 'genomic_dna_reads'
-        || $content_type_name eq 'genomic_dna_tags') {
+    if ($content_type_name eq 'trimmed_reads') {
       $graphs{'All reads after trimming'} = {
         pipedata => $stats_pipedata,
         input_pipedata => $input_pipedata,
         definition => $content_type_def,
       }
     } else {
-      if ($content_type_name =~ /^redundant_genome_aligned/) {
+      if ($content_type_name eq 'redundant_aligned_reads') {
         $graphs{'Redundant genome aligned reads'} = {
            pipedata => $stats_pipedata,
            input_pipedata => $input_pipedata,
            definition => $content_type_def,
         }
       } else {
-        if ($content_type_name eq 'non_redundant_srna_reads') {
+        if ($content_type_name eq 'non_redundant_reads') {
           $graphs{'Non-redundant reads'} = {
             pipedata => $stats_pipedata,
             input_pipedata => $input_pipedata,
             definition => $content_type_def,
           }
         } else {
-          if ($content_type_name eq 'genome_aligned_srna_reads') {
+          if ($content_type_name eq 'aligned_reads') {
             $graphs{'Genome aligned reads'} = {
               pipedata => $stats_pipedata,
               input_pipedata => $input_pipedata,
               definition => $content_type_def,
             }
           } else {
-            if ($content_type_name eq 'non_genome_aligned_srna_reads') {
+            if ($content_type_name eq 'non_aligned_reads') {
               $graphs{'Reads that did not align'} = {
                 pipedata => $stats_pipedata,
                 input_pipedata => $input_pipedata,
                 definition => $content_type_def,
               }
             } else {
-              if ($content_type_name eq 'filtered_srna_reads') {
+              if ($content_type_name eq 'filtered_trimmed_reads') {
                 $graphs{'Size filtered reads'} = {
                   pipedata => $stats_pipedata,
                   input_pipedata => $input_pipedata,
