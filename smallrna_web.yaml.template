@@ -266,9 +266,9 @@ class_info:
         source: type_id
         values_constraint: 'cv->name = "tracking publication types"'
         editable: 1
-reports:
-  sample_read_counts:
-    description: Sample counts and percentages
+report_list:
+  - name: sample_read_counts
+    description: Counts of fasta sequences for each sample at each pipeline stage
     object_type: sample
     columns:
       - name: Sample name
