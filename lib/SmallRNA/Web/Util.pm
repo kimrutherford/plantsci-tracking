@@ -111,13 +111,6 @@ sub get_field_value
 
   $field_db_column =~ s/_id$//;
 
-  use Data::Dumper;
-
-  warn "$field_db_column $name - ",  Dumper([$col_conf]);
-
-  die unless defined $name;
-
-
   my $field_value = $object->$field_db_column();
 
   my $info_ref = $parent_class_name->relationship_info($field_db_column);
