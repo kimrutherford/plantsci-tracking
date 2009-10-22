@@ -105,7 +105,7 @@ sub get_field_value
     $field_db_column = $source;
   }
 
-  if ($name eq "${type}_id") {
+  if ($field_db_column eq "${type}_id") {
     return ($object->$field_db_column(), 'table_id', undef);
   }
 
