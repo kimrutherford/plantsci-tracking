@@ -99,7 +99,10 @@ for my $pipedata (@pipedatas) {
           $graphs{'Non-redundant reads'} = $pipedata;
         } else {
           if ($content_type_name eq 'aligned_reads') {
-            $graphs{'Genome aligned reads'} = $pipedata;
+            if (grep { $_->type()->name() eq 'alignment program' &&
+                       $_->value() eq 'patman' } $pipedata->pipedata_properties()) {
+              $graphs{'Genome aligned reads'} = $pipedata;
+            }
           }
         }
       }
