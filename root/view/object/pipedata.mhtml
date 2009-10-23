@@ -19,6 +19,8 @@ $type
     list_title => 'Process that generated this data' &>
   <& /view/list.mhtml, type => 'pipeprocess', rs => $next_pipeprocess_rs,
     list_title => 'Processes that use this data as input' &>
+  <& /view/list.mhtml, type => 'pipedata', rs => $generated_pipedatas_rs,
+    list_title => 'Data files that are generated from this file' &>
   <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
     list_title => "The sample$plu that (ultimately) generated this data" &>
   <& /view/collection.mhtml, object => $object,
@@ -30,6 +32,9 @@ $type
 my $next_pipeprocess_rs =
   $object->pipeprocess_in_pipedatas()->search_related('pipeprocess');
 my $prev_pipeprocess_rs = $object->search_related('generating_pipeprocess');
+my $generated_pipedatas_rs =
+  $object->pipeprocess_in_pipedatas()->search_related('pipeprocess')
+     ->search_related('pipedatas');
 my $samples_rs =
   $object->sample_pipedatas()->search_related('sample');
 my $samples_count = $samples_rs->count();
