@@ -18,7 +18,7 @@ This component shows composition statistics and graphs.
 </script>
 
 <div class="sect">
-<span class="sect-title undisclosed-title">
+<span class="sect-title disclosed-title">
   <a href="#">Base composition and size distribution graphs and statistics</a>
 </span>
 <div class="sect-content" id="tabs">
