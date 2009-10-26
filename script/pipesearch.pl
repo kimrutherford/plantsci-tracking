@@ -10,8 +10,9 @@ use SmallRNA::Index::Manager;
 
 use Getopt::Long;
 
-my $c = SmallRNA::Web->commandline();
-my $config = $c->config();
+my $config_file_name = shift;
+
+my $config = SmallRNA::Config->new($config_file_name);
 
 # set defaults
 my %options = (
@@ -61,12 +62,13 @@ my $search_sequence = $options{search_fasta} || $options{search_gff};
 
 my $schema = SmallRNA::DB->schema($config);
 
-my $file_format;
+my $file_format = 'seq_offset_index';
+my $expected_content_type;
 
 if ($options{search_fasta}) {
-  $file_format = 'seq_offset_index';
+  $expected_content_type = 'fasta_index';
 } else {
-  $file_format = 'seq_offset_index';
+  $expected_content_type = 'gff3_index';
 }
 
 my $rs = $schema->resultset('Cvterm')->search({
@@ -81,7 +83,11 @@ while (defined (my $pipedata = $rs->next())) {
   my $pipeprocess = $pipedata->generating_pipeprocess();
   my @input_pipedatas = $pipeprocess->input_pipedatas();
 
-  my $file_name = $input_pipedatas[0]->file_name();
+  my $input_pipedata = $input_pipedatas[0];
+
+  next if $pipedata->content_type()->name() ne $expected_content_type;
+
+  my $file_name = $input_pipedata->file_name();
   my $index_file_name = $pipedata->file_name();
 
   if ($options{verbose}) {
