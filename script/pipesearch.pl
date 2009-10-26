@@ -5,8 +5,8 @@ use warnings;
 use Carp;
 
 use SmallRNA::DB;
-use SmallRNA::Web;
 use SmallRNA::Index::Manager;
+use SmallRNA::Config;
 
 use Getopt::Long;
 
