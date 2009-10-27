@@ -71,24 +71,19 @@ if ($options{search_fasta}) {
   $expected_content_type = 'gff3_index';
 }
 
-my $rs = $schema->resultset('Cvterm')->search({
-  name => $file_format
-})->search_related('pipedata_format_types');
-
 my $manager = SmallRNA::Index::Manager->new();
 
-my $data_dir = $config->data_directory();
+sub do_search
+{
+  my $pipedata = shift;
+  my $index_pipedata = shift;
+  my $sequence = shift;
+  my $cache = shift;
 
-while (defined (my $pipedata = $rs->next())) {
-  my $pipeprocess = $pipedata->generating_pipeprocess();
-  my @input_pipedatas = $pipeprocess->input_pipedatas();
+  my $data_dir = $config->data_directory();
 
-  my $input_pipedata = $input_pipedatas[0];
-
-  next if $pipedata->content_type()->name() ne $expected_content_type;
-
-  my $file_name = $input_pipedata->file_name();
-  my $index_file_name = $pipedata->file_name();
+  my $file_name = $pipedata->file_name();
+  my $index_file_name = $index_pipedata->file_name();
 
   if ($options{verbose}) {
     print "checking $file_name\n";
@@ -96,8 +91,9 @@ while (defined (my $pipedata = $rs->next())) {
 
   my @res = $manager->search(input_file_name => $data_dir . '/' . $file_name,
                              index_file_name => $data_dir . '/' . $index_file_name,
-                             search_sequence => $search_sequence);
-
+                             search_sequence => $search_sequence,
+                             cache => $cache,
+                             count_only => $options{count_only});
 
   my $maybe_file_name = '';
 
@@ -112,4 +108,24 @@ while (defined (my $pipedata = $rs->next())) {
       print $maybe_file_name, "$res\n";
     }
   }
+}
+
+
+my $cache = {};
+
+my $rs = $schema->resultset('Cvterm')->search({
+  name => $file_format
+})->search_related('pipedata_format_types');
+
+while (defined (my $index_pipedata = $rs->next())) {
+  next if $index_pipedata->content_type()->name() ne $expected_content_type;
+
+  my $pipeprocess = $index_pipedata->generating_pipeprocess();
+  my @input_pipedatas = $pipeprocess->input_pipedatas();
+
+  my $input_pipedata = $input_pipedatas[0];
+
+  next unless $input_pipedata->file_name() =~ /patman/;
+
+  do_search($input_pipedata, $index_pipedata, $search_sequence, $cache);
 }
