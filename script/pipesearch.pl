@@ -60,33 +60,33 @@ my $search_sequence = $options{search_fasta} || $options{search_gff};
 my $cache = {};
 my $index_db = SmallRNA::IndexDB->new(config => $config, cache => $cache);
 
-my @matches;
+my @results;
 
 if ($options{search_fasta}) {
-  @matches = $index_db->search_all(schema => $schema, search_file_type => 'fasta',
+  @results = $index_db->search_all(schema => $schema, search_file_type => 'fasta',
                                    sequence => $search_sequence,
                                    retrieve_lines => !$options{count_only},
                                    verbose => $options{verbose});
 } else {
-  @matches = $index_db->search_all(schema => $schema, search_file_type => 'gff3',
+  @results = $index_db->search_all(schema => $schema, search_file_type => 'gff3',
                                    sequence => $search_sequence,
                                    retrieve_lines => !$options{count_only},
                                    verbose => $options{verbose});
 }
 
-for my $match (@matches) {
-  my @results = @{$match->{results}};
+for my $result (@results) {
+  my @matches = @{$result->{matches}};
 
-  if (@results) {
-    print $match->{pipedata}->file_name(), ':';
+  if (@matches) {
+    print $result->{pipedata}->file_name(), ':';
 
     if ($options{count_only}) {
       print ' ', scalar(@results), "\n";
     } else {
       print "\n";
 
-      for my $result (@results) {
-        my $line = $result->{line};
+      for my $match (@matches) {
+        my $line = $match->{line};
 
         print "$line\n";
       }

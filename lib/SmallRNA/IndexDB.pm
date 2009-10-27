@@ -91,12 +91,12 @@ sub _do_search
   my $full_input_file_name = $data_dir . '/' . $file_name;
   my $full_index_file_name = $data_dir . '/' . $index_file_name;
 
-  my @results = $self->{manager}->search(input_file_name => $full_input_file_name,
+  my @matches = $self->{manager}->search(input_file_name => $full_input_file_name,
                                          index_file_name => $full_index_file_name,
                                          search_sequence => $search_sequence,
                                          retrieve_lines => $retrieve_lines);
 
-  return { pipedata => $input_pipedata, results => \@results };
+  return { pipedata => $input_pipedata, matches => \@matches };
 }
 
 sub search_all
