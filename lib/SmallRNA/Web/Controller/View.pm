@@ -43,6 +43,8 @@ use base 'Catalyst::Controller';
 
 use Lingua::EN::Inflect::Number qw(to_PL);
 
+use SmallRNA::IndexDB;
+
 =head2 object
 
  Function: Render details about an object (about a row in a table)
@@ -185,7 +187,7 @@ sub report : Local {
 
     $st->{rs} = $c->schema->resultset($class_name)->search(undef, $params);
     $st->{column_confs} = $report_conf->{columns};
- 
+
     $st->{page} = $c->req->param('page') || 1;
     $st->{numrows} = $c->req->param('numrows') || 20;
   };
@@ -219,6 +221,35 @@ sub list_collection : LocalRegex('^list/(.+?)/(\d+?)/(.+?)$') {
 
   $st->{object} = $object;
   $st->{collection_name} = $collection_name;
+}
+
+my $index_manager_cache = {};
+
+sub seqread : Local {
+  my ($self, $c, $read_seq) = @_;
+
+  my $index_db = SmallRNA::IndexDB->new(config => $c->config(),
+                                        cache => $index_manager_cache);
+
+  my $st = $c->stash;
+
+  if (!defined $read_seq || length $read_seq == 0) {
+    $c->stash->{error} = qq(No sequence passed to /seqread);
+    $c->forward('/start');
+  } else {
+    $st->{title} = "Details of $read_seq";
+    $st->{template} = 'view/seqread.mhtml';
+    $st->{read_seq} = $read_seq;
+
+    my @results = $index_db->search_all(schema => $c->schema(),
+                                        sequence => $read_seq,
+                                        retrieve_lines => 1,
+                                        search_file_type => 'gff3');
+
+    @results = grep { scalar(@{$_->{matches}}) } @results;
+
+    $st->{results} = \@results;
+  }
 }
 
 1;

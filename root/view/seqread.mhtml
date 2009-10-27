@@ -1,0 +1,45 @@
+<%args>
+$read_seq
+@results
+</%args>
+
+seq: <% $read_seq %>
+
+% if (@results) {
+
+<table class="list">
+
+  <thead>
+    <tr>
+      <td>Sample name</td>
+      <td>file</td>
+      <td>Match count</td>
+      <td>deailts</td>
+    </tr>
+  </thead>
+
+%   for my $result (@results) {
+%     my @matches = @{$result->{matches}};
+%     my $pipedata = $result->{pipedata};
+%     my @samples = $pipedata->samples();
+%     my $sample = $samples[0];
+
+<tr>
+
+<td> <% $sample->name() %> </td>
+<td> <% $pipedata->file_name() %> </td>
+<td> <% scalar(@matches) %> </td>
+
+<td>
+%     for my $match (@matches) {
+%       my $line = $match->{line};
+<p> foo <% $line %> </p>
+%     }
+</td>
+
+%   }
+% } else {
+
+<p> [no matches found for any sample] </p>
+
+% }
