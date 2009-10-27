@@ -7,18 +7,16 @@ use Carp;
 use SmallRNA::DB;
 use SmallRNA::Index::Manager;
 use SmallRNA::Config;
+use SmallRNA::IndexDB;
 
 use Getopt::Long;
 
 my $config_file_name = shift;
 
-my $config = SmallRNA::Config->new($config_file_name);
-
 # set defaults
 my %options = (
                search_gff => undef,
                search_fasta => undef,
-               show_file_name => undef,
                count_only => undef,
                verbose => undef,
               );
@@ -29,7 +27,6 @@ $option_parser->configure("gnu_getopt");
 my %opt_config = (
                   "search-gff|g=s" => \$options{search_gff},
                   "search-fasta|s=s" => \$options{search_fasta},
-                  "show-file-name|f" => \$options{show_file_name},
                   "count-only|c" => \$options{count_only},
                   "verbose|v" => \$options{verbose},
                  );
@@ -42,7 +39,6 @@ usage: $0 [-v] [-c] <-s|-g> <sequence>
 options:
   -s search for a sequence in all non-redundant fasta files
   -g search for occurrence of a sequence in a GFF file
-  -f show the matching file name before each match
   -c show the count of matches, rather than the matches
   -v verbose
 
@@ -58,74 +54,42 @@ if (!($options{search_fasta} || $options{search_gff})) {
   usage();
 }
 
-my $search_sequence = $options{search_fasta} || $options{search_gff};
-
+my $config = SmallRNA::Config->new($config_file_name);
 my $schema = SmallRNA::DB->schema($config);
+my $search_sequence = $options{search_fasta} || $options{search_gff};
+my $cache = {};
+my $index_db = SmallRNA::IndexDB->new(config => $config, cache => $cache);
 
-my $file_format = 'seq_offset_index';
-my $expected_content_type;
+my @matches;
 
 if ($options{search_fasta}) {
-  $expected_content_type = 'fasta_index';
+  @matches = $index_db->search_all(schema => $schema, search_file_type => 'fasta',
+                                   sequence => $search_sequence,
+                                   retrieve_lines => !$options{count_only},
+                                   verbose => $options{verbose});
 } else {
-  $expected_content_type = 'gff3_index';
+  @matches = $index_db->search_all(schema => $schema, search_file_type => 'gff3',
+                                   sequence => $search_sequence,
+                                   retrieve_lines => !$options{count_only},
+                                   verbose => $options{verbose});
 }
 
-my $manager = SmallRNA::Index::Manager->new();
+for my $match (@matches) {
+  my @results = @{$match->{results}};
 
-sub do_search
-{
-  my $pipedata = shift;
-  my $index_pipedata = shift;
-  my $sequence = shift;
-  my $cache = shift;
+  if (@results) {
+    print $match->{pipedata}->file_name(), ':';
 
-  my $data_dir = $config->data_directory();
+    if ($options{count_only}) {
+      print ' ', scalar(@results), "\n";
+    } else {
+      print "\n";
 
-  my $file_name = $pipedata->file_name();
-  my $index_file_name = $index_pipedata->file_name();
+      for my $result (@results) {
+        my $line = $result->{line};
 
-  if ($options{verbose}) {
-    print "checking $file_name\n";
-  }
-
-  my @res = $manager->search(input_file_name => $data_dir . '/' . $file_name,
-                             index_file_name => $data_dir . '/' . $index_file_name,
-                             search_sequence => $search_sequence,
-                             cache => $cache,
-                             count_only => $options{count_only});
-
-  my $maybe_file_name = '';
-
-  if ($options{show_file_name}) {
-    $maybe_file_name = $data_dir . '/' . $file_name . ': ';
-  }
-
-  if ($options{count_only}) {
-    print $maybe_file_name, scalar(@res), "\n";
-  } else {
-    for my $res (@res) {
-      print $maybe_file_name, "$res\n";
+        print "$line\n";
+      }
     }
   }
-}
-
-
-my $cache = {};
-
-my $rs = $schema->resultset('Cvterm')->search({
-  name => $file_format
-})->search_related('pipedata_format_types');
-
-while (defined (my $index_pipedata = $rs->next())) {
-  next if $index_pipedata->content_type()->name() ne $expected_content_type;
-
-  my $pipeprocess = $index_pipedata->generating_pipeprocess();
-  my @input_pipedatas = $pipeprocess->input_pipedatas();
-
-  my $input_pipedata = $input_pipedatas[0];
-
-  next unless $input_pipedata->file_name() =~ /patman/;
-
-  do_search($input_pipedata, $index_pipedata, $search_sequence, $cache);
 }
