@@ -140,8 +140,12 @@ sub search_all
       warn "checking $input_pipedata_file_name\n";
     }
 
-    push @results, $self->_do_search($input_pipedata, $index_pipedata,
-                                     $search_sequence, $retrieve_lines);
+    my $result = $self->_do_search($input_pipedata, $index_pipedata,
+                                   $search_sequence, $retrieve_lines);
+
+    if (@{$result->{matches}}) {
+      push @results, $result;
+    }
   }
 
   return @results;
