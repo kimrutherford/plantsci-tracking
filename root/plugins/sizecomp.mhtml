@@ -40,7 +40,6 @@ This component shows composition statistics and graphs.
   </div>
 <%perl>
    for my $graph_name (@graph_names) {
-     warn " graph: $graph_name\n";
      my $data = $graphs{$graph_name};
      next unless defined $data;
      my $stats_pipedata = $data->{pipedata};
