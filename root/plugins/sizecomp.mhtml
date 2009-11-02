@@ -78,8 +78,8 @@ my %graphs = ();
 my @graph_names = ('All reads after trimming',
                    'Size filtered reads',
                    'Non-redundant reads',
-                   'Genome aligned reads',
-                   'Redundant genome aligned reads',
+                   'Aligned non-redundant reads',
+                   'Aligned redundant reads',
                    'Reads that did not align',
                   );
 
@@ -122,7 +122,7 @@ for my $stats_pipedata (@pipedatas) {
       }
     } else {
       if ($content_type_name eq 'redundant_aligned_reads') {
-        $graphs{'Redundant genome aligned reads'} = {
+        $graphs{'Aligned redundant reads'} = {
            pipedata => $stats_pipedata,
            input_pipedata => $input_pipedata,
            definition => $content_type_def,
@@ -136,7 +136,7 @@ for my $stats_pipedata (@pipedatas) {
           }
         } else {
           if ($content_type_name eq 'aligned_reads') {
-            $graphs{'Genome aligned reads'} = {
+            $graphs{'Aligned non-redundant reads'} = {
               pipedata => $stats_pipedata,
               input_pipedata => $input_pipedata,
               definition => $content_type_def,
