@@ -24,6 +24,11 @@ This component shows composition statistics and graphs.
 <div class="sect-content" id="tabs">
   <ul>
     <li><a href="#tabs-stats">Sequence statistics</a></li>
+
+% if (defined $fastq_pipedata) {
+    <li><a href="#tabs-n-mers">Top n-mers in FastQ file</a></li>
+% }
+
 %   for my $graph_name (@graph_names) {
 %     my $data = $graphs{$graph_name};
 %     next unless defined $data;
@@ -35,9 +40,17 @@ This component shows composition statistics and graphs.
     </a></li>
 %   }
   </ul>
+
   <div id="tabs-stats">
     <& /plugins/readstats.mhtml, object => $object &>
   </div>
+
+% if (defined $fastq_pipedata) {
+  <div id="tabs-n-mers">
+    <& /plugins/pipedata_details.mhtml, object => $fastq_pipedata &>
+  </div>
+% }
+
 <%perl>
    for my $graph_name (@graph_names) {
      my $data = $graphs{$graph_name};
@@ -74,6 +87,7 @@ my $schema = $c->schema();
 my $content_type = $schema->find_with_type('Cvterm', 'name', 'first_base_summary');
 my @pipedatas = $object->pipedatas()->search({content_type => $content_type->cvterm_id()});
 my %graphs = ();
+my $fastq_pipedata = undef;
 
 my @graph_names = ('All reads after trimming',
                    'Size filtered reads',
@@ -109,10 +123,26 @@ sub get_sparkline_values
 
 for my $stats_pipedata (@pipedatas) {
   my @input_pipedatas = $stats_pipedata->generating_pipeprocess()->input_pipedatas();
+
   if (@input_pipedatas) {
     my $input_pipedata = $input_pipedatas[0];
-    my $content_type = $input_pipedatas[0]->content_type();
+    my $content_type = $input_pipedata->content_type();
     my $content_type_name = $content_type->name();
+
+    if ($content_type_name eq 'raw_reads') {
+      if ($input_pipedata->format_type()->name() eq 'fasta') {
+        my $generating_process = $input_pipedata->generating_pipeprocess();
+        if (defined $generating_process) {
+          my @possible_fastqs = $generating_process->input_pipedatas();
+          for my $possible_fastq (@possible_fastqs) {
+            if ($possible_fastq->format_type()->name eq 'fastq') {
+              $fastq_pipedata = $possible_fastq;
+            }
+          }
+        }
+      }
+    }
+
     my $content_type_def = $content_type->definition();
     if ($content_type_name eq 'trimmed_reads') {
       $graphs{'All reads after trimming'} = {

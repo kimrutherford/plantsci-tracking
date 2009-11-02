@@ -2,12 +2,8 @@
 $object
 </%args>
 
-% if (keys %top_n_mers) {
-<div class="sect">
-  <span class="sect-title disclosed-title">
-    <a href="#">Data file details</a>
-  </span>
-  <div class="sect-content">
+<div>
+  <span>
     <table class="list">
       <thead>
         <tr>
@@ -18,15 +14,31 @@ $object
       <tbody>
 % for my $n_mer (@sorted_n_mers) {
         <tr>
-          <td><pre><% $n_mer %></pre></td>
+          <td><span class="seqbases"><% colour_top_substrs($n_mer, @top_substrs) %><span></td>
           <td><% $top_n_mers{$n_mer} %></td>
         </tr>
 % }
       </tbody>
     </table>
-  </div>
+  </span>
+
+%   if (@top_substrs) {
+  <span style="font-size: 80%;">
+    <div>
+      Commonest pattern<% @top_substrs == 1 ? '' : 's' %> in these n-mers:
+    </div>
+    <div style="color: red; font-size: 90%;">
+      <ul style="list-style-type: none;">
+%     for my $substr (@top_substrs) {
+        <li>
+         <% $substr %>
+        </li>
+%     }
+      </ul>
+    </div>
+  </span>
+%   }
 </div>
-% }
 
 
 <%init>
@@ -64,5 +76,52 @@ if (defined $top_n_mers_ref) {
 my @sorted_n_mers = sort {
     $top_n_mers{$b} <=> $top_n_mers{$a}
   } keys %top_n_mers;
+
+my %substrs = ();
+
+for (my $sublen = 15; $sublen < 100; $sublen++) {
+  for my $n_mer (@sorted_n_mers) {
+    next if $sublen > length $n_mer;
+
+    if ($n_mer =~ /([actgn]+)/i) {
+      my $seq = $1;
+      my $count = $top_n_mers{$n_mer};
+
+      for (my $i = 0; $i <= length($seq) - $sublen; $i++) {
+        my $subbit = substr ($seq, $i, $sublen);
+#      warn "found $sublen $subbit $count\n";
+
+        $substrs{$subbit} += $count;
+      }
+    }
+  }
+}
+
+my @top_substrs = sort { 
+                          $substrs{$b} <=> $substrs{$a} ||
+                          length($b) <=> length($a)
+                       } keys %substrs;
+
+if (@top_substrs && $substrs{$top_substrs[0]} > 1) {
+  # save only the substrs with the top count
+  @top_substrs = grep { 
+                   $substrs{$top_substrs[0]} == $substrs{$_} &&
+                   length($top_substrs[0]) == length($_)
+                 } @top_substrs;
+}
+
+sub colour_top_substrs
+{
+  my $str = uc shift;
+  my @sub_strs = @_;
+
+  for my $sub_str (@sub_strs) {
+    $str =~ s!($sub_str)!lc $1!eig;
+#    warn "$sub_str $str\n";
+  }
+
+  $str =~ s!([atcgn]+)!'<span style="color: red">' . uc $1 . '</span>'!e;
+  return $str;
+}
 
 </%init>

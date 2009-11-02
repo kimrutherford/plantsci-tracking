@@ -247,3 +247,8 @@ fieldset .checkboxgroup > span {
 #tabs {
   width: 75em;
 }
+
+.seqbases {
+  font-family: monospace;
+  font-size: 120%;
+}
