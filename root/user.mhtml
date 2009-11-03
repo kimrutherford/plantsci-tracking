@@ -1,3 +1,4 @@
+<div style="font-size: 80%">
 % if ($c->user_exists()) {
     <div id="logout">
       Logged in as: <% $c->user()->username() %>
@@ -21,3 +22,4 @@
       </form>
     </div>
 % }
+</div>
