@@ -7,44 +7,10 @@ $message => undef
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
   <head>
-    <title><% $c->config()->{long_name} %> - <% $title %></title>
-    <link href="<% $c->uri_for('/css/custom-theme/ui.all.css') %>" type="text/css" 
-          rel="stylesheet" />	
-    <link href="<% $c->uri_for('/css/style.css') %>" type="text/css" 
-          rel="stylesheet" />
-    <link href="<% $c->uri_for('/plugins/plugin.css') %>" type="text/css" 
-          rel="stylesheet" />
-    <script type="text/javascript" src="<% $c->uri_for('/js/jquery-1.3.2.min.js') %>"></script> 
-    <script type="text/javascript" src="<% $c->uri_for('/js/jquery-ui-1.7.2.custom.min.js') %>"></script> 
-    <script type="text/javascript" src="<% $c->uri_for('/js/jquery.sparkline.min.js') %>"></script>
+    <& head.mhtml, title => $title &>
   </head>
   <body>
-    <div id="heading">
-      <a href="<% $c->uri_for('/') %>"><img src="<% $c->uri_for('/static/images/header.png') %>" border="0" id="logo"/>
-        <div id="heading_text"> <% $c->config->{long_name} %> </div> </a>
-    </div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(".sect .sect-title").each(function(i) {
-              $(this).click(function() {
-                      $(this).next().toggle();
-                      $(this).toggleClass('undisclosed-title');
-                      $(this).toggleClass('disclosed-title');
-                      $.sparkline_display_visible();
-                      return false;
-                  }
-              );
-              if ($(this).is(".undisclosed-title")) {
-                  $(this).next().hide();
-              } else {
-                  $(this).next().show();
-              }
-            }
-          )
-        }
-    );
-</script>
+    <& header.mhtml &>
 
 <& /user.mhtml &>
 

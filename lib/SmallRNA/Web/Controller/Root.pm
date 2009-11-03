@@ -59,7 +59,7 @@ sub end : Private {
   $c->forward('SmallRNA::Web::View::Mason');
 }
 
-=head2
+=head2 login
 
  Try to authenticate a user based on username and password parameters
 
@@ -85,7 +85,7 @@ sub login : Global {
   return 0;
 }
 
-=head2
+=head2 logout
 
  Log out the user and return to the front page.
 
@@ -98,9 +98,31 @@ sub logout : Global {
   $c->forward('/start');
 }
 
+=head2 head
+
+ Output contents of the <head> section
+
+=cut
+
+sub head : Global {
+  my ( $self, $c ) = @_;
+
+  $c->stash->{title} = $c->req->param("page_title");
+  $c->stash->{template} = 'head.mhtml';
+}
+
+=head2 header
+
+ Output html for the top of the page, inside <body>
+
+=cut
+sub header : Global {
+  my ( $self, $c ) = @_;
+
+  $c->stash->{template} = 'header.mhtml';
+}
+
 =head1 AUTHOR
-
-
 
 =head1 LICENSE
 
