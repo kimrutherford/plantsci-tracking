@@ -83,8 +83,6 @@ for my $fast_stat_pipe_data (@pipe_datas) {
     my $fast_pipedata = $input_pipedatas[0];
 
     my $fast_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
-warn "consider: $fast_file_name\n";
-
     my @alignment_gff3_pipedata = $fast_pipedata->generating_pipeprocess()->input_pipedatas();
 
     my @gff3_pipedata_properties = map { $_->pipedata_properties() } @alignment_gff3_pipedata;
@@ -93,17 +91,11 @@ warn "consider: $fast_file_name\n";
     next if (grep { $_->type()->name() eq 'alignment program' &&
                     $_->value() ne 'patman' } @gff3_pipedata_properties);
 
-    next if (grep { warn $_->type()->name() . ' ' .
-                    $_->value();
-$_->type()->name() eq 'alignment component' &&
+    next if (grep { $_->type()->name() eq 'alignment component' &&
                     $_->value() ne 'genome' } @gff3_pipedata_properties);
 
     # "fast" = fasta or fastq
     my %fast_data = ();
-
-
-
-warn "opening $fast_file_name\n";
 
     open my $file, '<', $fast_file_name
       or die "can't open $fast_file_name: $!\n";
