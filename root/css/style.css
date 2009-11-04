@@ -244,8 +244,8 @@ fieldset .checkboxgroup > span {
     float: right;
 }
 
-#tabs {
-  width: 75em;
+div.tracking-tabs {
+  width: 60em;
 }
 
 .seqbases {

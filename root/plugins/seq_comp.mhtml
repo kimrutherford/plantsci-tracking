@@ -1,7 +1,31 @@
 <%args>
 $object
+$name
 </%args>
 
+<%doc>
+This component shows composition statistics and graphs.
+</%doc>
+
+<script type="text/javascript">
+    $(function() {
+        $("#seq-comp-tabs").tabs();
+    });
+</script>
+
+<div class="sect">
+<span class="sect-title disclosed-title">
+  <a href="#"><% $name %></a>
+</span>
+<div class="sect-content tracking-tabs" id="seq-comp-tabs">
+  <ul>
+    <li><a href="#seq-comp-tabs-stats">Sequence statistics</a></li>
+% if (defined $fastq_pipedata) {
+    <li><a href="#seq-comp-tabs-n-mers">Top n-mers in FastQ file</a></li>
+% }
+  </ul>
+
+  <div id="seq-comp-tabs-stats">
 % if (@stats > 0) {
 <table class="list">
   <thead>
@@ -63,9 +87,22 @@ $object
   No statistics available
 % }
 
+  </div>
+
+% if (defined $fastq_pipedata) {
+  <div id="seq-comp-tabs-n-mers">
+    <& /plugins/pipedata_details.mhtml, object => $fastq_pipedata &>
+  </div>
+% }
+
+</div>
+</div>
 
 <%init>
 my $schema = $c->schema();
+
+my $fastq_pipedata = undef;
+
 my $fast_stats_type = $schema->find_with_type('Cvterm', 'name', 'fast_stats');
 
 my $query = { content_type => $fast_stats_type->cvterm_id() };
@@ -77,10 +114,28 @@ my @stats = ();
 my $data_directory = $c->config()->data_directory();
 
 for my $fast_stat_pipe_data (@pipe_datas) {
-  my @input_pipedatas = $fast_stat_pipe_data->generating_pipeprocess()->input_pipedatas();
+  my @input_pipedatas = $fast_stat_pipe_data->generating_pipeprocess()->input_pipedatas()
+                               ->search({}, { prefetch => [qw(content_type format_type)] });
   if (@input_pipedatas) {
+    my $input_pipedata = $input_pipedatas[0];
+    my $content_type = $input_pipedata->content_type();
+    my $content_type_name = $content_type->name();
 
     my $fast_pipedata = $input_pipedatas[0];
+
+    if ($content_type_name eq 'raw_reads') {
+      if ($input_pipedata->format_type()->name() eq 'fasta') {
+        my $generating_process = $input_pipedata->generating_pipeprocess();
+        if (defined $generating_process) {
+          my @possible_fastqs = $generating_process->input_pipedatas();
+          for my $possible_fastq (@possible_fastqs) {
+            if ($possible_fastq->format_type()->name eq 'fastq') {
+              $fastq_pipedata = $possible_fastq;
+            }
+          }
+        }
+      }
+    }
 
     my $fast_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
     my @alignment_gff3_pipedata = $fast_pipedata->generating_pipeprocess()->input_pipedatas();
@@ -130,5 +185,6 @@ for my $fast_stat_pipe_data (@pipe_datas) {
 @stats = sort { 
   $b->{data}->{number_of_sequences} <=> $a->{data}->{number_of_sequences} 
 } @stats;
+
 
 </%init>

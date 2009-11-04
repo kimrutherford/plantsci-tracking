@@ -318,8 +318,11 @@ plugins:
     sample:
       - name: GBrowse
         path: /plugins/gbrowse.mhtml
-        css_class: gbrowse_link 
-      - name: Size distribution graph
+        css_class: gbrowse_link
+      - name: Sequence composition counts and statistics
+        path: /plugins/seq_comp.mhtml
+        css_class: seq_comp_graph
+      - name: Size distribution and first base composition graphs
         path: /plugins/sizecomp.mhtml
         css_class: size_dist_graph
       - name: Base distribution graph

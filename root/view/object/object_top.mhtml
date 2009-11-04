@@ -13,7 +13,7 @@ $object
 % for my $plugin_conf (@object_plugins) {
   <div class="plugin">
     <div class="<% $plugin_conf->{css_class} %>">
-      <& $plugin_conf->{path}, object => $object &>
+      <& $plugin_conf->{path}, object => $object, name => $plugin_conf->{name} &>
     </div>
   </div>
 % }
