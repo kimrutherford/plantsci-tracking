@@ -312,7 +312,7 @@ report_list:
      - '${database-user-name}'
      - '${database-password}'
 gbrowse:
-  prefix: 'http://node3/cgi-bin/gbrowse/arabidopsis'
+  prefix: 'http://node3/gb2/gbrowse/arabidopsis'
 plugins:
   object_page:
     sample:
