@@ -258,7 +258,7 @@ sub seqread : Local {
 
     my %org_results = ();
 
-    for my $result (@results) {
+    RESULT: for my $result (@results) {
       my @matches = @{$result->{matches}};
       my $match_count = scalar(@matches);
 
@@ -273,12 +273,13 @@ sub seqread : Local {
             $align_ecotype = $prop->value();
           }
           if ($prop->type()->name() eq 'alignment component') {
+            next RESULT if $prop->value() ne 'genome';
             $align_component = $prop->value();
           }
         }
 
-        if (! exists $org_results{$align_ecotype}{$align_component}) {
-          $org_results{$align_ecotype}{$align_component} = [@matches];
+        if (! exists $org_results{$align_ecotype}) {
+          $org_results{$align_ecotype} = [@matches];
         }
 
         my @processed_matches = ();
@@ -299,13 +300,20 @@ sub seqread : Local {
           push @processed_matches, { ref_name => $ref_name, start => $start,
                                      end => $end, strand => $strand };
         }
+
+        my @samples = $pipedata->samples();
+        my $sample = $samples[0];
+
+
         push @processed_results, { pipedata => $pipedata,
                                    redundant_count => $redundant_count,
-                                   matches => \@processed_matches };
+                                   matches => \@processed_matches,
+                                   sample => $sample };
       }
     }
 
-    $st->{results} = \@processed_results;
+    $st->{sample_results} = \@processed_results;
+    $st->{organism_results} = \%org_results;
   }
 }
 

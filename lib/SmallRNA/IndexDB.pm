@@ -134,8 +134,17 @@ sub search_all
   my $expected_content_type = $search_file_type . '_index';
 
   my $rs = $schema->resultset('Cvterm')->search({
-    name => $file_format
-  })->search_related('pipedata_format_types');
+    'me.name' => $file_format
+  })->search_related('pipedata_format_types', {},
+                     { prefetch => [ { 
+                         sample_pipedatas => 'sample' },
+                         'format_type',
+                         'content_type',
+                         generating_pipeprocess => { 
+                           pipeprocess_in_pipedatas => 'pipedata' },
+                         { pipedata_properties => 'type' } ],
+                       # hack to order nicely by the SL number:
+                       order_by => \"substring(sample.name from E'(?:SL([\\\\d]+).*|(.*))')::integer" });
 
   my @results = ();
 

@@ -1,14 +1,45 @@
 <%args>
 $read_seq
-@results
+@sample_results
+%organism_results
 </%args>
 
 <div style="padding: 5px; font-size: 110%">
 Seqeuence length: <% length($read_seq) %>
 </div>
 
-% if (@results) {
+<div class="sect">
+  <span class="sect-title disclosed-title">
+    <a href="#">Organism matches</a>
+  </span>
+  <div class="sect-content">
+% if (keys %organism_results) {
+    <table class="list">
+      <thead>
+        <tr>
+          <td>Organism name</td><td>Genome matches</td>
+        </tr>
+      </thead>
+% for my $organism_name (keys %organism_results) {
+      <tr>
+        <td><% $organism_name %></td>
+        <td><% scalar(@{$organism_results{$organism_name}}) %></td>
+      </tr>
+% }
+    </table>
+% } else {
+    No matches found in any organism
+% }
+  </div>
+</div>
 
+% if (@sample_results) {
+
+<div class="sect">
+  <span class="sect-title disclosed-title">
+    <a href="#">Sample matches</a>
+  </span>
+  <div class="sect-content">
 <table class="list">
 
   <thead>
@@ -16,16 +47,13 @@ Seqeuence length: <% length($read_seq) %>
       <td>Sample name</td>
       <td>File name</td>
       <td>Reads from FastQ file</td>
-      <td>Matches in aligned output</td>
     </tr>
   </thead>
 
-%   for my $result (@results) {
+%   for my $result (@sample_results) {
 %     my @matches = @{$result->{matches}};
 %     my $pipedata = $result->{pipedata};
-%     my @samples = $pipedata->samples();
-%     my $sample = $samples[0];
-%     my $match_count = scalar(@matches);
+%     my $sample = $result->{sample};
 
   <tr>
 %#     for (my $match_index = 0; $match_index < @matches; $match_index++) {
@@ -43,15 +71,14 @@ Seqeuence length: <% length($read_seq) %>
     <td valign="top">
       <% $result->{redundant_count} %>
     </td>
-    <td valign="top">
-      <% $match_count %>
-<!--      <a href="">[details&nbsp;...]</a> -->
-    </td>
 %#     }
   </tr>
 %   }
 
 </table>
+</div>
+</div>
+
 % } else {
 
     <p> [no matches found for any sample] </p>
