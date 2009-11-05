@@ -22,7 +22,12 @@ Seqeuence length: <% length($read_seq) %>
       </thead>
 % for my $organism_name (keys %organism_results) {
       <tr>
-        <td><% $organism_name %></td>
+        <td>
+          <a href="<% $c->uri_for('/view/object/organism', $organism_ids{$organism_name}) %>">
+%   (my $display_organism_name = $organism_name) =~ s/_/ /g;
+            <% $display_organism_name %>
+          </a>
+        </td>
         <td><% scalar(@{$organism_results{$organism_name}}) %></td>
       </tr>
 % }
@@ -83,3 +88,21 @@ Seqeuence length: <% length($read_seq) %>
 
 </div>
 </div>
+
+
+<%init>
+
+my %organism_ids = ();
+
+for my $organism_name (keys %organism_results) {
+  if ($organism_name =~ /(.*?)_(.*)/) {
+    my $genus = $1;
+    my $species = $2;
+    my $organism = $c->schema()->resultset('Organism')->find({ genus => $genus,
+                                                               species => $species });
+
+    $organism_ids{$organism_name} = $organism->organism_id();
+  }
+}
+
+</%init>
