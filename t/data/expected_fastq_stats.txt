@@ -1,5 +1,0 @@
----
-file: t/data/fastfastq.fq
-number_of_sequences: 8
-total_bases: 360
-gc_bases: 151
