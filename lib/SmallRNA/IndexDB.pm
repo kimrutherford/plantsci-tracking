@@ -99,6 +99,21 @@ sub _do_search
   return { pipedata => $input_pipedata, matches => \@matches };
 }
 
+=head2 search_all
+
+ Function: search all index files for a sequence
+ Args    : schema - the schema object
+           search_file_type - type of file to search either "gff3" or "fasta"
+           sequence - the sequence to find
+           retrieve_lines - if true return the matching line from the gff3 or
+              fasta file, otherwise just return the position
+           verbose - if true print the file currently being searched
+ Returns : a list of results, each of which is a map containing the pipedata
+           object and the matches. eg.
+             [ { pipedata => ..., matches => ... }, { pipedata => ... }, ... ]
+           the matches is a list returned by Index::Manager::search()   
+
+=cut
 sub search_all
 {
   my $self = shift;
