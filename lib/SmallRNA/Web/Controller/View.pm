@@ -225,6 +225,12 @@ sub list_collection : LocalRegex('^list/(.+?)/(\d+?)/(.+?)$') {
 
 my $index_manager_cache = {};
 
+=head2 seqread
+
+ Function: Show details of a read sequence
+ Args    : $read_seq - the sequence
+
+=cut
 sub seqread : Local {
   my ($self, $c, $read_seq) = @_;
 
