@@ -75,6 +75,7 @@ while (defined (my $pipedata = $pipedata_rs->next())) {
   my @samples = $pipedata->samples();
   my $sample = $samples[0];
   my $sample_name = $sample->name();
+  my $sample_description = $sample->description();
 
   my $owner = ($sample->pipeprojects())[0]->owner();
   my $first_name = $owner->first_name();
@@ -106,8 +107,9 @@ glyph        = arrow
 fgcolor      = \\&fgcolor
 linewidth    = \\&abundance
 description  = 1
-key          = $sample_name
+key          = $sample_name - $sample_description
 category     = $org_name - $first_name $last_name
+link = \\&seqread_link
 
 TRACK
 }
