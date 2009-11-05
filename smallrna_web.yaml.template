@@ -312,7 +312,14 @@ report_list:
      - '${database-user-name}'
      - '${database-password}'
 gbrowse:
-  prefix: 'http://node3/gb2/gbrowse/arabidopsis'
+  Arabidopsis_thaliana:
+    prefix: 'http://node3/gb2/gbrowse/arabidopsis'
+  Chlamydomonas_reinhardtii:
+    prefix: 'http://node3/gb2/gbrowse/chlamy'
+  Solanum_lycopersicon:
+    prefix: 'http://node3/gb2/gbrowse/tomato'
+  Lycopersicon_esculentum:
+    prefix: 'http://node3/gb2/gbrowse/tomato'
 plugins:
   object_page:
     sample:

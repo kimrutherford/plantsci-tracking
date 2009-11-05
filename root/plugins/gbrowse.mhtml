@@ -2,9 +2,34 @@
 $object
 </%args>
 
-<a href="<% $gbrowse_image_url %>">View in GBrowse</a>
+% if (@gbrowse_conf == 1) {
+% my $link = $gbrowse_conf[0]->{link};
+<a href="<% $link %>">View in GBrowse ...</a>
+% } else {
+%   for my $conf (@gbrowse_conf) {
+%     my $link = $conf->{link};
+%     my $organism_name = $conf->{organism_name};
+<a href="<% $link %>">View in <% $organism_name %> GBrowse ...</a>
+%   }
+% }
 
 <%init>
-my $gbrowse_image_url =
-  $c->config->{gbrowse}->{prefix} . '?label=' . $object->name();
+my $organisms_rs = 
+  $object->sample_ecotypes()->search_related('ecotype')->search_related('organism',
+                                                                        {}, { distinct => 1} );
+
+
+my @gbrowse_conf = ();
+
+while (defined (my $organism = $organisms_rs->next())) {
+  my $organism_name = $organism->full_name();
+  $organism_name =~ s/ /_/g;
+
+  if (exists $c->config->{gbrowse}->{$organism_name}) {
+    push @gbrowse_conf, {
+           organism_name => $organism->full_name(),
+           link => $c->config->{gbrowse}->{$organism_name}->{prefix} . '?label=' . $object->name()
+         }
+  }
+}
 </%init>
