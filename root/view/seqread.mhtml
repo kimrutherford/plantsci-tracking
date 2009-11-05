@@ -3,8 +3,6 @@ $read_seq
 @results
 </%args>
 
-seq: <% $read_seq %>
-
 % if (@results) {
 
 <table class="list">
@@ -12,9 +10,9 @@ seq: <% $read_seq %>
   <thead>
     <tr>
       <td>Sample name</td>
-      <td>file</td>
-      <td>Match count</td>
-      <td>deailts</td>
+      <td>File name</td>
+      <td>Reads from FastQ file</td>
+      <td>Matches in aligned output</td>
     </tr>
   </thead>
 
@@ -23,23 +21,34 @@ seq: <% $read_seq %>
 %     my $pipedata = $result->{pipedata};
 %     my @samples = $pipedata->samples();
 %     my $sample = $samples[0];
+%     my $match_count = scalar(@matches);
 
-<tr>
-
-<td> <% $sample->name() %> </td>
-<td> <% $pipedata->file_name() %> </td>
-<td> <% scalar(@matches) %> </td>
-
-<td>
-%     for my $match (@matches) {
-%       my $line = $match->{line};
-<p> foo <% $line %> </p>
-%     }
-</td>
-
+  <tr>
+%#     for (my $match_index = 0; $match_index < @matches; $match_index++) {
+%#       my $match = $matches[$match_index];
+%#       my $start = $match->{start};
+%#       my $end = $match->{start};
+    <td valign="top">
+      <a href='<% $c->uri_for("/view/object/sample", SmallRNA::DB::id_of_object($sample)) %>'>
+        <% $sample->name() %>
+      </a>
+    </td>
+    <td valign="top">
+      <% $pipedata->file_name() %>
+    </td>
+    <td valign="top">
+      <% $result->{redundant_count} %>
+    </td>
+    <td valign="top">
+      <% $match_count %>
+      <a href="">[details&nbsp;...]</a>
+    </td>
+%#     }
+  </tr>
 %   }
+
+</table>
 % } else {
 
-<p> [no matches found for any sample] </p>
-
+    <p> [no matches found for any sample] </p>
 % }

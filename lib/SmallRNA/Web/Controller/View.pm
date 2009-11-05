@@ -237,7 +237,9 @@ sub seqread : Local {
     $c->stash->{error} = qq(No sequence passed to /seqread);
     $c->forward('/start');
   } else {
-    $st->{title} = "Details of $read_seq";
+    $read_seq = uc $read_seq;
+
+    $st->{title} = "Summary for: $read_seq";
     $st->{template} = 'view/seqread.mhtml';
     $st->{read_seq} = $read_seq;
 
@@ -246,9 +248,58 @@ sub seqread : Local {
                                         retrieve_lines => 1,
                                         search_file_type => 'gff3');
 
-    @results = grep { scalar(@{$_->{matches}}) } @results;
+    my @processed_results = ();
 
-    $st->{results} = \@results;
+    my %org_results = ();
+
+    for my $result (@results) {
+      my @matches = @{$result->{matches}};
+      my $match_count = scalar(@matches);
+
+      if ($match_count) {
+        my $pipedata = $result->{pipedata};
+
+        my $align_component;
+        my $align_ecotype;
+
+        for my $prop ($pipedata->pipedata_properties()) {
+          if ($prop->type()->name() eq 'alignment ecotype') {
+            $align_ecotype = $prop->value();
+          }
+          if ($prop->type()->name() eq 'alignment component') {
+            $align_component = $prop->value();
+          }
+        }
+
+        if (! exists $org_results{$align_ecotype}{$align_component}) {
+          $org_results{$align_ecotype}{$align_component} = [@matches];
+        }
+
+        my @processed_matches = ();
+
+        my $redundant_count = undef;
+        for my $match (@matches) {
+          my $gff3_line = $match->{line};
+
+          my @bits = split (/\t/, $gff3_line);
+
+          my ($ref_name, $source, $type, $start, $end, $score, $strand, $phase,
+              $attributes) = @bits;
+
+          if (!defined $redundant_count) {
+            $redundant_count = $score;
+          }
+
+          push @processed_matches, { ref_name => $ref_name, start => $start,
+                                     end => $end, strand => $strand };
+        }
+        push @processed_results, { pipedata => $pipedata,
+                                   redundant_count => $redundant_count,
+                                   matches => \@processed_matches };
+      }
+    }
+
+    $st->{results} = \@processed_results;
   }
 }
 
