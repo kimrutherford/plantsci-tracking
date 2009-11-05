@@ -3,6 +3,10 @@ $read_seq
 @results
 </%args>
 
+<div style="padding: 5px; font-size: 110%">
+Seqeuence length: <% length($read_seq) %>
+</div>
+
 % if (@results) {
 
 <table class="list">
@@ -41,7 +45,7 @@ $read_seq
     </td>
     <td valign="top">
       <% $match_count %>
-      <a href="">[details&nbsp;...]</a>
+<!--      <a href="">[details&nbsp;...]</a> -->
     </td>
 %#     }
   </tr>
