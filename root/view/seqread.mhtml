@@ -33,13 +33,13 @@ Seqeuence length: <% length($read_seq) %>
   </div>
 </div>
 
-% if (@sample_results) {
-
 <div class="sect">
   <span class="sect-title disclosed-title">
     <a href="#">Sample matches</a>
   </span>
   <div class="sect-content">
+% if (@sample_results) {
+
 <table class="list">
 
   <thead>
@@ -76,10 +76,10 @@ Seqeuence length: <% length($read_seq) %>
 %   }
 
 </table>
-</div>
-</div>
 
 % } else {
-
-    <p> [no matches found for any sample] </p>
+   No matches found for any sample
 % }
+
+</div>
+</div>
