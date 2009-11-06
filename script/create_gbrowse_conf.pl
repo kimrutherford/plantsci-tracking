@@ -72,6 +72,17 @@ my $pipedata_rs =
 
 
 while (defined (my $pipedata = $pipedata_rs->next())) {
+  my @pipedata_properties = 
+    $pipedata->pipedata_properties()->search({}, 
+                                               {
+                                                 prefetch => 'type'
+                                                });
+
+  if (!grep { $_->type()->name() eq 'alignment component' && 
+              $_->value() eq 'genome' } @pipedata_properties) {
+    next;
+  }
+
   my @samples = $pipedata->samples();
   my $sample = $samples[0];
   my $sample_name = $sample->name();
