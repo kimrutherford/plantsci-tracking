@@ -273,6 +273,9 @@ report_list:
     columns:
       - name: Sample name
         source: name
+      - name: Organism name
+        source: |
+           ($object->ecotypes())[0]->organism()->full_name()
       - name: Raw reads
         format: integer
         source: |
