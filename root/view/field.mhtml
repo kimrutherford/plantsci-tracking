@@ -55,6 +55,8 @@ sub format_field_value
     if ($col_conf->{format} eq 'integer') {
       if ($field_value =~ /^\d+$/) {
         return $fmt->format_number($field_value);
+      } else {
+        return 0;
       }
     } else {
       if ($col_conf->{format} =~ /\%/) {
