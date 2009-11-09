@@ -68,8 +68,6 @@ class_info:
         editable: 1
       - name: last_name
         editable: 1
-      - name: test
-        source: "$object->username() . ' foo!'"
   sample:
     editable: 1
     display_field: name
