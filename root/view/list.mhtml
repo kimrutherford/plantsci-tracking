@@ -38,6 +38,8 @@ $disclosed => 1  # true will make the list default to visible
 </div>
 
 <%init>
+use SmallRNA::Web::Util;
+
 my @column_headings = ();
 my @rows = ();
 my $first = 1;
