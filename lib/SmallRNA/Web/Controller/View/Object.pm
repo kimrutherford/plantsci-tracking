@@ -42,6 +42,7 @@ use warnings;
 use base 'Catalyst::Controller';
 
 use SmallRNA::DB;
+use SmallRNA::Web::Controller::View;
 
 sub set_template : Private {
   my ($self, $c, $type, $object_id) = @_;
@@ -79,7 +80,7 @@ sub set_template : Private {
   } elsif ($type eq 'coded_sample') {
     $c->stash()->{title} = 'Sample with barcode for sample: ' . $object->sample()->name();
   } elsif ($type eq 'process_conf') {
-    $c->stash()->{title} = 'Details for pipeline process configuration type: ' 
+    $c->stash()->{title} = 'Details for pipeline process configuration type: '
       . $object->type()->name();
   } elsif ($type eq 'process_conf_input') {
     $c->stash()->{title} = 'Details for process input configuration type for : '
@@ -92,7 +93,11 @@ our $TYPE_PATTERN =
 
 sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample|coded_sample|barcode|barcode_set|process_conf|process_conf_input)/(.*)') {
   my ($self, $c) = @_;
-  my ($type, $object_id) = @{$c->req()->captures()};
+  my ($type, $object_key) = @{$c->req()->captures()};
+
+  my $object = SmallRNA::Web::Controller::View::get_object_by_id_or_name($c, $type, $object_key);
+  my $object_id = SmallRNA::DB::id_of_object($object);
+
   set_template($self, $c, $type, $object_id);
 }
 

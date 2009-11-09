@@ -45,32 +45,61 @@ use Lingua::EN::Inflect::Number qw(to_PL);
 
 use SmallRNA::IndexDB;
 
+=head2 get_object_by_id_or_name
+
+ Function: Find and return the object given a database id or display name.
+           The database id (eg. sample_id) is checked first.
+
+=cut
+sub get_object_by_id_or_name
+{
+  my $c = shift;
+  my $type = shift;
+  my $object_key = shift;
+
+  my $class_name = SmallRNA::DB::class_name_of_table($type);
+
+  if ($object_key =~ /^\d+$/) {
+    return $c->schema()->find_with_type($class_name, $object_key);
+  } else {
+    # try looking up by display name
+    my $class_info = $c->config()->{class_info}->{$type};
+    if (defined $class_info) {
+      if (defined $class_info->{display_field}) {
+        return $c->schema()->find_with_type($class_name, 
+                                            $class_info->{display_field} =>
+                                              $object_key);
+      }
+    }
+  }
+
+  return undef;
+}
+
 =head2 object
 
  Function: Render details about an object (about a row in a table)
  Args    : $type - the object class from the URL
-           $object_id - the id of an object to render
+           $object_key - the id or primary key of an object to render
 
 =cut
 sub object : Local {
-  my ($self, $c, $type, $object_id) = @_;
+  my ($self, $c, $type, $object_key) = @_;
 
   my $st = $c->stash;
 
   eval {
-    $st->{title} = "Details for $type with id: $object_id";
+    $st->{title} = "Details for $type $object_key";
     $st->{template} = 'view/object/generic.mhtml';
 
     $st->{type} = $type;
 
-    my $class_name = SmallRNA::DB::class_name_of_table($type);
+    my $object = get_object_by_id_or_name($c, $type, $object_key);
 
-    my $object =
-      $c->schema()->find_with_type($class_name, "${type}_id" => $object_id);
     $st->{object} = $object;
   };
-  if ($@) {
-    $c->stash->{error} = qq(No object type "$type" and id = $object_id - $@);
+  if ($@ || !defined $st->{object}) {
+    $c->stash->{error} = qq(No object type "$type" and key = $object_key - $@);
     $c->forward('/start');
   }
 }
