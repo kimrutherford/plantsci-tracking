@@ -84,7 +84,7 @@ sub get_field_value
   my $type = $object->table();
 
   if (defined $col_conf->{source} && $col_conf->{source} =~ /[\$\-<>\';]/) {
-    # Perl code
+    # it looks like Perl code, so eval it
     my $field_value = eval $col_conf->{source};
     if ($@) {
       $field_value = $@;
