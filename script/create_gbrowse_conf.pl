@@ -121,6 +121,8 @@ description  = 1
 key          = $sample_name - $sample_description
 category     = $org_name - $first_name $last_name
 link = \\&seqread_link
+west         = sub { my \$f = shift; return \$f->reversed() }  # arrow always points right
+east         = sub { my \$f = shift; return !\$f->reversed() } # without this hack
 
 TRACK
 }
