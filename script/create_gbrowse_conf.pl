@@ -6,7 +6,7 @@ use Carp;
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use lib "$FindBin::Bin/../../pipeline/lib";
+use lib "$FindBin::Bin/../../../pipeline/svn/lib";
 use SmallRNA::DB;
 use SmallRNA::Config;
 
