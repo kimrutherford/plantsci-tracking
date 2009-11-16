@@ -44,6 +44,7 @@ use base 'Catalyst::Controller';
 use Lingua::EN::Inflect::Number qw(to_PL);
 
 use SmallRNA::IndexDB;
+use SmallRNA::Web::Report;
 
 =head2 get_object_by_id_or_name
 

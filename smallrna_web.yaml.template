@@ -72,7 +72,7 @@ class_info:
     editable: 1
     display_field: name
     # hack to put the samples in a sensible order:
-    order_by: "substring(name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
       - name: name
         default_value: |
@@ -213,7 +213,7 @@ class_info:
   sequencing_sample:
     editable: 1
     display_field: name
-    order_by: "substring(name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
       - name: name
         default_value: |
@@ -277,35 +277,35 @@ report_list:
       - name: Raw reads
         format: integer
         source: |
-           $object->get_pipedata_property("raw_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "raw_reads", "fastq", "sequence count")
       - name: Reads after trimming
         format: integer
         source: |
-           $object->get_pipedata_property("trimmed_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "trimmed_reads", "fasta", "sequence count")
       - name: Remove adapter rejects
         format: integer
         source: |
-           $object->get_pipedata_property("trim_rejects", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "trim_rejects", "fasta", "sequence count")
       - name: Filtered reads
         format: integer
         source: |
-           $object->get_pipedata_property("filtered_trimmed_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "filtered_trimmed_reads", "fasta", "sequence count")
       - name: Non redundant reads
         format: integer
         source: |
-           $object->get_pipedata_property("non_redundant_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, "genome", "non_redundant_reads", "fasta", "sequence count")
       - name: Non aligned reads
         format: integer
         source: |
-           $object->get_pipedata_property("non_aligned_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, "genome", "non_aligned_reads", "fasta", "sequence count")
       - name: Aligned reads
         format: integer
         source: |
-           $object->get_pipedata_property("aligned_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, "genome", "aligned_reads", "fasta", "sequence count")
       - name: Redundant aligned reads
         format: integer
         source: |
-           $object->get_pipedata_property("redundant_aligned_reads", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, "genome", "redundant_aligned_reads", "fasta", "sequence count")
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:
