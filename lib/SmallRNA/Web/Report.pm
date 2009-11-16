@@ -39,22 +39,16 @@ use strict;
 use warnings;
 use Carp;
 
-    use Data::Dumper;
-
-
 my %_sample_props_cache = ();
 
 my $_cache_time = undef;
 my $MAX_CACHE_AGE = 10 * 60;  # 10 minutes
-
-#    prefetch: "[ { sample_ecotypes => { ecotype => 'organism' } }, { sample_pipedatas => { pipedata => [ 'content_type', { pipedata_properties => 'type' } ] } } ]"
 
 sub _get_sample_props
 {
   my $sample = shift;
 
   if (exists $_sample_props_cache{$sample->sample_id()}) {
-
     return %{$_sample_props_cache{$sample->sample_id()}};
   }
 
