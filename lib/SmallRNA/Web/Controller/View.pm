@@ -215,7 +215,13 @@ sub report : Local {
     my $class_name = SmallRNA::DB::class_name_of_table($type);
     my $params = { order_by => $self->_get_order_by_field($c, $type) };
 
-    $st->{rs} = $c->schema->resultset($class_name)->search(undef, $params);
+    my $prefetch_conf = $report_conf->{prefetch};
+
+    if (defined $prefetch_conf) {
+      $params->{prefetch} = eval "$prefetch_conf";
+    }
+
+    $st->{rs} = $c->schema->resultset($class_name)->search({ }, $params);
     $st->{column_confs} = $report_conf->{columns};
 
     $st->{page} = $c->req->param('page') || 1;
