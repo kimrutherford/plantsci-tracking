@@ -60,6 +60,7 @@ sub format_field_value
       }
     } else {
       if ($col_conf->{format} =~ /\%/) {
+        return 0 unless $field_value;
         return sprintf $col_conf->{format}, $field_value;
       } else {
         die "unknown column format: ", $col_conf->{format}, "\n";

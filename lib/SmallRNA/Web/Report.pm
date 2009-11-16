@@ -111,4 +111,23 @@ sub get_pipedata_property
   return undef;
 }
 
+sub get_pipedata_property_precent
+{
+  my $sample = shift;
+  my %args = @_;
+
+  if (defined $args{first} && defined $args{second}) {
+    my $first_val = get_pipedata_property($sample, @{$args{first}});
+    my $second_val = get_pipedata_property($sample, @{$args{second}});
+
+    if (defined $first_val && defined $second_val && $second_val != 0) {
+      return int(10000 * $first_val / $second_val) / 100;
+    } else {
+      return undef;
+    }
+  } else {
+    croak "must pass 'first' and 'second' parameters\n";
+  }
+}
+
 1;

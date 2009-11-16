@@ -22,7 +22,11 @@ $disclosed => 1  # true will make the list default to visible
 %   for my $object (@rows) {
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
 %     for my $col_conf (@column_confs) {
-%       my $align_attr = (defined $col_conf->{format} && $col_conf->{format} eq 'integer' ? 'right' : 'left');
+%       my $align_attr = '';
+%       if (defined $col_conf->{format} && $col_conf->{format} eq 'integer' ||
+%           defined $col_conf->{align} && $col_conf->{align} eq 'right') {
+%         $align_attr = 'right';
+%       }
         <td align="<% $align_attr %>">
            <& field.mhtml, object => $object, col_conf => $col_conf &>
         </td>

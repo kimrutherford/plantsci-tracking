@@ -286,6 +286,10 @@ report_list:
         format: integer
         source: |
            SmallRNA::Web::Report::get_pipedata_property($object, undef, "trim_rejects", "fasta", "sequence count")
+      - name: Remove adapter rejects (containing Ns)
+        format: integer
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "trim_n_rejects", "fasta", "sequence count")
       - name: Filtered reads
         format: integer
         source: |
@@ -293,7 +297,7 @@ report_list:
       - name: Non redundant reads
         format: integer
         source: |
-           SmallRNA::Web::Report::get_pipedata_property($object, "genome", "non_redundant_reads", "fasta", "sequence count")
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "non_redundant_reads", "fasta", "sequence count")
       - name: Non aligned reads
         format: integer
         source: |
@@ -306,6 +310,140 @@ report_list:
         format: integer
         source: |
            SmallRNA::Web::Report::get_pipedata_property($object, "genome", "redundant_aligned_reads", "fasta", "sequence count")
+  - name: sample_read_percentages
+    description: Relative (percentage) reads numbers for selected pipeline stages
+    object_type: sample
+    columns:
+      - name: Sample name
+        source: name
+      - name: Organism name
+        source: |
+           ($object->ecotypes())[0]->organism()->full_name()
+      - name: Raw read count
+        format: integer
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "raw_reads", "fastq", "sequence count")
+      - name: Reads after trimming v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "trimmed_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Remove adapter rejects v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "trim_rejects", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Remove adapter rejects (containing Ns) v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "trim_n_rejects", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Filtered reads v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "filtered_trimmed_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Non redundant reads v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "non_redundant_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Non redundant reads v filtered reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "non_redundant_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "filtered_trimmed_reads", "fasta", "sequence count" ])
+      - name: Non aligned reads v non-redundant
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ "genome", "non_aligned_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "non_redundant_reads", "fasta", "sequence count" ])
+      - name: Aligned reads v non-redundant
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ "genome", "aligned_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "non_redundant_reads", "fasta", "sequence count" ])
+      - name: Redundant aligned reads v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object, 
+                                                                first => [ "genome", "redundant_aligned_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+  - name: sample_read_percentages
+    description: Relative (percentage) reads numbers for selected pipeline stages
+    object_type: sequencing_sample
+    columns:
+      - name: Sample name
+        source: name
+      - name: Organism name
+        source: |
+           ($object->ecotypes())[0]->organism()->full_name()
+      - name: Raw read count
+        format: integer
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property($object, undef, "raw_reads", "fastq", "sequence count")
+      - name: Reads after trimming v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "trimmed_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Remove adapter rejects v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "trim_rejects", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Remove adapter rejects (containing Ns) v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "trim_n_rejects", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Filtered reads v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "filtered_trimmed_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Non redundant reads v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "non_redundant_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
+      - name: Non redundant reads v filtered reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ undef, "non_redundant_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "filtered_trimmed_reads", "fasta", "sequence count" ])
+      - name: Non aligned reads v non-redundant
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ "genome", "non_aligned_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "non_redundant_reads", "fasta", "sequence count" ])
+      - name: Aligned reads v non-redundant
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
+                                                                first => [ "genome", "aligned_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "non_redundant_reads", "fasta", "sequence count" ])
+      - name: Redundant aligned reads v raw reads
+        align: right
+        source: |
+           SmallRNA::Web::Report::get_pipedata_property_precent($object, 
+                                                                first => [ "genome", "redundant_aligned_reads", "fasta", "sequence count" ],
+                                                                second => [ undef, "raw_reads", "fastq", "sequence count" ])
 "Model::SmallRNAModel":
   schema_class: 'SmallRNA::DB'
   connect_info:
