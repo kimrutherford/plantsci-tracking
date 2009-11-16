@@ -110,28 +110,37 @@ my $schema = $c->schema();
 my $fastq_pipedata = undef;
 
 my $fast_stats_type = $schema->find_with_type('Cvterm', 'name', 'fast_stats');
+my $fasta_type = $schema->find_with_type('Cvterm', 'name', 'fasta');
+my $fastq_type = $schema->find_with_type('Cvterm', 'name', 'fastq');
 
-my $query = { content_type => $fast_stats_type->cvterm_id() };
-my @pipe_datas = $object->pipedatas()->search($query);
-my $pipe_data_id = undef;
+my $query = { -or => [ format_type => $fasta_type->cvterm_id(),
+                       format_type => $fastq_type->cvterm_id() ] };
+my $options = { order_by => 'pipedata_id' };
+
+my @fast_pipe_datas = $object->pipedatas()->search($query, $options);
 
 my @stats = ();
 
 my $data_directory = $c->config()->data_directory();
 
-for my $fast_stat_pipe_data (@pipe_datas) {
-  my @input_pipedatas = $fast_stat_pipe_data->generating_pipeprocess()->input_pipedatas()
-                               ->search({}, { prefetch => [qw(content_type format_type)] });
-  if (@input_pipedatas) {
-    my $input_pipedata = $input_pipedatas[0];
-    my $content_type = $input_pipedata->content_type();
+# "fast" = fasta or fastq
+for my $fast_pipe_data (@fast_pipe_datas) {
+  my @stat_pipedatas =
+    $fast_pipe_data->next_pipeprocesses()->search_related('pipedatas',
+                                                          { content_type =>
+                                                              $fast_stats_type->cvterm_id() },
+                                                          { });
+
+  if (@stat_pipedatas) {
+    my $fast_stat_pipe_data = $stat_pipedatas[0];
+
+    my $content_type = $fast_pipe_data->content_type();
     my $content_type_name = $content_type->name();
 
-    my $fast_pipedata = $input_pipedatas[0];
 
     if ($content_type_name eq 'raw_reads') {
-      if ($input_pipedata->format_type()->name() eq 'fasta') {
-        my $generating_process = $input_pipedata->generating_pipeprocess();
+      if ($fast_pipe_data->format_type()->name() eq 'fasta') {
+        my $generating_process = $fast_pipe_data->generating_pipeprocess();
         if (defined $generating_process) {
           my @possible_fastqs = $generating_process->input_pipedatas();
           for my $possible_fastq (@possible_fastqs) {
@@ -143,30 +152,28 @@ for my $fast_stat_pipe_data (@pipe_datas) {
       }
     }
 
-    my $fast_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
-    my @alignment_gff3_pipedata = $fast_pipedata->generating_pipeprocess()->input_pipedatas();
+    my $fast_stat_file_name = $data_directory . '/' . $fast_stat_pipe_data->file_name();
 
-    my @gff3_pipedata_properties = map { $_->pipedata_properties() } @alignment_gff3_pipedata;
+    my @fast_properties = $fast_pipe_data->pipedata_properties();
 
     # ignore fasta from alignments that aren't from patman
-    next if (grep { $_->type()->name() eq 'alignment program' &&
-                    $_->value() ne 'patman' } @gff3_pipedata_properties);
+    next if grep { $_->type()->name() eq 'alignment program' &&
+                   $_->value() ne 'patman' } @fast_properties;
 
     my $alignment_component = '';
 
-    for my $property (@gff3_pipedata_properties) {
+    for my $property (@fast_properties) {
       if ($property->type()->name() eq 'alignment component') {
         $alignment_component = $property->value();
       }
     }
 
-    # "fast" = fasta or fastq
     my %fast_data = ();
 
-    open my $file, '<', $fast_file_name
-      or die "can't open $fast_file_name: $!\n";
+    open my $stat_file, '<', $fast_stat_file_name
+      or die "can't open $fast_stat_file_name: $!\n";
 
-    while (defined (my $line = <$file>)) {
+    while (defined (my $line = <$stat_file>)) {
       if ($line =~ /(.*):\s*(.*?)\s*$/) {
         $fast_data{$1} = $2;
       }
@@ -179,22 +186,17 @@ for my $fast_stat_pipe_data (@pipe_datas) {
       $fast_data{gc_content} = 'N/A'
     }
 
-    my $content_type_def = $fast_pipedata->content_type()->definition();
+    my $content_type_def = $fast_pipe_data->content_type()->definition();
 
-    push @stats, { fast_pipedata => $fast_stat_pipe_data,
+    push @stats, { fast_pipe_data => $fast_stat_pipe_data,
                    data => \%fast_data,
                    label => $content_type_def,
                    alignment_component => $alignment_component,
-                   content_type => $fast_pipedata->content_type()->name(),
+                   content_type => $fast_pipe_data->content_type()->name(),
                    };
 
-    close $file or die "can't close $file: $!\n";
+    close $stat_file or die "can't close $fast_stat_file_name: $!\n";
   }
 }
-
-@stats = sort { 
-  $b->{data}->{number_of_sequences} <=> $a->{data}->{number_of_sequences} 
-} @stats;
-
 
 </%init>
