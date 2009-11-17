@@ -105,7 +105,8 @@ sub _get_field_values
 # the names of buttons in the form so we can skip them later
 my @INPUT_BUTTON_NAMES = qw(submit cancel);
 
-# get the default value (if configured)
+# get the default value (if configured) by eval()ing the default_value
+# field from the configuration file
 sub _get_default_value
 {
   my $c = shift;
@@ -125,6 +126,47 @@ sub _get_default_value
   }
 
   return undef;
+}
+
+# return the default value to use for the field given by $field_info
+sub _get_default_ref_value
+{
+  my $c = shift;
+  my $field_info = shift;
+  my $referenced_class_name = shift;
+
+  my $referenced_table = SmallRNA::DB::table_name_of_class($referenced_class_name);
+
+  # try to find the default value from the configuration file
+  my $default_value = _get_default_value($c, $field_info);
+
+  if (defined $default_value) {
+    # look up the display name and find the object_id
+    my $ref_table_info = $c->config()->{class_info}->{$referenced_table};
+    my $ref_display_field = $ref_table_info->{display_field};
+    my $ref_default_obj;
+
+    eval "require $referenced_class_name";
+
+    if ($referenced_class_name->has_column($ref_display_field)) {
+      $ref_default_obj = $c->schema()->resultset($referenced_class_name)->
+        find({ $ref_display_field, $default_value });
+    } else {
+      # display name isn't a column (eg. Person::full_name()) so iterate instead
+      my $rs = $c->schema()->resultset($referenced_class_name);
+
+      while (defined (my $row = $rs->next())) {
+        if ($row->$ref_display_field() eq $default_value) {
+          $ref_default_obj = $row;
+        }
+      }
+    }
+    if (defined $ref_default_obj) {
+      my $table_pk_column = ($ref_default_obj->primary_columns())[0];
+
+      return $ref_default_obj->$table_pk_column();
+    }
+  }
 }
 
 sub _init_form_field
@@ -186,20 +228,7 @@ sub _init_form_field
       $current_value = $c->req->param("$referenced_table.id");
 
       if (!defined $current_value) {
-        # try to find the default value from the configuration file
-        my $default_value = _get_default_value($c, $field_info);
-        if (defined $default_value) {
-          my $ref_table_info = $c->config()->{class_info}->{$referenced_table};
-          my $ref_display_field = $ref_table_info->{display_field};
-          my $ref_default_obj = $c->schema()->resultset($referenced_class_name) ->
-            find({ $ref_display_field, $default_value });
-
-          if (defined $ref_default_obj) {
-            my $table_pk_column = ($ref_default_obj->primary_columns())[0];
-
-            $current_value = $ref_default_obj->$table_pk_column();
-          }
-        }
+        $current_value = _get_default_ref_value($c, $field_info, $referenced_class_name);
       }
     }
 
@@ -299,10 +328,10 @@ sub _initialise_form
     $separator_block = { name => 'clear-div', type => 'Block',
                          attributes => { style => 'clear: both;' } };
   } else {
-    $separator_block = { 
+    $separator_block = {
       name => 'clear-div', type => 'Block',
       attributes => { style => 'clear: both;' },
-      content => qq([No editable fields configured for type "$type"]) 
+      content => qq([No editable fields configured for type "$type"])
      };
   }
 
@@ -391,8 +420,8 @@ sub _update_object {
 
   my @form_fields = keys %form_params;
 
-  # special case for setting collections - if nothing is select then nothing 
-  # is sent in the form.  We'd like to clear the collection in that case so we 
+  # special case for setting collections - if nothing is select then nothing
+  # is sent in the form.  We'd like to clear the collection in that case so we
   # make sure that all collections are processed
   for my $field_label (keys %field_infos) {
     if (grep { $_ eq $field_label } @form_fields) {
@@ -455,7 +484,7 @@ sub _update_object {
         my $rs_meth = $field_db_column;
         my $other_rs = $object->$rs_meth();
         while (defined (my $other_obj = $other_rs->next())) {
-          if (grep { 
+          if (grep {
                 my $other_id_field = $referenced_table . '_id';
                 $_->$other_id_field() eq $other_obj->$other_id_field();
               } @values) {
