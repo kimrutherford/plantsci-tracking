@@ -105,6 +105,28 @@ sub _get_field_values
 # the names of buttons in the form so we can skip them later
 my @INPUT_BUTTON_NAMES = qw(submit cancel);
 
+# get the default value (if configured)
+sub _get_default_value
+{
+  my $c = shift;
+  my $field_info = shift;
+
+  my $default_value_code = $field_info->{default_value};
+
+  if (defined $default_value_code) {
+    my $result = eval "$default_value_code";
+    if ($@) {
+      my $field_label = $field_info->{name};
+      warn "error evaluating default_value configuration for "
+        . "'$field_label': $@";
+    } else {
+      return $result;
+    }
+  }
+
+  return undef;
+}
+
 sub _init_form_field
 {
   my $c = shift;
@@ -212,15 +234,9 @@ sub _init_form_field
       if (defined $object) {
         $elem->{value} = $object->$field_db_column();
       } else {
-        # try to set the default value (if configured)
-        my $default_value_code = $field_info->{default_value};
-
-        if (defined $default_value_code) {
-          $elem->{value} = eval "$default_value_code";
-          if ($@) {
-            warn "error evaluating default_value configuration for "
-              . "'$field_label': $@";
-          }
+        my $default_value = _get_default_value($c, $field_info);
+        if (defined $default_value) {
+          $elem->{value} = $default_value;
         }
       }
     }
