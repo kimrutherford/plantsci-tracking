@@ -47,9 +47,11 @@ This component shows composition statistics and graphs.
       <td style="white-space: nowrap;">
         Total bases
       </td>
+% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
       <td style="white-space: nowrap;">
         G+C bases
       </td>
+% }
       <td style="white-space: nowrap;">
         G+C percentage
       </td>
@@ -78,9 +80,11 @@ This component shows composition statistics and graphs.
     <td>
       <% $fmt->format_number($stat->{data}->{total_bases}) %>
     </td>
+% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
     <td>
       <% $fmt->format_number($stat->{data}->{gc_bases}) %>
     </td>
+% }
     <td>
       <% $stat->{data}->{gc_content} %>
     </td>
