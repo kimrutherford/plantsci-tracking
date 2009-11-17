@@ -143,16 +143,8 @@ for my $fast_pipe_data (@fast_pipe_datas) {
 
 
     if ($content_type_name eq 'raw_reads') {
-      if ($fast_pipe_data->format_type()->name() eq 'fasta') {
-        my $generating_process = $fast_pipe_data->generating_pipeprocess();
-        if (defined $generating_process) {
-          my @possible_fastqs = $generating_process->input_pipedatas();
-          for my $possible_fastq (@possible_fastqs) {
-            if ($possible_fastq->format_type()->name eq 'fastq') {
-              $fastq_pipedata = $possible_fastq;
-            }
-          }
-        }
+      if ($fast_pipe_data->format_type()->name eq 'fastq') {
+        $fastq_pipedata = $fast_pipe_data;
       }
     }
 
