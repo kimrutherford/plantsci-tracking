@@ -121,8 +121,8 @@ sub _init_form_field
 
   my $field_db_column = $field_label;
 
-  if (defined $field_info->{conf}) {
-    $field_db_column = $field_info->{conf};
+  if (defined $field_info->{source}) {
+    $field_db_column = $field_info->{source};
   }
 
   my $elem = {
