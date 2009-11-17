@@ -68,6 +68,9 @@ class_info:
         editable: 1
       - name: last_name
         editable: 1
+      - name: role
+        values_constraint: 'cv->name = "tracking users types"'
+        editable: 1
   sample:
     editable: 1
     display_field: name
