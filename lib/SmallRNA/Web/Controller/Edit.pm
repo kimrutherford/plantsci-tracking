@@ -184,6 +184,23 @@ sub _init_form_field
       $current_value = $other_object->$table_pk_column();
     } else {
       $current_value = $c->req->param("$referenced_table.id");
+
+      if (!defined $current_value) {
+        # try to find the default value from the configuration file
+        my $default_value = _get_default_value($c, $field_info);
+        if (defined $default_value) {
+          my $ref_table_info = $c->config()->{class_info}->{$referenced_table};
+          my $ref_display_field = $ref_table_info->{display_field};
+          my $ref_default_obj = $c->schema()->resultset($referenced_class_name) ->
+            find({ $ref_display_field, $default_value });
+
+          if (defined $ref_default_obj) {
+            my $table_pk_column = ($ref_default_obj->primary_columns())[0];
+
+            $current_value = $ref_default_obj->$table_pk_column();
+          }
+        }
+      }
     }
 
     my @current_values = ();

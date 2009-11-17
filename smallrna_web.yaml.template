@@ -63,12 +63,14 @@ class_info:
       - name: username
         editable: 1
       - name: organisation
+        default_value: "'DCB'"
         editable: 1
       - name: first_name
         editable: 1
       - name: last_name
         editable: 1
       - name: role
+        default_value: "'local'"
         values_constraint: 'cv->name = "tracking users types"'
         editable: 1
   sample:
