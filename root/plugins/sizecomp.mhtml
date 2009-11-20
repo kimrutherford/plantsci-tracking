@@ -1,6 +1,7 @@
 <%args>
 $object
 $name
+%args => ()
 </%args>
 
 <%doc>
@@ -9,7 +10,7 @@ This component shows composition statistics and graphs.
 
 <script type="text/javascript">
     $(function() {
-        $("#sizecomp-tabs").tabs();
+        $("#sizecomp-<% $component %>-tabs").tabs();
     });
 </script>
 
@@ -17,14 +18,14 @@ This component shows composition statistics and graphs.
 <span class="sect-title disclosed-title">
   <a href="#"><% $name %></a>
 </span>
-<div class="sect-content tracking-tabs" id="sizecomp-tabs">
+<div class="sect-content tracking-tabs" id="sizecomp-<% $component %>-tabs">
   <ul>
 %   for my $graph_name (@graph_names) {
 %     my $data = $graphs{$graph_name};
 %     next unless defined $data;
 %     my $stats_pipedata = $data->{pipedata};
 %     my $sparkline_vals = get_sparkline_values($c, $stats_pipedata);
-    <li><a href="#sizecomp-tabs-<% $stats_pipedata->pipedata_id() %>">
+    <li><a href="#sizecomp-<% $component %>-tabs-<% $stats_pipedata->pipedata_id() %>">
         <% $graph_name %>
 % #        <span class="inlinesparkline"><% $sparkline_vals %></span>
     </a></li>
@@ -40,7 +41,7 @@ This component shows composition statistics and graphs.
      my $definition = $data->{definition};
      my $stats_pipedata_id = $stats_pipedata->pipedata_id();
 </%perl>
-  <div id="sizecomp-tabs-<% $stats_pipedata_id %>">
+  <div id="sizecomp-<% $component %>-tabs-<% $stats_pipedata_id %>">
     <div><% $definition %></div>
     <img src='<% $c->uri_for("/plugin/graph/sizedist", $stats_pipedata->pipedata_id()) %>'/>
     <div>
@@ -63,6 +64,10 @@ This component shows composition statistics and graphs.
 </div>
 
 <%init>
+my $component = $args{component};
+if (!defined $component) {
+  $component = 'none';
+}
 my $schema = $c->schema();
 my $content_type = $schema->find_with_type('Cvterm', 'name', 'first_base_summary');
 my @pipedatas = $object->pipedatas()->search({content_type => $content_type->cvterm_id()});
@@ -109,43 +114,48 @@ for my $stats_pipedata (@pipedatas) {
     my $content_type_name = $content_type->name();
 
     my $content_type_def = $content_type->definition();
-    if ($content_type_name eq 'trimmed_reads') {
+    if ($content_type_name eq 'trimmed_reads' && $component eq 'none') {
       $graphs{'All reads after trimming'} = {
         pipedata => $stats_pipedata,
         input_pipedata => $input_pipedata,
         definition => $content_type_def,
       }
     } else {
-      if ($content_type_name eq 'redundant_aligned_reads') {
-        $graphs{'Aligned redundant reads'} = {
-           pipedata => $stats_pipedata,
-           input_pipedata => $input_pipedata,
-           definition => $content_type_def,
+      if ($content_type_name eq 'filtered_trimmed_reads' && $component eq 'none') {
+        $graphs{'Size filtered reads'} = {
+          pipedata => $stats_pipedata,
+          input_pipedata => $input_pipedata,
+          definition => $content_type_def,
         }
       } else {
-        if ($content_type_name eq 'non_redundant_reads') {
+        if ($content_type_name eq 'non_redundant_reads' && $component eq 'none') {
           $graphs{'Non-redundant reads'} = {
             pipedata => $stats_pipedata,
             input_pipedata => $input_pipedata,
             definition => $content_type_def,
           }
         } else {
-          if ($content_type_name eq 'aligned_reads') {
-            $graphs{'Aligned non-redundant reads'} = {
+          if (!grep {$_->type()->name() eq 'alignment component' &&
+                     $_->value() eq $component } $input_pipedata->pipedata_properties()) {
+            next;
+          }
+
+          if ($content_type_name eq 'redundant_aligned_reads') {
+            $graphs{'Aligned redundant reads'} = {
               pipedata => $stats_pipedata,
               input_pipedata => $input_pipedata,
               definition => $content_type_def,
             }
           } else {
-            if ($content_type_name eq 'non_aligned_reads') {
-              $graphs{'Reads that did not align'} = {
+            if ($content_type_name eq 'aligned_reads') {
+              $graphs{'Aligned non-redundant reads'} = {
                 pipedata => $stats_pipedata,
                 input_pipedata => $input_pipedata,
                 definition => $content_type_def,
               }
             } else {
-              if ($content_type_name eq 'filtered_trimmed_reads') {
-                $graphs{'Size filtered reads'} = {
+              if ($content_type_name eq 'non_aligned_reads') {
+                $graphs{'Reads that did not align'} = {
                   pipedata => $stats_pipedata,
                   input_pipedata => $input_pipedata,
                   definition => $content_type_def,
@@ -158,4 +168,4 @@ for my $stats_pipedata (@pipedatas) {
     }
   }
 }
-</%init>
+  </%init>

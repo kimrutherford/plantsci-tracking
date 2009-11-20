@@ -475,7 +475,18 @@ plugins:
       - name: Sequence composition counts and statistics
         path: /plugins/seq_comp.mhtml
         css_class: seq_comp_graph
-      - name: Size distribution and first base composition graphs
+      - name: Size distribution and first base composition graphs before alignment
+        path: /plugins/sizecomp.mhtml
+        css_class: size_dist_graph
+      - name: Size distribution and first base composition graphs for genome matching reads 
+        path: /plugins/sizecomp.mhtml
+        args:
+          component: genome
+        css_class: size_dist_graph
+      - name: Size distribution graphs for tRNA matching reads
+        constraint: "$object->ecotypes()->search_related('organism', { genus => 'Arabidopsis', species => 'thaliana' })->count() >= 1"
+        args:
+          component: trna
         path: /plugins/sizecomp.mhtml
         css_class: size_dist_graph
       - name: Base distribution graph

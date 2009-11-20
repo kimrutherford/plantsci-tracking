@@ -13,7 +13,12 @@ $object
 % for my $plugin_conf (@object_plugins) {
   <div class="plugin">
     <div class="<% $plugin_conf->{css_class} %>">
-      <& $plugin_conf->{path}, object => $object, name => $plugin_conf->{name} &>
+% my %args = ();
+% if (defined $plugin_conf->{args}) {
+%   %args = %{$plugin_conf->{args}}
+% }
+      <& $plugin_conf->{path}, object => $object, name =>
+                               $plugin_conf->{name}, args => \%args &>
     </div>
   </div>
 % }
@@ -27,7 +32,18 @@ my @object_plugins = ();
 my $plugins_ref = $c->config()->{plugins}{object_page}{$type};
 
 if (defined $plugins_ref) {
-  @object_plugins = @{$plugins_ref};
+  for my $plugin_conf (@{$plugins_ref}) {
+    if (exists $plugin_conf->{constraint}) {
+      if (eval $plugin_conf->{constraint}) {
+        push @object_plugins, $plugin_conf;
+      }
+      if ($@) {
+        warn $@;
+      }
+    } else {
+      push @object_plugins, $plugin_conf;
+    }
+  }
 }
 
 if (!@field_labels) {
