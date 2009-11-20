@@ -374,8 +374,8 @@ sub _create_object {
 
     my $field_db_column = $name;
 
-    if (defined $field_info{conf}) {
-      $field_db_column = $field_info{conf};
+    if (defined $field_info{source}) {
+      $field_db_column = $field_info{source};
     }
 
     my $value = $form_params{$name};
@@ -441,8 +441,8 @@ sub _update_object {
 
     my $field_db_column = $name;
 
-    if (defined $field_info{conf}) {
-      $field_db_column = $field_info{conf};
+    if (defined $field_info{source}) {
+      $field_db_column = $field_info{source};
     }
 
     my $value = $form_params{$name};
