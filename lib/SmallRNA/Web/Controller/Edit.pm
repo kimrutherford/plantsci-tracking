@@ -420,7 +420,7 @@ sub _update_object {
 
   my @form_fields = keys %form_params;
 
-  # special case for setting collections - if nothing is select then nothing
+  # special case for setting collections - if nothing is selected then nothing
   # is sent in the form.  We'd like to clear the collection in that case so we
   # make sure that all collections are processed
   for my $field_label (keys %field_infos) {
