@@ -224,7 +224,8 @@ class_info:
       - name: name
         default_value: |
            use SmallRNA::DBLayer::Loader;
-           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 'name', 'SEQSAMP-');
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 
+                                                            'name', 'SQ');
         editable: 1
       - name: coded_samples
         referenced_class: CodedSample
