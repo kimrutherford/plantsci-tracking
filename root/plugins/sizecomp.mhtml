@@ -15,7 +15,7 @@ This component shows composition statistics and graphs.
 </script>
 
 <div class="sect">
-<span class="sect-title disclosed-title">
+<span class="sect-title <% $disclosed_style %>">
   <a href="#"><% $name %></a>
 </span>
 <div class="sect-content tracking-tabs" id="sizecomp-<% $component %>-tabs">
@@ -68,6 +68,15 @@ my $component = $args{component};
 if (!defined $component) {
   $component = 'none';
 }
+
+my $disclosed_style;
+
+if ($component eq 'none' || $component eq 'genome') {
+  $disclosed_style = 'disclosed-title';
+} else {
+  $disclosed_style = 'undisclosed-title';
+}
+
 my $schema = $c->schema();
 my $content_type = $schema->find_with_type('Cvterm', 'name', 'first_base_summary');
 my @pipedatas = $object->pipedatas()->search({content_type => $content_type->cvterm_id()});
