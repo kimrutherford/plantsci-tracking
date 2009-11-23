@@ -489,6 +489,26 @@ plugins:
           component: trna
         path: /plugins/sizecomp.mhtml
         css_class: size_dist_graph
+      - name: Size distribution graphs for miRNA hairpin matching reads
+        constraint: "$object->ecotypes()->search_related('organism', { genus => 'Arabidopsis', species => 'thaliana' })->count() >= 1"
+        args:
+          component: mirbase-hairpin
+        path: /plugins/sizecomp.mhtml
+        css_class: size_dist_graph
+      - name: Size distribution graphs for mature miRNA matching reads
+        constraint: |
+           $object->ecotypes()->search_related('organism', { genus => 'Arabidopsis', species => 'thaliana' })->count() >= 1 ||
+           $object->ecotypes()->search_related('organism', { genus => 'Nicotiana', species => 'benthamiana' })->count() >= 1
+        args:
+          component: mirbase-mature
+        path: /plugins/sizecomp.mhtml
+        css_class: size_dist_graph
+      - name: Size distribution graphs for mature star miRNA matching reads
+        constraint: "$object->ecotypes()->search_related('organism', { genus => 'Arabidopsis', species => 'thaliana' })->count() >= 1"
+        args:
+          component: mirbase-maturestar
+        path: /plugins/sizecomp.mhtml
+        css_class: size_dist_graph
       - name: Base distribution graph
         path: /plugins/basedist.mhtml
         css_class: base_dist_graph
