@@ -519,12 +519,19 @@ sub object : Regex('(new|edit)/object/([^/]+)(?:/([^/]+))?') {
 
   my $object = undef;
 
+  my $st = $c->stash;
+
+  if (!defined $c->user()) {
+    $st->{error} = "Log in to allow editing";
+    $c->forward('/start');
+    $c->detach();
+    return;
+  }
+
   if (defined $object_id) {
     my $class_name = SmallRNA::DB::class_name_of_table($type);
     $object = $c->schema()->find_with_type($class_name, "${type}_id" => $object_id);
   }
-
-  my $st = $c->stash;
 
   my $display_type_name = SmallRNA::DB::display_name($type);
 
