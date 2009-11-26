@@ -1,4 +1,4 @@
-<div style="font-size: 80%">
+<div class="user_login">
 % if ($c->user_exists()) {
     <div id="logout">
       Logged in as: <% $c->user()->username() %>
