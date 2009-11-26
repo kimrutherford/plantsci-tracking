@@ -172,6 +172,8 @@ class_info:
         editable: 1
       - name: ecotype
         editable: 1
+      - name: sample_type
+        editable: 1
       - name: process_conf
         editable: 1
   pipeprocess:
