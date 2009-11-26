@@ -43,6 +43,8 @@ $object
 
     $("#deleteDialog").dialog("open");
   });
+
+  $("#deleteDialog").hide();
 </script>
 
       </li>
