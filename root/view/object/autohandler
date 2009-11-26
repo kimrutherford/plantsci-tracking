@@ -3,15 +3,20 @@ $type
 $object
 </%args>
 
-% if ($editable && $c->user_exists()) {
+% if ($c->user_exists()) {
 <div class="actionlist" style="float: right">
   <div class="label">
     Actions
   </div>
   <div>
     <ul>
+%  if ($editable) {
       <li>
         <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">Edit</a>
+      </li>
+%  }
+      <li>
+        <a href="<% $c->uri_for('/delete/object/' . $type . '/' . $object_id) %>">Delete</a>
       </li>
     </ul>
   </div>
