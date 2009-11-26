@@ -3,6 +3,10 @@ $type
 $object
 </%args>
 
+<div id="deleteDialog" title="Confirmation Required">
+  Delete this <% $type %>?
+</div>
+
 % if ($c->user_exists()) {
 <div class="actionlist" style="float: right">
   <div class="label">
@@ -16,7 +20,31 @@ $object
       </li>
 %  }
       <li>
-        <a href="<% $c->uri_for('/delete/object/' . $type . '/' . $object_id) %>">Delete</a>
+
+<a id="confirmDelete" href="<% $c->uri_for('/delete/object/' . $type . '/' . $object_id) %>">Delete</a>
+
+<script type="text/javascript">
+  $("#confirmDelete").click(function(e) {
+    e.preventDefault();
+    var targetUrl = $(this).attr("href");
+
+    $("#deleteDialog").dialog({
+      autoOpen: false,
+      modal: true,
+      buttons : {
+        "Confirm" : function() {
+          window.location.href = targetUrl;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $("#deleteDialog").dialog("open");
+  });
+</script>
+
       </li>
     </ul>
   </div>
