@@ -78,6 +78,9 @@ sub login : Global {
     }
   } else {
     $c->stash->{error} = "log in failed";
+    $c->forward('/start');
+    $c->detach();
+    return 0;
   }
 
   $c->res->redirect($return_path, 302);
