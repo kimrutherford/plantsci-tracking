@@ -18,9 +18,11 @@ my $schema = SmallRNA::DB->schema($config);
 my $database_config = "";
 my $track_config = "";
 
-if (@ARGV != 1) {
+if (@ARGV < 1) {
   croak "$0: error one argument needed - the organism name\n";
 }
+
+my $component = $ARGV[1] || 'genome';
 
 my $organism_name = shift;
 my $genus;
@@ -79,7 +81,7 @@ while (defined (my $pipedata = $pipedata_rs->next())) {
                                                 });
 
   if (!grep { $_->type()->name() eq 'alignment component' && 
-              $_->value() eq 'genome' } @pipedata_properties) {
+              $_->value() eq $component } @pipedata_properties) {
     next;
   }
 
