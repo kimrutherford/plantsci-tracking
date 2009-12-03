@@ -3,11 +3,11 @@ $type
 $object
 </%args>
 
+% if ($c->user_exists()) {
 <div id="deleteDialog" title="Confirmation Required">
   Delete this <% $type %>?
 </div>
 
-% if ($c->user_exists()) {
 <div class="actionlist" style="float: right">
   <div class="label">
     Actions
