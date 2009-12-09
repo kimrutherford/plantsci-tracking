@@ -123,6 +123,7 @@ class_info:
         admin_only: 1
   ecotype:
     display_field: long_description
+    order_by: description
   genotype:
     display_field: description
   tissue:
