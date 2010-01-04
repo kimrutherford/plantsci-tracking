@@ -62,33 +62,39 @@ This component shows composition statistics and graphs.
 % use Number::Format;
 % my $fmt = Number::Format->new();
 % for my $stat (@stats) {
+%  my @details_list = @{$stat->{details_list}};
+%  for (my $detail_index = 0; $detail_index < @details_list; $detail_index++) {
+%    my $detail = $details_list[$detail_index];
     <tr class="<% $row_count % 2 == 0 ? 'even' : 'odd' %>">
 % if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
     <td>
-      <% $stat->{content_type} %>
+      <% $stat->{content_type_name} %>
+    </td>
+% }
+% if ($detail_index == 0) {
+    <td rowspan="<% scalar(@details_list) %>">
+      <% $stat->{label} %>
     </td>
 % }
     <td>
-      <% $stat->{label} %>
+      <% $detail->{alignment_component} %>
     </td>
     <td>
-      <% $stat->{alignment_component} %>
+      <% $fmt->format_number($detail->{data}->{number_of_sequences}) %>
     </td>
     <td>
-      <% $fmt->format_number($stat->{data}->{number_of_sequences}) %>
-    </td>
-    <td>
-      <% $fmt->format_number($stat->{data}->{total_bases}) %>
+      <% $fmt->format_number($detail->{data}->{total_bases}) %>
     </td>
 % if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
     <td>
-      <% $fmt->format_number($stat->{data}->{gc_bases}) %>
+      <% $fmt->format_number($detail->{data}->{gc_bases}) %>
     </td>
 % }
     <td>
-      <% $stat->{data}->{gc_content} %>
+      <% $detail->{data}->{gc_content} %>
     </td>
   </tr>
+%   }
 %   $row_count++
 % }
   </tbody>
@@ -184,12 +190,24 @@ for my $fast_pipe_data (@fast_pipe_datas) {
 
     my $content_type_def = $fast_pipe_data->content_type()->definition();
 
-    push @stats, { fast_pipe_data => $fast_stat_pipe_data,
-                   data => \%fast_data,
-                   label => $content_type_def,
-                   alignment_component => $alignment_component,
-                   content_type => $fast_pipe_data->content_type()->name(),
-                   };
+    my $details = {
+      fast_pipe_data => $fast_stat_pipe_data,
+      data => \%fast_data,
+      alignment_component => $alignment_component,
+    };
+
+    my ($entry) = grep { $_->{content_type_name} eq $content_type_name } @stats;
+
+    if (!defined $entry) {
+      $entry = { 
+        label => $content_type_def,
+        content_type_name => $content_type_name,
+        details_list => []
+      };
+      push @stats, $entry;
+    }
+
+    push @{$entry->{details_list}}, $details;
 
     close $stat_file or die "can't close $fast_stat_file_name: $!\n";
   }
