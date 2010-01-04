@@ -48,7 +48,7 @@ use strict;
 use warnings;
 use Carp;
 
-use Moose;
+use Mouse;
 
 #has 'schema' => (is => 'ro', isa => 'SmallRNA::DB', required => 1);
 

@@ -40,7 +40,7 @@ use warnings;
 use Carp;
 
 use Params::Validate qw(:all);
-use Moose;
+use Mouse;
 
 =head2 cache
 
