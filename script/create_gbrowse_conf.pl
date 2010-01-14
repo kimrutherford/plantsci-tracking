@@ -16,7 +16,7 @@ my $config = SmallRNA::Config->new($config_file_name);
 my $schema = SmallRNA::DB->new($config);
 
 if (@ARGV < 1) {
-  croak "$0: error one argument needed - the organism name\n";
+  croak "$0: error two arguments needed - the config file name and the organism name\n";
 }
 
 my $component = $ARGV[1] || 'genome';
