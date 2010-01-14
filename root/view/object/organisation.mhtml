@@ -16,7 +16,7 @@ $object
 
 <%init>
 my $seqruns_rs = $object->people()->search_related('pipeprojects')
-  ->search_related('sample_pipeprojects')->search_related('sample')
+  ->search_related('biosample_pipeprojects')->search_related('biosample')
   ->search_related('coded_samples')->search_related('sequencing_sample')
   ->search_related('sequencingruns');
 my $seqruns_count = $seqruns_rs->count();

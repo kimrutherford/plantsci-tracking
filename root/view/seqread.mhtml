@@ -40,7 +40,7 @@ Seqeuence length: <% length($read_seq) %>
 
 <div class="sect">
   <span class="sect-title disclosed-title">
-    <a href="#">Sample matches</a>
+    <a href="#">Biosample matches</a>
   </span>
   <div class="sect-content">
 % if (@sample_results) {
@@ -49,7 +49,7 @@ Seqeuence length: <% length($read_seq) %>
 
   <thead>
     <tr>
-      <td>Sample name</td>
+      <td>Biosample name</td>
       <td>File name</td>
       <td>Reads from FastQ file</td>
     </tr>
@@ -58,7 +58,7 @@ Seqeuence length: <% length($read_seq) %>
 %   for my $result (@sample_results) {
 %     my @matches = @{$result->{matches}};
 %     my $pipedata = $result->{pipedata};
-%     my $sample = $result->{sample};
+%     my $biosample = $result->{biosample};
 
   <tr>
 %#     for (my $match_index = 0; $match_index < @matches; $match_index++) {
@@ -66,8 +66,8 @@ Seqeuence length: <% length($read_seq) %>
 %#       my $start = $match->{start};
 %#       my $end = $match->{start};
     <td valign="top">
-      <a href='<% $c->uri_for("/view/object/sample", SmallRNA::DB::id_of_object($sample)) %>'>
-        <% $sample->name() %>
+      <a href='<% $c->uri_for("/view/object/biosample", SmallRNA::DB::id_of_object($biosample)) %>'>
+        <% $biosample->name() %>
       </a>
     </td>
     <td valign="top">
@@ -83,7 +83,7 @@ Seqeuence length: <% length($read_seq) %>
 </table>
 
 % } else {
-   No matches found for any sample
+   No matches found for any biosample
 % }
 
 </div>

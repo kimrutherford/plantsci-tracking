@@ -63,9 +63,9 @@ my $pipedata_rs =
                                                   { where => \$prop_where } )
     ->search_related('pipedata', { format_type => $bam_cvterm->cvterm_id() },
                      { prefetch => [ {
-                       sample_pipedatas => {
-                         sample => {
-                           sample_pipeprojects => {
+                       biosample_pipedatas => {
+                         biosample => {
+                           biosample_pipeprojects => {
                              pipeproject => {
                                owner => 'organisation' } } } } } ] });
 
@@ -85,12 +85,12 @@ while (defined (my $pipedata = $pipedata_rs->next())) {
     next;
   }
 
-  my @samples = $pipedata->samples();
-  my $sample = $samples[0];
-  my $sample_name = $sample->name();
-  my $sample_description = $sample->description();
+  my @biosamples = $pipedata->biosamples();
+  my $biosample = $biosamples[0];
+  my $biosample_name = $biosample->name();
+  my $biosample_description = $biosample->description();
 
-  my $owner = ($sample->pipeprojects())[0]->owner();
+  my $owner = ($biosample->pipeprojects())[0]->owner();
   my $first_name = $owner->first_name();
   my $last_name = $owner->last_name();
 
@@ -105,7 +105,7 @@ while (defined (my $pipedata = $pipedata_rs->next())) {
 
   $database_config .= <<"DATABASE";
 
-[bam_${sample_name}_db:database]
+[bam_${biosample_name}_db:database]
 db_adaptor    = Bio::DB::Sam
 db_args       = -bam $bam_file
 search options= default
@@ -113,14 +113,14 @@ search options= default
 DATABASE
 
     $track_config .= <<"TRACK";
-[$sample_name]
+[$biosample_name]
 feature = read_pair
-database = bam_${sample_name}_db
+database = bam_${biosample_name}_db
 glyph        = arrow
 fgcolor      = \\&fgcolor
 linewidth    = \\&abundance
 description  = 1
-key          = $sample_name - $sample_description
+key          = $biosample_name - $biosample_description
 category     = $org_name - $first_name $last_name
 link = \\&seqread_link
 west         = sub { my \$f = shift; return \$f->reversed() }  # arrow always points right

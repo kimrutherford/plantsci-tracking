@@ -4,50 +4,50 @@ $type
 </%args>
 
 <&| /view/object/object_top.mhtml, object => $object, 
-  field_labels => [qw(name description genotype sample_type protocol molecule_type
+  field_labels => [qw(name description genotype biosample_type protocol molecule_type
                    treatment_type fractionation_type tissue
                    processing_requirement)]&>
   <div>
-    <a href="<% $c->uri_for('/custom/create_seq_sample', { 'sample.id' => $object->sample_id() }) %>">
-      Create a non-multiplexed sequencing sample for this sample
+    <a href="<% $c->uri_for('/custom/create_seq_biosample', { 'biosample.id' => $object->biosample_id() }) %>">
+      Create a non-multiplexed sequencing sample for this biosample
     </a>
   </div>
   <div>
-    <a href="<% $c->uri_for('/new/object/coded_sample', { 'sample.id' => $object->sample_id() }) %>">
-      Barcode this sample
+    <a href="<% $c->uri_for('/new/object/coded_sample', { 'biosample.id' => $object->biosample_id() }) %>">
+      Barcode this biosample
     </a>
   </div>
 </&>
 
 <div id="collections">
   <& /view/list.mhtml, type => 'pipeproject', rs => $pipeprojects_rs,
-    list_title => "The project$pipeproject_plu containing this sample" &>
+    list_title => "The project$pipeproject_plu containing this biosample" &>
   <& /view/list.mhtml, type => 'organism', rs => $organisms_rs,
-    list_title => "The organism$organism_plu for this sample" &>
+    list_title => "The organism$organism_plu for this biosample" &>
   <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
-    list_title => "The ecotype$ecotype_plu for this sample" &>
+    list_title => "The ecotype$ecotype_plu for this biosample" &>
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
-    list_title => "The sequencing run$seqruns_plu for this sample", disclosed => 0 &>
+    list_title => "The sequencing run$seqruns_plu for this biosample", disclosed => 0 &>
   <& /view/list.mhtml, type => 'sequencing_sample', rs => $sequencing_samples_rs,
-    list_title => "The sequencing sample$sequencing_samples_plu containing this sample",
+    list_title => "The sequencing sample$sequencing_samples_plu containing this biosample",
     disclosed => 0 &>
 % if ($coded_samples_count > 0) {
   <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
-    list_title => "The bar-coded sample$coded_samples_plu created from this sample",
+    list_title => "The bar-coded sample$coded_samples_plu created from this biosample",
     disclosed => 0 &>
 % }
   <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
-    list_title => "The file$pipedata_plu for this sample", disclosed => 0 &>
+    list_title => "The file$pipedata_plu for this biosample", disclosed => 0 &>
 </div>
   
 <%init>
 my $organisms_rs = 
-  $object->sample_ecotypes()->search_related('ecotype')->search_related('organism',
+  $object->biosample_ecotypes()->search_related('ecotype')->search_related('organism',
                                                                         {}, { distinct => 1} );
 my $organisms_count = $organisms_rs->count();
 my $organism_plu = ($organisms_count != 1) ? 's' : '';
 my $ecotypes_rs = 
-  $object->sample_ecotypes()->search_related('ecotype');
+  $object->biosample_ecotypes()->search_related('ecotype');
 my $ecotypes_count = $ecotypes_rs->count();
 my $ecotype_plu = ($ecotypes_count != 1) ? 's' : '';
 my $seqruns_rs = $object->coded_samples()->search_related('sequencing_sample')->search_related('sequencingruns');

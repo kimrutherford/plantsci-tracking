@@ -65,8 +65,8 @@ sub set_template : Private {
     $c->stash()->{title} = 'Details for data ' . $object->file_name();
   } elsif ($type eq 'organism') {
     $c->stash()->{title} = 'Details for organism ' . $object->full_name();
-  } elsif ($type eq 'sample') {
-    $c->stash()->{title} = 'Details for sample ' . $object->name();
+  } elsif ($type eq 'biosample') {
+    $c->stash()->{title} = 'Details for biosample ' . $object->name();
   } elsif ($type eq 'sequencingrun') {
     $c->stash()->{title} = 'Details for sequencing run ' . $object->identifier();
   } elsif ($type eq 'ecotype') {
@@ -78,7 +78,7 @@ sub set_template : Private {
   } elsif ($type eq 'sequencing_sample') {
     $c->stash()->{title} = 'Sequencing sample ' . $object->name();
   } elsif ($type eq 'coded_sample') {
-    $c->stash()->{title} = 'Sample with barcode for sample: ' . $object->sample()->name();
+    $c->stash()->{title} = 'Sample with barcode for sample: ' . $object->biosample()->name();
   } elsif ($type eq 'process_conf') {
     $c->stash()->{title} = 'Details for pipeline process configuration type: '
       . $object->type()->name();
@@ -91,7 +91,7 @@ sub set_template : Private {
 our $TYPE_PATTERN =
   qr()x;
 
-sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|sample|sequencingrun|organism|organisation|ecotype|sequencing_sample|coded_sample|barcode|barcode_set|process_conf|process_conf_input)/(.*)') {
+sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|biosample|sequencingrun|organism|organisation|ecotype|sequencing_sample|coded_sample|barcode|barcode_set|process_conf|process_conf_input)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_key) = @{$c->req()->captures()};
 

@@ -1,3 +1,7 @@
+<%doc>
+This template renders a link the an appropriate GBrowse.
+</%doc>
+
 <%args>
 $object
 </%args>
@@ -15,7 +19,7 @@ $object
 
 <%init>
 my $organisms_rs = 
-  $object->sample_ecotypes()->search_related('ecotype')->search_related('organism',
+  $object->biosample_ecotypes()->search_related('ecotype')->search_related('organism',
                                                                         {}, { distinct => 1} );
 
 

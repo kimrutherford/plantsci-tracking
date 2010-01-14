@@ -21,8 +21,8 @@ $type
     list_title => 'Processes that use this data as input' &>
   <& /view/list.mhtml, type => 'pipedata', rs => $generated_pipedatas_rs,
     list_title => 'Data files that are generated from this file' &>
-  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$plu that (ultimately) generated this data" &>
+  <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs,
+    list_title => "The biosample$plu that (ultimately) generated this data" &>
   <& /view/collection.mhtml, object => $object,
     collection_title => 'The properties stored for this data',
     collection_name => 'pipedata_properties' &>
@@ -35,9 +35,9 @@ my $prev_pipeprocess_rs = $object->search_related('generating_pipeprocess');
 my $generated_pipedatas_rs =
   $object->pipeprocess_in_pipedatas()->search_related('pipeprocess')
      ->search_related('pipedatas', { file_name => \'IS NOT NULL' } );
-my $samples_rs =
-  $object->sample_pipedatas()->search_related('sample');
-my $samples_count = $samples_rs->count();
-my $plu = $samples_count !=  1 ? 's' : '';
+my $biosamples_rs =
+  $object->biosample_pipedatas()->search_related('biosample');
+my $biosamples_count = $biosamples_rs->count();
+my $plu = $biosamples_count !=  1 ? 's' : '';
 </%init>
 

@@ -73,16 +73,16 @@ class_info:
         default_value: "'local'"
         values_constraint: 'cv->name = "tracking users types"'
         editable: 1
-  sample:
+  biosample:
     editable: 1
     display_field: name
-    # hack to put the samples in a sensible order:
+    # hack to put the biosamples in a sensible order:
     order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
       - name: name
         default_value: |
            use SmallRNA::DBLayer::Loader;
-           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Sample', 'name', 'SL');
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Biosample', 'name', 'SL');
         editable: 1
       - name: description
         editable: 1
@@ -90,9 +90,9 @@ class_info:
         editable: 1
       - name: protocol
         editable: 1
-      - name: sample_type
+      - name: biosample_type
         editable: 1
-        values_constraint: 'cv->name = "tracking sample types"'
+        values_constraint: 'cv->name = "tracking biosample types"'
       - name: molecule_type
         editable: 1
         values_constraint: 'cv->name = "tracking molecule types"'
@@ -105,7 +105,7 @@ class_info:
       - name: tissue
         editable: 1
       - name: processing_requirement
-        values_constraint: 'cv->name = "tracking sample processing requirements"'
+        values_constraint: 'cv->name = "tracking biosample processing requirements"'
         editable: 1
       - name: ecotypes
         referenced_class: Ecotype
@@ -144,8 +144,8 @@ class_info:
         editable: 1
       - name: funder
         editable: 1
-      - name: samples
-        referenced_class: Sample
+      - name: biosamples
+        referenced_class: Biosample
         editable: 1
         is_collection: 1
   process_conf:
@@ -173,7 +173,7 @@ class_info:
         editable: 1
       - name: ecotype
         editable: 1
-      - name: sample_type
+      - name: biosample_type
         editable: 1
       - name: process_conf
         editable: 1
@@ -244,7 +244,7 @@ class_info:
         source: coded_sample_type
         values_constraint: 'cv->name = "tracking coded sample types"'
         editable: 1
-      - name: sample
+      - name: biosample
         editable: 1
       - name: barcode
         editable: 1
@@ -275,11 +275,11 @@ class_info:
         values_constraint: 'cv->name = "tracking publication types"'
         editable: 1
 report_list:
-  - name: sample_read_counts
-    description: Counts of fasta sequences for each sample at each pipeline stage
-    object_type: sample
+  - name: biosample_read_counts
+    description: Counts of fasta sequences for each biosample at each pipeline stage
+    object_type: biosample
     columns:
-      - name: Sample name
+      - name: Biosample name
         source: name
       - name: Organism name
         source: |
@@ -320,11 +320,11 @@ report_list:
         format: integer
         source: |
            SmallRNA::Web::Report::get_pipedata_property($object, "genome", "redundant_aligned_reads", "fasta", "sequence count")
-  - name: sample_read_percentages
+  - name: biosample_read_percentages
     description: Relative (percentage) reads numbers for selected pipeline stages
-    object_type: sample
+    object_type: biosample
     columns:
-      - name: Sample name
+      - name: Biosample name
         source: name
       - name: Organism name
         source: |
@@ -404,7 +404,7 @@ gbrowse:
     prefix: '/gb2/gbrowse/tomato'
 plugins:
   object_page:
-    sample:
+    biosample:
       - name: GBrowse
         path: /plugins/gbrowse.mhtml
         css_class: gbrowse_link

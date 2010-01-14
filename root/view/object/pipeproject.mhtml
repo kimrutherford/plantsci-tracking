@@ -9,18 +9,18 @@ $type
 </div>
 
 <div>
-  <a href="<% $c->uri_for('/new/object/sample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
-    Create a sample for this project
+  <a href="<% $c->uri_for('/new/object/biosample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
+    Create a biosample for this project
   </a>
 </div>
 
 <div id="collections">
-  <& /view/list.mhtml, type => 'sample', rs => $samples_rs, disclosed => 1,
-    list_title => "The sample$sample_plu for this project" &>
+  <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs, disclosed => 1,
+    list_title => "The biosample$biosample_plu for this project" &>
 </div>
 
 <%init>
-my $samples_rs = $object->samples();
-my $samples_count = $samples_rs->count();
-my $sample_plu = ($samples_count != 1) ? 's' : '';
+my $biosamples_rs = $object->biosamples();
+my $biosamples_count = $biosamples_rs->count();
+my $biosample_plu = ($biosamples_count != 1) ? 's' : '';
 </%init>

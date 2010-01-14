@@ -137,7 +137,7 @@ sub search_all
     'me.name' => $file_format
   })->search_related('pipedata_format_types', {},
                      { prefetch => [ {
-                         sample_pipedatas => 'sample' 
+                         biosample_pipedatas => 'biosample' 
                         },
                        'format_type',
                        'content_type',

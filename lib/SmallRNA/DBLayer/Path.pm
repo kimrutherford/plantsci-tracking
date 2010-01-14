@@ -7,12 +7,12 @@ SmallRNA::DBLayer::Path - A path through the model
 =head1 DESCRIPTION
 
 This class describes a path through the objects in the database.  When we
-are looking at a Sample object, examples paths are
- "name" - the "name" attribute of the sample
+are looking at a Biosample object, examples paths are
+ "name" - the "name" attribute of the biosample
  "ecotype" - the ecotype reference
  "ecotype->description" - the ecotype description
  "ecotype->organism" - the organism referred to by the ecotype reference in
-                       this sample
+                       this biosample
  "ecotype->organism->species" - the species of the organism of the ecotype 
 
 =head1 AUTHOR
@@ -78,7 +78,7 @@ sub bits
 
  Usage   : my $object_or_value = $path->resolve($object);
  Function: Follow a path from the given object, returning the object or value
-           at the end.  eg. From a sample object, for path "ecotype->organism"
+           at the end.  eg. For a biosample object, for path "ecotype->organism"
            we might get the arabidopsis row from the organism table.  The path
            "ecotype->organism->species" might give us "thaliana"
  Args    : $object - an object

@@ -8,13 +8,13 @@ $object
 <div id="collections">
   <& /view/collection.mhtml, object => $object, collection_title => 'Projects',
     collection_name => 'pipeprojects', disclosed => 1 &>
-  <& /view/list.mhtml, type => 'Sample', rs => $samples_rs,
-    list_title => "The sample$sample_plu from all projects" &>
+  <& /view/list.mhtml, type => 'Biosample', rs => $biosamples_rs,
+    list_title => "The biosample$biosample_plu from all projects" &>
 </div>
   
 <%init>
-my $samples_rs = 
-  $object->search_related('pipeprojects')->search_related('sample_pipeprojects')->search_related('sample');
-my $samples_count = $samples_rs->count();
-my $sample_plu = ($samples_count != 1) ? 's' : '';
+my $biosamples_rs = 
+  $object->search_related('pipeprojects')->search_related('biosample_pipeprojects')->search_related('biosample');
+my $biosamples_count = $biosamples_rs->count();
+my $biosample_plu = ($biosamples_count != 1) ? 's' : '';
 </%init>

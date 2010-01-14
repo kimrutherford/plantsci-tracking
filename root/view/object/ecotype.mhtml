@@ -8,12 +8,12 @@ $object
 </div>
 
 <div id="collections">
-  <& /view/list.mhtml, type => 'sample', rs => $samples_rs,
-    list_title => "The sample$plu for this ecotype" &>
+  <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs,
+    list_title => "The biosample$plu for this ecotype" &>
 </div>
 
 <%init>
-my $samples_rs = $object->samples();
-my $samples_count = $samples_rs->count();
-my $plu = $samples_count !=  1 ? 's' : '';
+my $biosamples_rs = $object->biosamples();
+my $biosamples_count = $biosamples_rs->count();
+my $plu = $biosamples_count !=  1 ? 's' : '';
 </%init>

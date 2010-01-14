@@ -39,20 +39,20 @@ use strict;
 use warnings;
 use Carp;
 
-my %_sample_props_cache = ();
+my %_biosample_props_cache = ();
 
 my $_cache_time = undef;
 my $MAX_CACHE_AGE = 10 * 60;  # 10 minutes
 
-sub _get_sample_props
+sub _get_biosample_props
 {
-  my $sample = shift;
+  my $biosample = shift;
 
-  if (exists $_sample_props_cache{$sample->sample_id()}) {
-    return %{$_sample_props_cache{$sample->sample_id()}};
+  if (exists $_biosample_props_cache{$biosample->biosample_id()}) {
+    return %{$_biosample_props_cache{$biosample->biosample_id()}};
   }
 
-  my @pipedatas = $sample->pipedatas()->search({}, { prefetch => [
+  my @pipedatas = $biosample->pipedatas()->search({}, { prefetch => [
                                                        'content_type',
                                                        'format_type',
                                                        { pipedata_properties => 'type' } ] });
@@ -76,20 +76,20 @@ sub _get_sample_props
     $results{$prop_key} = \%props;
   }
 
-  $_sample_props_cache{$sample->sample_id()} = \%results;
+  $_biosample_props_cache{$biosample->biosample_id()} = \%results;
 
   return %results;
 }
 
 sub get_pipedata_property
 {
-  my $sample = shift;
+  my $biosample = shift;
   my $alignment_component = shift;
   my $wanted_content_type_name = shift;
   my $wanted_format_type_name = shift;
   my $property_type_name = shift;
 
-  my %results = _get_sample_props($sample);
+  my %results = _get_biosample_props($biosample);
   my $prop_ref = $results{"$wanted_content_type_name:$wanted_format_type_name"};
 
   if (!defined $prop_ref && defined $alignment_component) {
@@ -113,12 +113,12 @@ sub get_pipedata_property
 
 sub get_pipedata_property_precent
 {
-  my $sample = shift;
+  my $biosample = shift;
   my %args = @_;
 
   if (defined $args{first} && defined $args{second}) {
-    my $first_val = get_pipedata_property($sample, @{$args{first}});
-    my $second_val = get_pipedata_property($sample, @{$args{second}});
+    my $first_val = get_pipedata_property($biosample, @{$args{first}});
+    my $second_val = get_pipedata_property($biosample, @{$args{second}});
 
     if (defined $first_val && defined $second_val && $second_val != 0) {
       return int(10000 * $first_val / $second_val) / 100;

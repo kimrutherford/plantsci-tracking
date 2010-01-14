@@ -49,7 +49,7 @@ use SmallRNA::Web::Report;
 =head2 get_object_by_id_or_name
 
  Function: Find and return the object given a database id or display name.
-           The database id (eg. sample_id) is checked first.
+           The database id (eg. biosample_id) is checked first.
 
 =cut
 sub get_object_by_id_or_name
@@ -337,14 +337,14 @@ sub seqread : Local {
                                      end => $end, strand => $strand };
         }
 
-        my @samples = $pipedata->samples();
-        my $sample = $samples[0];
+        my @biosamples = $pipedata->biosamples();
+        my $biosample = $biosamples[0];
 
 
         push @processed_results, { pipedata => $pipedata,
                                    redundant_count => $redundant_count,
                                    matches => \@processed_matches,
-                                   sample => $sample };
+                                   biosample => $biosample };
       }
     }
 

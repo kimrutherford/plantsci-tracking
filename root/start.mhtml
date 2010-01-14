@@ -14,7 +14,7 @@
               <a href="<% $c->uri_for('/view/list/organisation') %>">Organisations</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/view/list/sample') %>">Samples</a>
+              <a href="<% $c->uri_for('/view/list/biosample') %>">Biosamples</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
@@ -73,7 +73,7 @@
               <a href="<% $c->uri_for('/new/object/pipeproject') %>">Project</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sample') %>">Sample</a>
+              <a href="<% $c->uri_for('/new/object/biosample') %>">Biosample</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/coded_sample') %>">Sample
