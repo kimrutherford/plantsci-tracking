@@ -13,8 +13,8 @@ $type
     </a>
   </div>
   <div>
-    <a href="<% $c->uri_for('/new/object/coded_sample', { 'biosample.id' => $object->biosample_id() }) %>">
-      Barcode this biosample
+    <a href="<% $c->uri_for('/new/object/library', { 'biosample.id' => $object->biosample_id() }) %>">
+      Create a library from this biosample
     </a>
   </div>
 </&>
@@ -27,15 +27,13 @@ $type
   <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
     list_title => "The ecotype$ecotype_plu for this biosample" &>
   <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
-    list_title => "The sequencing run$seqruns_plu for this biosample", disclosed => 0 &>
+    list_title => "The sequencing run$seqruns_plu for this biosample", disclosed => 1 &>
   <& /view/list.mhtml, type => 'sequencing_sample', rs => $sequencing_samples_rs,
     list_title => "The sequencing sample$sequencing_samples_plu containing this biosample",
-    disclosed => 0 &>
-% if ($coded_samples_count > 0) {
-  <& /view/list.mhtml, type => 'coded_sample', rs => $coded_samples_rs,
-    list_title => "The bar-coded sample$coded_samples_plu created from this biosample",
-    disclosed => 0 &>
-% }
+    disclosed => 1 &>
+  <& /view/list.mhtml, type => 'library', rs => $libraries_rs,
+    list_title => "The " . ($libraries_plu ? 'libraries' : 'library') . " created from this biosample",
+    disclosed => 1 &>
   <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
     list_title => "The file$pipedata_plu for this biosample", disclosed => 0 &>
 </div>
@@ -50,14 +48,14 @@ my $ecotypes_rs =
   $object->biosample_ecotypes()->search_related('ecotype');
 my $ecotypes_count = $ecotypes_rs->count();
 my $ecotype_plu = ($ecotypes_count != 1) ? 's' : '';
-my $seqruns_rs = $object->coded_samples()->search_related('sequencing_sample')->search_related('sequencingruns');
+my $seqruns_rs = $object->libraries()->search_related('sequencing_sample')->search_related('sequencingruns');
 my $seqruns_count = $seqruns_rs->count();
 my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
-# show only those coded_samples that have a code
-my $coded_samples_rs = $object->coded_samples()->search({ barcode => { '!=' => undef }});
-my $coded_samples_count = $coded_samples_rs->count();
-my $coded_samples_plu = ($coded_samples_count != 1) ? 's' : '';
-my $sequencing_samples_rs = $object->coded_samples->search_related('sequencing_sample');
+# show only those libraries that have a code
+my $libraries_rs = $object->libraries();
+my $libraries_count = $libraries_rs->count();
+my $libraries_plu = ($libraries_count != 1) ? 's' : '';
+my $sequencing_samples_rs = $object->libraries->search_related('sequencing_sample');
 my $sequencing_samples_count = $sequencing_samples_rs->count();
 my $sequencing_samples_plu = ($sequencing_samples_count != 1) ? 's' : '';
 my $pipedatas_rs = $object->pipedatas();

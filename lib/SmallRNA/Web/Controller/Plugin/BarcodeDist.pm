@@ -78,10 +78,10 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
 
   my %expected_barcode_ids = ();
 
-  my @barcoded_samples = $sequencingrun->sequencing_sample()->search_related('coded_samples');
+  my @libraries = $sequencingrun->sequencing_sample()->search_related('libraries');
 
-  for my $barcoded_sample (@barcoded_samples) {
-    my $barcode_id = $barcoded_sample->barcode()->identifier();
+  for my $library (@libraries) {
+    my $barcode_id = $library->barcode()->identifier();
     $expected_barcode_ids{$barcode_id}++;
   }
 

@@ -49,17 +49,17 @@ sub create_seq_biosample : Local {
 
   my $biosample = $schema->find_with_type('Biosample', biosample_id => $biosample_id);
 
-  my $description = 'Dummy coded sample for ' . $biosample->name() . ' - no barcode';
+  my $description = 'Library for ' . $biosample->name() . ' - no barcode';
   my $initial_run_cvterm = $schema->find_with_type('Cvterm',
                                                    { name => 'initial run' });
-  my $coded_sample = $schema->create_with_type('CodedSample',
-                                               { description => $description,
-                                                 coded_sample_type => $initial_run_cvterm,
-                                                 biosample => $biosample});
+  my $library = $schema->create_with_type('Library',
+                                          { description => $description,
+                                            library_type => $initial_run_cvterm,
+                                            biosample => $biosample });
 
   $c->res->redirect($c->uri_for("/new/object/sequencing_sample",
                                 {
-                                  'coded_sample.id' => $coded_sample->coded_sample_id()
+                                  'library.id' => $library->library_id()
                                 }));
   $c->detach();
 }

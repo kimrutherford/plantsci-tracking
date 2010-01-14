@@ -7,8 +7,8 @@ $object
 </div>
 
 <div id="collections">
-  <& /view/collection.mhtml, object => $object, collection_name => 'coded_samples',
-    collection_title => "The coded samples for this sequencing sample" &>
+  <& /view/collection.mhtml, object => $object, collection_name => 'libraries',
+    collection_title => "The libraries for this sequencing sample" &>
   <& /view/collection.mhtml, object => $object, collection_name => 'sequencingruns',
     collection_title => "The sequencing runs for this sequencing sample" &>
   <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs,
@@ -16,7 +16,7 @@ $object
 </div>
 
 <%init>
-my $biosamples_rs = $object->coded_samples()->search_related('biosample');
+my $biosamples_rs = $object->libraries()->search_related('biosample');
 my $biosamples_count = $biosamples_rs->count();
 my $biosamples_plu = ($biosamples_count != 1) ? 's' : '';
 </%init>

@@ -230,19 +230,19 @@ class_info:
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 
                                                             'name', 'SQ');
         editable: 1
-      - name: coded_samples
-        referenced_class: CodedSample
+      - name: libraries
+        referenced_class: Library
         editable: 1
         is_collection: 1
-  coded_sample:
+  library:
     editable: 1
     display_field: description
     field_info_list:
       - name: description
         editable: 1
       - name: run type
-        source: coded_sample_type
-        values_constraint: 'cv->name = "tracking coded sample types"'
+        source: library_type
+        values_constraint: 'cv->name = "tracking library types"'
         editable: 1
       - name: biosample
         editable: 1

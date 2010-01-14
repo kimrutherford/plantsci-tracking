@@ -26,7 +26,7 @@
               <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/view/list/coded_sample') %>">Coded samples</a>
+              <a href="<% $c->uri_for('/view/list/library') %>">Libraries</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
@@ -76,8 +76,7 @@
               <a href="<% $c->uri_for('/new/object/biosample') %>">Biosample</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/coded_sample') %>">Sample
-                with barcode</a>
+              <a href="<% $c->uri_for('/new/object/library') %>">Library</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">Sequencing sample</a>
