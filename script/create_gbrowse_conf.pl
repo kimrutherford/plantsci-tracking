@@ -15,9 +15,6 @@ my $config_file_name = shift;
 my $config = SmallRNA::Config->new($config_file_name);
 my $schema = SmallRNA::DB->new($config);
 
-my $database_config = "";
-my $track_config = "";
-
 if (@ARGV < 1) {
   croak "$0: error one argument needed - the organism name\n";
 }
@@ -72,6 +69,9 @@ my $pipedata_rs =
                              pipeproject => {
                                owner => 'organisation' } } } } } ] });
 
+
+my $database_config = "";
+my $track_config = "";
 
 while (defined (my $pipedata = $pipedata_rs->next())) {
   my @pipedata_properties = 
