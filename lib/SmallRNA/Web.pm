@@ -9,7 +9,6 @@ use Sys::Hostname;
 
 use parent qw/Catalyst/;
 use Catalyst qw/ConfigLoader
-                CommandLine
                 StackTrace
                 Authentication
                 Session
