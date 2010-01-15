@@ -4,7 +4,7 @@ $name
 </%args>
 
 <%doc>
-This component shows composition statistics and graphs.
+This component shows counts and composition statistics
 </%doc>
 
 <script type="text/javascript">
