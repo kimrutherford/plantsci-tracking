@@ -3,7 +3,7 @@ $object
 </%args>
 
 <%doc>
-This component creates a pie chart showing which barcodes were returned from a
+This component creates a chart showing which barcodes were returned from a
 sequencing run.
 </%doc>
 
