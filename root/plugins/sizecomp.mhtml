@@ -14,6 +14,7 @@ This component shows composition statistics and graphs.
     });
 </script>
 
+% if (keys %graphs > 0) {
 <div class="sect">
 <span class="sect-title <% $disclosed_style %>">
   <a href="#"><% $name %></a>
@@ -62,6 +63,7 @@ This component shows composition statistics and graphs.
 
 </div>
 </div>
+% }
 
 <%init>
 my $component = $args{component};

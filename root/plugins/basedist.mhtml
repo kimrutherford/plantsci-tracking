@@ -18,6 +18,7 @@ read for a FASTA or FASTQ file.
     });
 </script>
 
+% if (keys %graphs > 0) {
 <div class="sect">
 <span class="sect-title undisclosed-title">
   <a href="#">Base distribution graphs</a>
@@ -43,6 +44,7 @@ read for a FASTA or FASTQ file.
 %   }
 </div>
 </div>
+% }
 
 <%init>
 use Tie::IxHash;
