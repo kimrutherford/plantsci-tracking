@@ -216,9 +216,6 @@ class_info:
       - name: quality
         editable: 1
         values_constraint: 'cv->name = "tracking quality values"'
-      - name: multiplexing_type
-        editable: 1
-        values_constraint: 'cv->name = "tracking multiplexing types"'
   sequencing_sample:
     editable: 1
     display_field: name
