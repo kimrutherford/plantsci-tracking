@@ -11,11 +11,6 @@ read for a FASTA or FASTQ file.
     $(function() {
         $("#basedist-tabs").tabs();
     });
-
-    $(function() {
-        $('.basedistsparkline').sparkline('html', {type: 'bar', barSpacing: 0,
-                  barWidth: 1, barColor: '#d00'});
-    });
 </script>
 
 % if (keys %graphs > 0) {
@@ -58,31 +53,6 @@ my @pipedatas = $object->pipedatas()->search({
 tie my %graphs, 'Tie::IxHash';
 
 %graphs = ();
-
-sub get_sparkline_values
-{
-  my $c = shift;
-  my $pipedata = shift;
-
-  my ($counts_ref, $min, $max) =
-    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $pipedata);
-
-  my %counts = %$counts_ref;
-  my @lengths = (15 .. $max);
-
-  my @total_counts = (0) x @lengths;
-
-  for my $length (@lengths) {
-    for my $base (qw(A T C G)) {
-
-      if (defined $counts{$length}{$base}) {
-        $total_counts[$length] += $counts{$length}{$base};
-      }
-    }
-  }
-
-  return join ',', @total_counts;
-}
 
 my @graph_names = ('Raw sequence reads', 'Reads after trimming',
                    'Non-redundant reads', 'Genome aligned reads');
