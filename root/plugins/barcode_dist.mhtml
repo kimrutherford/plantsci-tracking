@@ -7,13 +7,35 @@ This component creates a chart showing which barcodes were returned from a
 sequencing run.
 </%doc>
 
-% if ($object->multiplexing_type()->name() eq 'multiplexed') {
+% for my $sequencingrun (@sequencingruns) {
 <div class="sect">
 <span class="sect-title disclosed-title">
-  <a href="#">Barcode distribution</a>
+  <a href="#">Barcode distribution for <% $sequencingrun->identifier() . ' ' 
+    . $seq_samp_description %></a>
 </span>
 <div class="sect-content">
-  <img src='<% $c->uri_for("/plugin/graph/barcode_dist", $object->sequencingrun_id()) %>'/>
+  <img src='<% $c->uri_for("/plugin/graph/barcode_dist", $sequencingrun->sequencingrun_id()) %>'/>
 </div>
 </div>
 % }
+
+<%init>
+
+my @sequencingruns = ();
+my $seq_samp_description = "";
+
+if ($object->table() eq 'sequencingrun') {
+  if ($object->sequencing_sample()->has_barcoded_libraries()) {
+    push @sequencingruns, $object;
+  }
+
+  my $seq_samp = $object->sequencing_sample();
+  $seq_samp_description = "(sequencing_sample " . $seq_samp->name() . ")";
+} else {
+  # hopefully it's a sequencing sample
+  if ($object->has_barcoded_libraries()) {
+    @sequencingruns = $object->sequencingruns();
+  }
+}
+
+</%init>

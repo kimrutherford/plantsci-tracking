@@ -449,6 +449,10 @@ plugins:
       - name: Multiplexing barcode distribution graph
         path: /plugins/barcode_dist.mhtml
         css_class: barcode_dist
+    sequencing_sample:
+      - name: Multiplexing barcode distribution graph
+        path: /plugins/barcode_dist.mhtml
+        css_class: barcode_dist
     pipedata:
       - name: Data file details
         path: /plugins/pipedata_details.mhtml
