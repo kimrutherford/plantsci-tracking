@@ -12,16 +12,16 @@ $type
   <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs,
     list_title => "The biosample$biosample_plu sequenced by this run" &>
   <& /view/list.mhtml, type => 'library', rs => $libraries_rs,
-    list_title => "The " . ($sample_plu ? 'libraries' : 'library') . " sequenced by this run" &>
+    list_title => "The " . ($libraries_plu ? 'libraries' : 'library') . " sequenced by this run" &>
 </div>
 
 <%init>
 my $libraries_rs =
   $object->sequencing_sample()->search_related('libraries');
 my $libraries_count = $libraries_rs->count();
-my $coded_plu = $libraries_count != 0 ? 's' : '';
+my $libraries_plu = $libraries_count != 0 ? 's' : '';
 my $biosamples_rs =
-  $object->sequencing_biosample()->search_related('coded_biosamples')->search_related('biosample');
+  $object->sequencing_sample()->search_related('libraries')->search_related('biosample');
 my $biosamples_count = $biosamples_rs->count();
 my $biosample_plu = $biosamples_count != 0 ? 's' : '';
 </%init>
