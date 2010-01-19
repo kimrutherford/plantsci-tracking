@@ -19,8 +19,9 @@ $object
         <a href="<% $c->uri_for('/edit/object/' . $type . '/' . $object_id) %>">Edit</a>
       </li>
 %  }
-      <li>
 
+%  if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+      <li>
 <a id="confirmDelete" href="<% $c->uri_for('/delete/object/' . $type . '/' . $object_id) %>">Delete</a>
 
 <script type="text/javascript">
@@ -48,6 +49,7 @@ $object
 </script>
 
       </li>
+%  }
     </ul>
   </div>
 </div>
