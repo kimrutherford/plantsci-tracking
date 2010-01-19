@@ -29,7 +29,7 @@
               <a href="<% $c->uri_for('/view/list/library') %>">Libraries</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/view/list/sequencingrun') %>">Sequencing runs</a>
+              <a href="<% $c->uri_for('/view/list/sequencing_run') %>">Sequencing runs</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/view/list/pipedata') %>">Data files</a>
@@ -82,7 +82,7 @@
               <a href="<% $c->uri_for('/new/object/sequencing_sample') %>">Sequencing sample</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/new/object/sequencingrun') %>">Sequencing run</a>
+              <a href="<% $c->uri_for('/new/object/sequencing_run') %>">Sequencing run</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/new/object/person') %>">Person</a>

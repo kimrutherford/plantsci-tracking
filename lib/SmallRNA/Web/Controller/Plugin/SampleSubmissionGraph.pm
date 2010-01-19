@@ -67,7 +67,7 @@ sub sample_submission_graph : Path('/plugin/graph/sample_submissions') {
   my $query = <<'END';
 SELECT COUNT(identifier),
        EXTRACT(YEAR FROM data_received_date) || '_' || EXTRACT(QUARTER FROM data_received_date) AS quarter
-  FROM sequencingrun WHERE data_received_date IS NOT NULL
+  FROM sequencing_run WHERE data_received_date IS NOT NULL
        AND submission_date IS NOT NULL
   GROUP BY quarter
   ORDER BY QUARTER

@@ -55,21 +55,21 @@ use Graphics::Primitive::Font;
 =head2 barcode_dist
 
  Usage   : Called as a Catalyst action
- Function: Given the id of a sequencingrun, create a pie chart of the
+ Function: Given the id of a sequencing_run, create a pie chart of the
            distribution of barcodes in a sequencing run, store it in
            the stash then forward to SmallRNA::Web::View::Graph
- Args    : object_id - the id of the sequencingrun containin
+ Args    : object_id - the id of the sequencing_run containin
 
 =cut
 sub sizedist : Path('/plugin/graph/barcode_dist') {
   my ($self, $c, $object_id) = @_;
 
   my $schema = $c->schema();
-  my $sequencingrun = $schema->find_with_type('Sequencingrun', 'sequencingrun_id', $object_id);
+  my $sequencing_run = $schema->find_with_type('SequencingRun', 'sequencing_run_id', $object_id);
 
   my $cc = Chart::Clicker->new(width => 700, height => 400);
 
-  my $fastq_pipedata = $sequencingrun->initial_pipedata();
+  my $fastq_pipedata = $sequencing_run->initial_pipedata();
 
   my $seq_count_prop_type = $schema->find_with_type('Cvterm',
                                                  { name => 'sequence count' });
@@ -78,7 +78,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
 
   my %expected_barcode_ids = ();
 
-  my @libraries = $sequencingrun->sequencing_sample()->search_related('libraries');
+  my @libraries = $sequencing_run->sequencing_sample()->search_related('libraries');
 
   for my $library (@libraries) {
     my $barcode_id = $library->barcode()->identifier();
@@ -90,7 +90,7 @@ sub sizedist : Path('/plugin/graph/barcode_dist') {
                                       { type => $seq_count_prop_type->cvterm_id() })
       ->single()->value();
 
-  # all pipedatas that are generated from the fastq file of this sequencingrun
+  # all pipedatas that are generated from the fastq file of this sequencing_run
   my @demultiplex_pipedatas =
     $fastq_pipedata->pipeprocess_in_pipedatas()->search_related('pipeprocess')
       ->search_related('pipedatas');

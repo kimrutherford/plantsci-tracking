@@ -194,14 +194,14 @@ class_info:
     display_field: name
   pipedata:
     display_field: file_name
-  sequencingrun:
+  sequencing_run:
     editable: 1
     display_field: identifier
     field_info_list:
       - name: identifier
         default_value: |
            use SmallRNA::DBLayer::Loader;
-           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Sequencingrun', 'identifier', 'RUN-');
+           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingRun', 'identifier', 'RUN-');
         editable: 1
       - name: Sequencing centre
         source: sequencing_centre
@@ -447,7 +447,7 @@ plugins:
       - name: Base distribution graph
         path: /plugins/basedist.mhtml
         css_class: base_dist_graph
-    sequencingrun:
+    sequencing_run:
       - name: Multiplexing barcode distribution graph
         path: /plugins/barcode_dist.mhtml
         css_class: barcode_dist

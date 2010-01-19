@@ -26,7 +26,7 @@ $type
     list_title => "The organism$organism_plu for this biosample" &>
   <& /view/list.mhtml, type => 'ecotype', rs => $ecotypes_rs,
     list_title => "The ecotype$ecotype_plu for this biosample" &>
-  <& /view/list.mhtml, type => 'sequencingrun', rs => $seqruns_rs,
+  <& /view/list.mhtml, type => 'sequencing_run', rs => $seqruns_rs,
     list_title => "The sequencing run$seqruns_plu for this biosample", disclosed => 1 &>
   <& /view/list.mhtml, type => 'sequencing_sample', rs => $sequencing_samples_rs,
     list_title => "The sequencing sample$sequencing_samples_plu containing this biosample",
@@ -48,7 +48,7 @@ my $ecotypes_rs =
   $object->biosample_ecotypes()->search_related('ecotype');
 my $ecotypes_count = $ecotypes_rs->count();
 my $ecotype_plu = ($ecotypes_count != 1) ? 's' : '';
-my $seqruns_rs = $object->libraries()->search_related('sequencing_sample')->search_related('sequencingruns');
+my $seqruns_rs = $object->libraries()->search_related('sequencing_sample')->search_related('sequencing_runs');
 my $seqruns_count = $seqruns_rs->count();
 my $seqruns_plu = ($seqruns_count != 1) ? 's' : '';
 # show only those libraries that have a code

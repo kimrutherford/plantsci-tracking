@@ -67,7 +67,7 @@ sub set_template : Private {
     $c->stash()->{title} = 'Details for organism ' . $object->full_name();
   } elsif ($type eq 'biosample') {
     $c->stash()->{title} = 'Details for biosample ' . $object->name();
-  } elsif ($type eq 'sequencingrun') {
+  } elsif ($type eq 'sequencing_run') {
     $c->stash()->{title} = 'Details for sequencing run ' . $object->identifier();
   } elsif ($type eq 'ecotype') {
     $c->stash()->{title} = 'Details for ecotype ' . $object->long_description();
@@ -91,7 +91,7 @@ sub set_template : Private {
 our $TYPE_PATTERN =
   qr()x;
 
-sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|biosample|sequencingrun|organism|organisation|ecotype|sequencing_sample|library|barcode|barcode_set|process_conf|process_conf_input)/(.*)') {
+sub object_with_template : LocalRegex('^(cv|person|pipe[^/]+|biosample|sequencing_run|organism|organisation|ecotype|sequencing_sample|library|barcode|barcode_set|process_conf|process_conf_input)/(.*)') {
   my ($self, $c) = @_;
   my ($type, $object_key) = @{$c->req()->captures()};
 

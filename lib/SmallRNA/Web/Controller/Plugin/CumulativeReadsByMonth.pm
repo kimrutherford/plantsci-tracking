@@ -57,7 +57,7 @@ sub _unknown_date_total
   my $dbh = shift;
 
   my $query = <<'END';
-SELECT SUM(value::INTEGER) FROM sequencingrun, pipedata, pipedata_property, cvterm
+SELECT SUM(value::INTEGER) FROM sequencing_run, pipedata, pipedata_property, cvterm
  WHERE initial_pipedata = pipedata.pipedata_id
    AND pipedata.pipedata_id = pipedata_property.pipedata
    AND pipedata_property.type = cvterm.cvterm_id
@@ -97,7 +97,7 @@ sub cumulative_reads_by_month : Path('/plugin/graph/cumulative_reads_by_month') 
   my $query = <<'END';
 SELECT SUM(value::INTEGER) AS count,
        EXTRACT(YEAR FROM data_received_date) || '_' || EXTRACT(MONTH FROM data_received_date) AS month
-  FROM sequencingrun, pipedata, pipedata_property, cvterm
+  FROM sequencing_run, pipedata, pipedata_property, cvterm
  WHERE initial_pipedata = pipedata.pipedata_id
    AND pipedata.pipedata_id = pipedata_property.pipedata
    AND pipedata_property.type = cvterm.cvterm_id
