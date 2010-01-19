@@ -233,8 +233,10 @@ class_info:
         is_collection: 1
   library:
     editable: 1
-    display_field: description
+    display_field: name
     field_info_list:
+      - name: name
+        editable: 1
       - name: description
         editable: 1
       - name: run type
