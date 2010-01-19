@@ -145,7 +145,7 @@ sub search_all
                          pipeprocess_in_pipedatas => 'pipedata' },
                        { pipedata_properties => 'type' } ],
                        # hack to order nicely by the SL number:
-                       order_by => \"substring(sample.name from E'(?:SL([\\\\d]+).*|(.*))')::integer" });
+                       order_by => \"substring(biosample.name from E'(?:SL([\\\\d]+).*|(.*))')::integer" });
 
   my @results = ();
 
