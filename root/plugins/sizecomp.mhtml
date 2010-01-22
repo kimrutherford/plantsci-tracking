@@ -10,10 +10,10 @@ This component shows read length distribution graphs
 
 <script type="text/javascript">
     $(function() {
-        $("#sizecomp-<% $component %>-tabs").tabs();
+        $("#sizecomp-<% $component.$flags %>-tabs").tabs();
     });
     $(function() {
-        $(".sparkline-<% $component %>").sparkline('html', {type: 'bar', barSpacing: 0,
+        $(".sparkline-<% $component.$flags %>").sparkline('html', {type: 'bar', barSpacing: 0,
                   barWidth: 1, barColor: '#d00'});
     });
 </script>
@@ -23,16 +23,16 @@ This component shows read length distribution graphs
 <span class="sect-title <% $disclosed_style %>">
   <a href="#"><% $name %></a>
 </span>
-<div class="sect-content tracking-tabs" id="sizecomp-<% $component %>-tabs">
+<div class="sect-content tracking-tabs" id="sizecomp-<% $component.$flags %>-tabs">
   <ul>
 %   for my $graph_name (@graph_names) {
 %     my $data = $graphs{$graph_name};
 %     next unless defined $data;
 %     my $stats_pipedata = $data->{pipedata};
 %     my $sparkline_vals = get_sparkline_values($c, $stats_pipedata);
-    <li><a href="#sizecomp-<% $component %>-tabs-<% $stats_pipedata->pipedata_id() %>">
+    <li><a href="#sizecomp-<% $component.$flags %>-tabs-<% $stats_pipedata->pipedata_id() %>">
         <% $graph_name %>
-        <span class="sparkline-<% $component %>"><% $sparkline_vals %></span>
+        <span class="sparkline-<% $component.$flags %>"><% $sparkline_vals %></span>
     </a></li>
 %   }
   </ul>
@@ -46,7 +46,7 @@ This component shows read length distribution graphs
      my $definition = $data->{definition};
      my $stats_pipedata_id = $stats_pipedata->pipedata_id();
 </%perl>
-  <div id="sizecomp-<% $component %>-tabs-<% $stats_pipedata_id %>">
+  <div id="sizecomp-<% $component.$flags %>-tabs-<% $stats_pipedata_id %>">
     <div><% $definition %></div>
     <img src='<% $c->uri_for("/plugin/graph/sizedist", $stats_pipedata->pipedata_id()) %>'/>
     <div>
@@ -75,6 +75,8 @@ if (!defined $component) {
   $component = 'none';
 }
 
+my $flags = $args{flags} || '';
+
 my $disclosed_style;
 
 if ($component eq 'none' || $component eq 'genome') {
@@ -93,6 +95,8 @@ my @graph_names = ('All reads after trimming',
                    'Non-redundant reads',
                    'Aligned non-redundant reads',
                    'Aligned redundant reads',
+                   'Redundant reads that did not align',
+                   'Non-redundant reads that did not align',
                    'Reads that did not align',
                   );
 
@@ -101,8 +105,8 @@ sub get_sparkline_values
   my $c = shift;
   my $stats_pipedata = shift;
 
-  my ($counts_ref, $min, $max) = 
-    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $stats_pipedata); 
+  my ($counts_ref, $min, $max) =
+    SmallRNA::Web::Controller::Plugin::SizeDistGraph::get_pipedata_counts($c->config(), $stats_pipedata);
 
   my %counts = %$counts_ref;
   my @lengths = (15 .. $max);
@@ -155,22 +159,34 @@ for my $stats_pipedata (@pipedatas) {
             next;
           }
 
-          if ($content_type_name eq 'redundant_aligned_reads') {
-            $graphs{'Aligned redundant reads'} = {
-              pipedata => $stats_pipedata,
-              input_pipedata => $input_pipedata,
-              definition => $content_type_def,
-            }
-          } else {
-            if ($content_type_name eq 'aligned_reads') {
-              $graphs{'Aligned non-redundant reads'} = {
+          if ($flags eq 'not_aligned') {
+            warn "$args{flags} $content_type_name $component\n";
+
+            if ($content_type_name eq 'redundant_non_aligned_reads') {
+              $graphs{'Redundant reads that did not align'} = {
                 pipedata => $stats_pipedata,
                 input_pipedata => $input_pipedata,
                 definition => $content_type_def,
               }
             } else {
-              if ($content_type_name eq 'non_aligned_reads') {
-                $graphs{'Reads that did not align'} = {
+              if ($content_type_name eq 'non_redundant_non_aligned_reads') {
+                $graphs{'Non-redundant reads that did not align'} = {
+                  pipedata => $stats_pipedata,
+                  input_pipedata => $input_pipedata,
+                  definition => $content_type_def,
+                }
+              }
+            }
+          } else {
+            if ($content_type_name eq 'redundant_aligned_reads') {
+              $graphs{'Aligned redundant reads'} = {
+                pipedata => $stats_pipedata,
+                input_pipedata => $input_pipedata,
+                definition => $content_type_def,
+              }
+            } else {
+              if ($content_type_name eq 'aligned_reads') {
+                $graphs{'Aligned non-redundant reads'} = {
                   pipedata => $stats_pipedata,
                   input_pipedata => $input_pipedata,
                   definition => $content_type_def,

@@ -418,6 +418,12 @@ plugins:
         args:
           component: genome
         css_class: size_dist_graph
+      - name: "Size distribution and first base composition graphs for reads that don't match the genome"
+        path: /plugins/sizecomp.mhtml
+        args:
+          component: genome
+          flags: not_aligned
+        css_class: size_dist_graph
       - name: Size distribution graphs for tRNA matching reads
         constraint: "$object->ecotypes()->search_related('organism', { genus => 'Arabidopsis', species => 'thaliana' })->count() >= 1"
         args:
