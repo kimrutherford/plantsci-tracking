@@ -206,6 +206,7 @@ class_info:
       - name: Sequencing centre
         source: sequencing_centre
         editable: 1
+        default_value: '"CRUK CRI"'
       - name: Sequencing type 
         source: sequencing_type
         values_constraint: 'cv->name = "tracking sequencing method"'
