@@ -280,9 +280,15 @@ sub _init_form_field
       if (defined $object) {
         $elem->{value} = $object->$field_db_column();
       } else {
-        my $default_value = _get_default_value($c, $field_info);
-        if (defined $default_value) {
-          $elem->{value} = $default_value;
+        my $param_default_value = $c->req->param("object.$field_db_column");
+
+        if (defined $param_default_value) {
+          $elem->{value} = $param_default_value;
+        } else {
+          my $default_value = _get_default_value($c, $field_info);
+          if (defined $default_value) {
+            $elem->{value} = $default_value;
+          }
         }
       }
     }
