@@ -181,7 +181,7 @@ sub _init_form_field
   my $display_field_label = $field_label;
   $display_field_label =~ s/_/ /g;
 
-  next unless $field_info->{editable};
+  return unless $field_info->{editable};
 
   my $field_db_column = $field_label;
 
