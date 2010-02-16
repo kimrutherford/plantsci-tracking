@@ -13,7 +13,7 @@ authentication:
         password_type: 'clear'
       store:
         class: DBIx::Class
-        user_class: Person
+        user_class: SmallRNAModel::Person
         id_field: username
 # There needs to be a class_info entry for each class that will be displayed.
 # Class flags:
