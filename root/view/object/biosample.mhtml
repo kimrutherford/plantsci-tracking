@@ -3,17 +3,13 @@ $object
 $type
 </%args>
 
-<&| /view/object/object_top.mhtml, object => $object, 
+<&| /view/object/object_top.mhtml, object => $object,
   field_labels => [qw(name description genotype biosample_type protocol molecule_type
                    treatment_type fractionation_type tissue
                    processing_requirement)]&>
   <div>
-    <a href="<% $c->uri_for('/custom/create_seq_biosample', { 'biosample.id' => $object->biosample_id() }) %>">
-      Create a non-multiplexed sequencing sample for this biosample
-    </a>
-  </div>
-  <div>
-    <a href="<% $c->uri_for('/new/object/library', { 'biosample.id' => $object->biosample_id() }) %>">
+    <a href="<% $c->uri_for('/new/object/library', { 'object.name' => $new_library_name,
+                                                     'biosample.id' => $object->biosample_id() }) %>">
       Create a library from this biosample
     </a>
   </div>
@@ -37,14 +33,14 @@ $type
   <& /view/list.mhtml, type => 'pipedata', rs => $pipedatas_rs,
     list_title => "The file$pipedata_plu for this biosample", disclosed => 0 &>
 </div>
-  
+
 <%init>
-my $organisms_rs = 
+my $organisms_rs =
   $object->biosample_ecotypes()->search_related('ecotype')->search_related('organism',
                                                                         {}, { distinct => 1} );
 my $organisms_count = $organisms_rs->count();
 my $organism_plu = ($organisms_count != 1) ? 's' : '';
-my $ecotypes_rs = 
+my $ecotypes_rs =
   $object->biosample_ecotypes()->search_related('ecotype');
 my $ecotypes_count = $ecotypes_rs->count();
 my $ecotype_plu = ($ecotypes_count != 1) ? 's' : '';
@@ -64,4 +60,9 @@ my $pipedata_plu = ($pipedatas_count != 1) ? 's' : '';
 my $pipeprojects_rs = $object->pipeprojects();
 my $pipeprojects_count = $pipeprojects_rs->count();
 my $pipeproject_plu = ($pipeprojects_count != 1) ? 's' : '';
+
+use SmallRNA::DBLayer::Loader;
+my $new_library_name =
+  SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Library', 'name',
+                                                   $object->name() . '_L');
 </%init>
