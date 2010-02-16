@@ -247,6 +247,9 @@ class_info:
         editable: 1
       - name: barcode
         editable: 1
+      - name: adaptor
+        values_constraint: 'cv->name = "tracking 3 prime adaptor"'
+        editable: 1
       - name: sequencing sample
         source: sequencing_sample
         editable: 1
