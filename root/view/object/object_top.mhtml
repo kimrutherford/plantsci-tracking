@@ -51,7 +51,8 @@ if (!@field_labels) {
   my @field_info_list = @{$class_info{field_info_list}};
 
   for my $field_info (@field_info_list) {
-    push @field_labels, $field_info->{field_label};
+    my $field_name = $field_info->{name};
+    push @field_labels, $field_name;
   }
 }
 </%init>
