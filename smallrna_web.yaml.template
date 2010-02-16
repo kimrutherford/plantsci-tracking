@@ -214,7 +214,7 @@ class_info:
         source: sequencing_sample
         editable: 1
       - name: quality
-        editable: 1
+        editable: 0
         values_constraint: 'cv->name = "tracking quality values"'
   sequencing_sample:
     editable: 1
