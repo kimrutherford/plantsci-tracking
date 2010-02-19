@@ -10,6 +10,7 @@ use lib "$FindBin::Bin/../../../pipeline/svn/lib";
 use SmallRNA::DB;
 use SmallRNA::Config;
 
+use DBI qw(:sql_types);
 
 my $config_file_name = shift;
 my $config = SmallRNA::Config->new($config_file_name);
@@ -32,25 +33,24 @@ if ($organism_name =~ /(.*)_(.*)/) {
   croak qq(organism name argument needs to be "Genus_species"\n);
 }
 
-my $pipedata_where = <<"WHERE";
-    ( SELECT pipedata_property.pipedata
-       FROM pipedata_property, cvterm format_type, cvterm property_type
-      WHERE pipedata_property.type = property_type.cvterm_id
-        AND me.format_type = format_type.cvterm_id
-        AND property_type.name LIKE 'alignment %'
-        AND pipedata_property.value = '$organism_name'
-        AND format_type.name = 'bam' )
-WHERE
-
 my $bam_cvterm = $schema->resultset('Cvterm')->find({ name => 'bam' });
 
-my $alignment_types_cv =
-  $schema->resultset('Cvterm')
-     ->find({ name => 'tracking pipedata property types'});
+my $bam_cvterm_id = $bam_cvterm->cvterm_id();
 
-my $prop_where = <<"WHERE";
-  pipedata_property_id in ( SELECT pipedata_property_id from pipedata_property
-                              WHERE type IN (SELECT cvterm_id FROM cvterm
+my $where = <<"WHERE";
+  format_type = $bam_cvterm_id
+AND
+  pipedata_id IN (
+    SELECT pipedata
+     FROM pipedata_property, cvterm
+    WHERE pipedata_property.type = cvterm.cvterm_id
+      AND name = 'alignment component'
+      AND value = '$component')
+AND
+  pipedata_id IN (
+    SELECT pipedata_id from
+           pipedata_property
+                            WHERE type IN (SELECT cvterm_id FROM cvterm
                                               WHERE cv_id IN (SELECT cv_id FROM cv
                                                                WHERE name LIKE 'tracking pipedata property types')
                                                 AND name LIKE 'alignment ecotype')
@@ -59,10 +59,11 @@ my $prop_where = <<"WHERE";
 WHERE
 
 my $pipedata_rs =
-  $schema->resultset('PipedataProperty')->search( { },
-                                                  { where => \$prop_where } )
-    ->search_related('pipedata', { format_type => $bam_cvterm->cvterm_id() },
-                     { prefetch => [ {
+  $schema->resultset('Pipedata')->search( { },
+                     { where => \$where,
+                       prefetch => [
+                       {
+                       pipedata_properties => 'type',
                        biosample_pipedatas => {
                          biosample => {
                            biosample_pipeprojects => {
@@ -73,24 +74,42 @@ my $pipedata_rs =
 my $database_config = "";
 my $track_config = "";
 
+# my @pipedatas = $pipedata_rs->all();
+# my @component_pipedata_ids = ();
+
+# my $props_query = <<"END";
+# SELECT pipedata_id, cvterm.name, value
+#   FROM pipedata, pipedata_property, cvterm
+#  WHERE pipedata_property.pipedata = pipedata.pipedata_id
+#    AND pipedata_property.type = cvterm.cvterm_id
+#    AND cvterm.name = 'alignment component'
+#    AND pipedata_id in (?)
+#    AND pipedata_property.value = ?
+# END
+
+# my $dbh = $schema->storage()->dbh();
+# my $sth = $dbh->prepare($props_query) || die $dbh->errstr;
+# $sth->bind_param(1, [map { int($_->pipedata_id()) } @pipedatas], { TYPE => SQL_INTEGER });
+# $sth->bind_param(2, $component);
+
+# $sth->execute() || die $sth->errstr;;
+# while (my $r = $sth->fetchrow_hashref()) {
+#   my $pipedata_id = $r->{pipedata_id};
+#   push @component_pipedata_ids, $pipedata_id;
+# }
+
+# die "@component_pipedata_ids\n";
+
+
+# $pipedata_rs->reset();
+
 while (defined (my $pipedata = $pipedata_rs->next())) {
-  my @pipedata_properties = 
-    $pipedata->pipedata_properties()->search({}, 
-                                               {
-                                                 prefetch => 'type'
-                                                });
+  my @samples = $pipedata->biosamples();
+  my $sample = $samples[0];
+  my $sample_name = $sample->name();
+  my $sample_description = $sample->description();
 
-  if (!grep { $_->type()->name() eq 'alignment component' && 
-              $_->value() eq $component } @pipedata_properties) {
-    next;
-  }
-
-  my @biosamples = $pipedata->biosamples();
-  my $biosample = $biosamples[0];
-  my $biosample_name = $biosample->name();
-  my $biosample_description = $biosample->description();
-
-  my $owner = ($biosample->pipeprojects())[0]->owner();
+  my $owner = ($sample->pipeprojects())[0]->owner();
   my $first_name = $owner->first_name();
   my $last_name = $owner->last_name();
 
@@ -105,7 +124,7 @@ while (defined (my $pipedata = $pipedata_rs->next())) {
 
   $database_config .= <<"DATABASE";
 
-[bam_${biosample_name}_db:database]
+[bam_${sample_name}_db:database]
 db_adaptor    = Bio::DB::Sam
 db_args       = -bam $bam_file
 search options= default
@@ -113,14 +132,14 @@ search options= default
 DATABASE
 
     $track_config .= <<"TRACK";
-[$biosample_name]
+[$sample_name]
 feature = read_pair
-database = bam_${biosample_name}_db
+database = bam_${sample_name}_db
 glyph        = arrow
 fgcolor      = \\&fgcolor
 linewidth    = \\&abundance
 description  = 1
-key          = $biosample_name - $biosample_description
+key          = $sample_name - $sample_description
 category     = $org_name - $first_name $last_name
 link = \\&seqread_link
 west         = sub { my \$f = shift; return \$f->reversed() }  # arrow always points right
