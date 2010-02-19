@@ -4,9 +4,11 @@ $object
 
 <&| /view/object/object_top.mhtml, object => $object, 
   field_labels => [qw(name description biosample barcode sequencing_sample library_type)]&>
+% if ($c->user_exists()) {
   <div>
     <a href="<% $c->uri_for('/new/object/sequencing_sample', { 'library.id' => $object->library_id() }) %>">
       Create a new sequencing sample for this library
     </a>
   </div>
+% }
 </&>

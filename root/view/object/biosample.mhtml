@@ -7,12 +7,14 @@ $type
   field_labels => [qw(name description genotype biosample_type protocol molecule_type
                    treatment_type fractionation_type tissue
                    processing_requirement)]&>
+% if ($c->user_exists()) {
   <div>
     <a href="<% $c->uri_for('/new/object/library', { 'object.name' => $new_library_name,
                                                      'biosample.id' => $object->biosample_id() }) %>">
       Create a library from this biosample
     </a>
   </div>
+% }
 </&>
 
 <div id="collections">

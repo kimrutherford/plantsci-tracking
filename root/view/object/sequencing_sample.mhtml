@@ -5,12 +5,14 @@ $object
 <& /view/object/object_top.mhtml, object => $object,
   field_labels => [qw(name)] &>
 
+% if ($c->user_exists()) {
 <div>
   <a href="<% $c->uri_for('/new/object/sequencing_run', { 
            'sequencing_sample.id' => $object->sequencing_sample_id() }) %>">
     Book a sequencing run for this sequencing sample
   </a>
 </div>
+% }
 
 <div id="collections">
   <& /view/collection.mhtml, object => $object, collection_name => 'libraries',
