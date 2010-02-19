@@ -228,7 +228,7 @@ class_info:
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 
                                                             'name', 'SQ');
         editable: 1
-      - name: external_identifier
+      - name: sequencing_centre_identifier
         editable: 1
       - name: libraries
         referenced_class: Library
@@ -245,7 +245,7 @@ class_info:
            use SmallRNA::DBLayer::Loader;
            SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Library', 'name', 'L');
         editable: 1
-      - name: external_identifier
+      - name: sequencing_centre_identifier
         editable: 1
       - name: description
         editable: 1
