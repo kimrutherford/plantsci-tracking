@@ -48,7 +48,7 @@ AND
       AND value = '$component')
 AND
   pipedata_id IN (
-    SELECT pipedata_id from
+    SELECT pipedata from
            pipedata_property
                             WHERE type IN (SELECT cvterm_id FROM cvterm
                                               WHERE cv_id IN (SELECT cv_id FROM cv
