@@ -67,7 +67,7 @@ sub get_object_by_id_or_name
     my $class_info = $c->config()->{class_info}->{$type};
     if (defined $class_info) {
       if (defined $class_info->{display_field}) {
-        return $c->schema()->find_with_type($class_name, 
+        return $c->schema()->find_with_type($class_name,
                                             $class_info->{display_field} =>
                                               $object_key);
       }
@@ -309,7 +309,7 @@ sub seqread : Local {
             $align_ecotype = $prop->value();
           }
           if ($prop->type()->name() eq 'alignment component') {
-            next RESULT if $prop->value() ne 'genome';
+            next RESULT if $prop->value() !~ /^genome/;
             $align_component = $prop->value();
           }
         }
