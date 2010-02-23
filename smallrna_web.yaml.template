@@ -477,6 +477,9 @@ plugins:
       - name: Multiplexing barcode distribution graph
         path: /plugins/barcode_dist.mhtml
         css_class: barcode_dist
+      - name: Make a sequencing_run and add to CRI database
+        path: /plugins/make_cri_request.mhtml
+        css_class: barcode_dist
     pipedata:
       - name: Data file details
         path: /plugins/pipedata_details.mhtml
