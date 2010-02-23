@@ -115,6 +115,9 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
         return;
       }
 
+      $sequencing_sample->sequencing_centre_identifier($cri_slx_identifier);
+      $sequencing_sample->update();
+
       my $sequencing_centre = $schema->find_with_type('Organisation',
                                                       name => 'CRUK CRI');
 
