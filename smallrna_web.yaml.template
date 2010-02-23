@@ -230,6 +230,9 @@ class_info:
         editable: 1
       - name: sequencing_centre_identifier
         editable: 1
+      - name: sample_creator
+        editable: 1
+        referenced_class: Person
       - name: libraries
         referenced_class: Library
         editable: 1
