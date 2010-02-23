@@ -479,7 +479,7 @@ plugins:
         css_class: barcode_dist
       - name: Make a sequencing_run and add to CRI database
         path: /plugins/make_cri_request.mhtml
-        css_class: barcode_dist
+        css_class: make_cri_request
     pipedata:
       - name: Data file details
         path: /plugins/pipedata_details.mhtml
