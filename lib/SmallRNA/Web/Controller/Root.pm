@@ -77,8 +77,8 @@ sub login : Global {
       return 0;
     }
   } else {
-    $c->stash->{error} = "log in failed";
-    $c->forward('/start');
+    $c->flash->{error} = "log in failed";
+    $c->res->redirect($return_path, 302);
     $c->detach();
     return 0;
   }

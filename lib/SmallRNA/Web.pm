@@ -30,6 +30,7 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
                       file                => __PACKAGE__->path_to('smallrna_web'),
                       config_local_suffix => $login . '_' . $host,
                     },
+                    session => { flash_to_stash => 1 },
                     'View::Graphics::Primitive' => {
                       driver => 'Cairo',
                       driver_args => { format => 'pdf' },
@@ -41,7 +42,7 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
 __PACKAGE__->setup();
 
 my $config = __PACKAGE__->config();
-  
+
 # this is hacky, but allow us to call methods on the config object
 bless $config, 'SmallRNA::Config';
 
