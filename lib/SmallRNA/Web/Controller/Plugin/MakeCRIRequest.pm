@@ -137,7 +137,7 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
     }
   );
 
-  $c->res->redirect($c->uri_for("/new/object/sequencing_run",
+  $c->res->redirect($c->uri_for("/view/object/sequencing_run",
                                 $sequencing_run->sequencing_run_id()
                                ));
   $c->detach();
