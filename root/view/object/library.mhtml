@@ -5,9 +5,19 @@ $object
 <&| /view/object/object_top.mhtml, object => $object &>
 % if ($c->user_exists()) {
   <div>
-    <a href="<% $c->uri_for('/new/object/sequencing_sample', { 'library.id' => $object->library_id() }) %>">
+    <a href="<% $c->uri_for('/new/object/sequencing_sample',
+                            { 'library.id' => $object->library_id(),
+                              'object.name' => $new_seq_sample_name }) %>">
       Create a new sequencing sample for this library
     </a>
   </div>
 % }
 </&>
+
+<%init>
+
+use SmallRNA::DBLayer::Loader;
+my $new_seq_sample_name =
+  SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 'name',
+                                                   $object->name() . '_SQ');
+</%init>
