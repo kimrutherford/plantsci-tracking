@@ -473,6 +473,9 @@ plugins:
       - name: Multiplexing barcode distribution graph
         path: /plugins/barcode_dist.mhtml
         css_class: barcode_dist
+      - name: Show status of CRI sequencing run
+        path: /plugins/cri_request_status.mhtml
+        css_class: cri_request_status
     sequencing_sample:
       - name: Multiplexing barcode distribution graph
         path: /plugins/barcode_dist.mhtml

@@ -1,0 +1,40 @@
+<%args>
+$object
+</%args>
+
+<div class="sect">
+  <span class="sect-title disclosed-title">
+    <a href="#">CRI request status</a>
+  </span>
+  <div class="sect-content" id="cri-request-status">
+
+% if (defined $error_message) {
+    <pre>
+      ERROR: <% $error_message %>
+    </pre>
+% } else {
+    <p>request status: <% $status->{requestStatus} %></p>
+    <p>sequencing status: <% $status->{lastProcess} %></p>
+% }
+  </div>
+</div>
+<%init>
+
+my $host = '192.168.80.1';
+
+my $port = 8080;
+
+my $status = undef;
+my $error_message = undef;
+
+use CRI::SOAP;
+
+eval {
+  my $service = CRI::SOAP->new('http', $host, $port, '/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
+  $status = $service->call('getStatus', 521871);
+};
+if($@) {
+  $error_message = $@;
+}
+
+</%init>

@@ -58,11 +58,11 @@ sub _create_cri_request
   my $port = 8080;
 
   eval {
-    CRI::SOAP->debug();
+#    CRI::SOAP->debug();
           $service = CRI::SOAP->new('http', $host, $port, '/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
   };
   if($@) {
-          print $@;
+    die $@;
   }
 
   my $sample_info = $service->call('submitRequest', $sl_identifier,
@@ -94,6 +94,7 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
                             sequencing_sample_id => $sequencing_sample_id);
 
   my $sequencing_run = undef;
+  my $submit_request_error = undef;
 
   $c->schema()->txn_do(
     sub {
@@ -101,17 +102,13 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
 
       eval {
          ($cri_slx_identifier, $cri_request_identifier) =
-           ("SLX-1234", 54321);
-#           _create_cri_request($c->config(), $sequencing_sample->name(),
-# #                              $sequencing_sample->sample_creator()
-#                               'ag1'
-# );
+           _create_cri_request($c->config(), $sequencing_sample->name(),
+                               $sequencing_sample->sample_creator()->username());
       };
-
       if ($@) {
         warn "ERROR FROM CRI: $@\n";
-        $c->stash->{error} = qq(Failed to create sequencing run - request to CRI failed with error: $@);
-        $c->forward('/view/object/sequencing_sample/' . $sequencing_sample_id);
+        $submit_request_error =
+          qq(Failed to create sequencing run - request to CRI failed with error: $@);
         return;
       }
 
@@ -137,13 +134,20 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
                                       sequencing_type => $illumina_sequencing_cvterm,
                                       quality => $unknown_quality_cvterm
                                      });
+
+      $c->flash->{message} = qq(Sequencing run added to CRI database as $cri_slx_identifier, request ID: $cri_request_identifier);
     }
   );
 
-  $c->res->redirect($c->uri_for("/view/object/sequencing_run",
-                                $sequencing_run->sequencing_run_id()
-                               ));
-  $c->detach();
+  if (defined $submit_request_error) {
+    $c->stash->{error} = $submit_request_error;
+    $c->forward('/view/object/sequencing_sample/' . $sequencing_sample_id);
+  } else {
+    $c->res->redirect($c->uri_for("/view/object/sequencing_run",
+                                  $sequencing_run->sequencing_run_id()
+                                 ));
+    $c->detach();
+  }
 }
 
 1;
