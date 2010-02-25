@@ -5,7 +5,7 @@ $object
 
 % if ($c->user_exists()) {
 <div id="deleteDialog" title="Confirmation Required">
-  Delete this <% $type %>?
+  Delete this <% SmallRNA::DB::display_name($type) %>?
 </div>
 
 <div class="actionlist" style="float: right">
