@@ -240,9 +240,6 @@ class_info:
     order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
       - name: name
-        default_value: |
-           use SmallRNA::DBLayer::Loader;
-           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Library', 'name', 'L');
         editable: 1
       - name: sequencing_centre_identifier
         editable: 1
