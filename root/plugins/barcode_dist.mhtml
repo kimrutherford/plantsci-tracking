@@ -30,7 +30,7 @@ if ($object->table() eq 'sequencing_run') {
   }
 
   my $seq_samp = $object->sequencing_sample();
-  $seq_samp_description = "(sequencing_sample " . $seq_samp->name() . ")";
+  $seq_samp_description = "(sequencing_sample " . $seq_samp->identifier() . ")";
 } else {
   # hopefully it's a sequencing sample
   if ($object->has_barcoded_libraries()) {

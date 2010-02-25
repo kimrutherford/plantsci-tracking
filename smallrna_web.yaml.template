@@ -219,10 +219,10 @@ class_info:
         values_constraint: 'cv->name = "tracking quality values"'
   sequencing_sample:
     editable: 1
-    display_field: name
-    order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    display_field: identifier
+    order_by: "substring(me.identifier from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
-      - name: name
+      - name: identifier
         editable: 1
       - name: sequencing_centre_identifier
         editable: 1
@@ -235,11 +235,11 @@ class_info:
         is_collection: 1
   library:
     editable: 1
-    display_field: name
+    display_field: identifier
     # hack to put the libraries in a sensible order:
-    order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    order_by: "substring(me.identifier from E'(?:SL([\\\\d]+).*|(.*))')::integer"
     field_info_list:
-      - name: name
+      - name: identifier
         editable: 1
       - name: sequencing_centre_identifier
         editable: 1

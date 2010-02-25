@@ -65,6 +65,6 @@ my $pipeproject_plu = ($pipeprojects_count != 1) ? 's' : '';
 
 use SmallRNA::DBLayer::Loader;
 my $new_library_name =
-  SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Library', 'name',
+  SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Library', 'identifier',
                                                    $object->name() . '_L');
 </%init>

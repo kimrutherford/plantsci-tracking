@@ -76,9 +76,10 @@ sub set_template : Private {
   } elsif ($type eq 'cv') {
     $c->stash()->{title} = 'Controlled vocabulary ' . $object->name();
   } elsif ($type eq 'sequencing_sample') {
-    $c->stash()->{title} = 'Sequencing sample ' . $object->name();
+    $c->stash()->{title} = 'Sequencing sample ' . $object->identifier();
   } elsif ($type eq 'library') {
-    $c->stash()->{title} = 'Library for sample: ' . $object->biosample()->name();
+    $c->stash()->{title} = 'Library ' . $object->identifier()
+      . ' for sample: ' . $object->biosample()->name();
   } elsif ($type eq 'process_conf') {
     $c->stash()->{title} = 'Details for pipeline process configuration type: '
       . $object->type()->name();

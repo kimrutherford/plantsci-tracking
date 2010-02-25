@@ -102,7 +102,7 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
 
       eval {
          ($cri_slx_identifier, $cri_request_identifier) =
-           _create_cri_request($c->config(), $sequencing_sample->name(),
+           _create_cri_request($c->config(), $sequencing_sample->identifier(),
                                $sequencing_sample->sample_creator()->username());
       };
       if ($@) {
