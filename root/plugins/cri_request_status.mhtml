@@ -8,9 +8,9 @@ $object
   </span>
   <div class="sect-content" id="cri-request-status">
 
-% if (defined $error_message) {
+% if (defined $message) {
     <pre>
-      ERROR: <% $error_message %>
+ <% $message %>
     </pre>
 % } else {
     <p>request status: <% $status->{requestStatus} %></p>
@@ -25,16 +25,21 @@ my $host = '192.168.80.1';
 my $port = 8080;
 
 my $status = undef;
-my $error_message = undef;
+my $message = undef;
 
 use CRI::SOAP;
 
-eval {
-  my $service = CRI::SOAP->new('http', $host, $port, '/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
-  $status = $service->call('getStatus', 521871);
-};
-if($@) {
-  $error_message = $@;
+if ($object->identifier() =~ /^\d+$/) {
+  # probably a CRI identifier
+  eval {
+    my $service = CRI::SOAP->new('http', $host, $port, '/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
+    $status = $service->call('getStatus', $object->identifier());
+  };
+  if($@) {
+    $message = "Problem reading status from CRI: $@";
+  }
+} else {
+  $message = '[No CRI status]';
 }
 
 </%init>
