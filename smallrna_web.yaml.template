@@ -77,7 +77,7 @@ class_info:
     editable: 1
     display_field: name
     # hack to put the biosamples in a sensible order:
-    order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    order_by: "substring(me.name from E'(?:SL([\\\\d]+).*|(.*))')::integer, me.biosample_id"
     field_info_list:
       - name: name
         default_value: |
@@ -220,7 +220,7 @@ class_info:
   sequencing_sample:
     editable: 1
     display_field: identifier
-    order_by: "substring(me.identifier from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    order_by: "substring(me.identifier from E'(?:SL([\\\\d]+).*|(.*))')::integer, me.sequencing_sample_id"
     field_info_list:
       - name: identifier
         editable: 1
@@ -237,7 +237,7 @@ class_info:
     editable: 1
     display_field: identifier
     # hack to put the libraries in a sensible order:
-    order_by: "substring(me.identifier from E'(?:SL([\\\\d]+).*|(.*))')::integer"
+    order_by: "substring(me.identifier from E'(?:SL([\\\\d]+).*|(.*))')::integer, me.library_id"
     field_info_list:
       - name: identifier
         editable: 1
