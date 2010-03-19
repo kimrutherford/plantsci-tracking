@@ -1,8 +1,0 @@
-# params file for deploy.pl for use in development
-'pipeline-directory': /data/pipeline
-'pipeline-process-directory': process
-'database-name': pipeline-dev-kmr44
-'database-host': hydrogen
-'database-user-name': kmr44
-'database-password': kmr
-

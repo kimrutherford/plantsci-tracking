@@ -1,9 +1,0 @@
-# params file for deploy.pl for temporary deployments of recent runs, before 
-# moving to node3
-'pipeline-directory': /data/pipeline
-'pipeline-process-directory': process
-'database-name': pipeline-dev-kmr44
-'database-host': hydrogen
-'database-user-name': kmr44
-'database-password': kmr
-
