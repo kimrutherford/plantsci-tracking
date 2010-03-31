@@ -7,10 +7,10 @@ $object
 </div>
 
 <div id="collections">
-  <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs,
-    list_title => "The biosample$biosample_plu for this organism" &>
   <& /view/collection.mhtml, object => $object, collection_name => 'ecotypes',
     collection_title => "The ecotype$ecotype_plu for this organism" &>
+  <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs,
+    list_title => "The biosample$biosample_plu for this organism" &>
   <& /view/collection.mhtml, object => $object, collection_name => 'tissues',
     collection_title => "The tissue type$tissue_plu for this organism" &>
 </div>
