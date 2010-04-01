@@ -39,7 +39,7 @@ cri_api:
 #        - if set, and the value does not match /^\w[\w\d]+$/, evaluate as
 #          perl code for each object / row to be displayed.  During evaluation,
 #          $object will be set to the current row.  Any HTML characters will be
-#          passed through to the user.  These fields cannot be edited 
+#          passed through to the user.  These fields cannot be edited
 #        - if not set, the name is used to choose the database
 #          column that holds the value for this field
 class_info:
@@ -172,7 +172,7 @@ class_info:
     field_info_list:
       - name: content_type
         values_constraint: 'cv->name = "tracking file content types"'
-        editable: 1 
+        editable: 1
       - name: format_type
         values_constraint: 'cv->name = "tracking file format types"'
         editable: 1
@@ -212,7 +212,7 @@ class_info:
         source: sequencing_centre
         editable: 1
         default_value: '"CRUK CRI"'
-      - name: Sequencing type 
+      - name: Sequencing type
         source: sequencing_type
         values_constraint: 'cv->name = "tracking sequencing method"'
         editable: 1
@@ -397,7 +397,7 @@ report_list:
       - name: Redundant aligned reads v raw reads
         align: right
         source: |
-           SmallRNA::Web::Report::get_pipedata_property_precent($object, 
+           SmallRNA::Web::Report::get_pipedata_property_precent($object,
                                                                 first => [ "genome", "redundant_aligned_reads", "fasta", "sequence count" ],
                                                                 second => [ undef, "raw_reads", "fastq", "sequence count" ])
 "Model::SmallRNAModel":
@@ -427,7 +427,7 @@ plugins:
       - name: Size distribution and first base composition graphs before alignment
         path: /plugins/sizecomp.mhtml
         css_class: size_dist_graph
-      - name: Size distribution and first base composition graphs for genome matching reads 
+      - name: Size distribution and first base composition graphs for genome matching reads
         path: /plugins/sizecomp.mhtml
         args:
           component: genome
