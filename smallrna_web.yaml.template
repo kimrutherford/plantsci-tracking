@@ -15,6 +15,11 @@ authentication:
         class: DBIx::Class
         user_class: SmallRNAModel::Person
         id_field: username
+cri_api:
+  username: ${cri-api-username}
+  password: ${cri-api-password}
+  host: ${cri-api-host}
+  port: ${cri-api-port}
 # There needs to be a class_info entry for each class that will be displayed.
 # Class flags:
 #   editable: an edit link and edit page will be created for this class
