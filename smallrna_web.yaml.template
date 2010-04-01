@@ -53,11 +53,21 @@ class_info:
     display_field: name
   organisation:
     display_field: name
+    field_info_list:
+      - name: name
+        editable: 1
+      - name: description
+        editable: 1
   organism:
     display_field: full_name
     order_by:
       - genus
       - species
+    field_info_list:
+      - name: genus
+        editable: 1
+      - name: species
+        editable: 1
   person:
     editable: 1
     display_field: full_name
