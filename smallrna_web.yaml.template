@@ -304,9 +304,9 @@ report_list:
     columns:
       - name: Biosample name
         source: name
-      - name: Organism name
+      - name: Ecotype name
         source: |
-           ($object->ecotypes())[0]->organism()->full_name()
+           ($object->ecotypes())[0]->long_description()
       - name: Raw reads
         format: integer
         source: |
@@ -349,9 +349,9 @@ report_list:
     columns:
       - name: Biosample name
         source: name
-      - name: Organism name
+      - name: Ecotype name
         source: |
-           ($object->ecotypes())[0]->organism()->full_name()
+           ($object->ecotypes())[0]->long_description()
       - name: Raw read count
         format: integer
         source: |
