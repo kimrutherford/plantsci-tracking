@@ -76,7 +76,7 @@ sub _create_cri_request
   return ($slx_id, $request_id);
 }
 
-=head2 cumulative_reads_by_month
+=head2 make_cri_request
 
  Usage   : Called as a Catalyst action
  Function: Creates a sequencing_run and adds it to the CRI LIMS.
