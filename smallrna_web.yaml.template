@@ -3,6 +3,12 @@ name: SmallRNA::Web
 long_name: SmallRNA Tracking
 pipeline_directory: ${pipeline-directory}
 data_sub_directory: ${pipeline-process-directory}
+"Model::SmallRNAModel":
+  schema_class: 'SmallRNA::DB'
+  connect_info:
+     - "dbi:Pg:dbname=${database-name};host=${database-host}"
+     - '${database-user-name}'
+     - '${database-password}'
 authentication:
   default_realm: 'members'
   realms:
@@ -410,12 +416,6 @@ report_list:
            SmallRNA::Web::Report::get_pipedata_property_precent($object,
                                                                 first => [ "genome", "redundant_aligned_reads", "fasta", "sequence count" ],
                                                                 second => [ undef, "raw_reads", "fastq", "sequence count" ])
-"Model::SmallRNAModel":
-  schema_class: 'SmallRNA::DB'
-  connect_info:
-     - "dbi:Pg:dbname=${database-name};host=${database-host}"
-     - '${database-user-name}'
-     - '${database-password}'
 gbrowse:
   Arabidopsis_thaliana:
     prefix: '/gb2/gbrowse/arabidopsis'
