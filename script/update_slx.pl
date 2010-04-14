@@ -27,7 +27,7 @@ my $cri_password = $config->{cri_api}{password};
 my $service;
 
 eval {
-  warn "connecting ...\n";
+  warn "connecting to $host ...\n";
   $service = CRI::SOAP->new('https', $host, $port,
                             '/services/genomics/solexa-ws/SolexaExternalBeanWS',
                             'http://solexa.webservice.melab.cruk.org/',
@@ -41,7 +41,6 @@ if($@) {
 eval {
   my $work = sub {
     my $samp_rs = $schema->resultset('SequencingSample')->search({
-      sequencing_centre_identifier => undef
      });
 
     while (my $samp = $samp_rs->next()) {
@@ -54,6 +53,9 @@ eval {
 
       my @statuses = $service->call('getStatuses', $name);
       my $slx_id = $statuses[0][0]->{sampleRequest}->{slxId};
+
+      use Data::Dumper;
+      print Data::Dumper->Dumper(\@statuses);
 
       next unless defined $slx_id;
       print "$slx_id\n";
