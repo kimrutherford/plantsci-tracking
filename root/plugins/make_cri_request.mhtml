@@ -3,7 +3,7 @@ $object
 </%args>
 
 <div id="criSubmitDialog" title="Confirmation Required">
-  Really submit this sequencing sample to CRI?
+  Really submit this sequencing to CRI?
 </div>
 
 
@@ -13,7 +13,7 @@ $object
 <div>
 <a id="confirmCRISubmit" href="<% $c->uri_for('/plugin/make_cri_request', { 
            'sequencing_sample.id' => $object->sequencing_sample_id() }) %>">
-Book a sequencing run for this sequencing sample
+Book a sequencing run for this sample ...
 </a>
 
 </div>
