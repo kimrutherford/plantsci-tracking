@@ -5,6 +5,7 @@ use warnings;
 use Carp;
 
 use SmallRNA::DB;
+use SmallRNA::DBLayer::Loader;
 use SmallRNA::Config;
 
 use Digest::MD5;
@@ -74,7 +75,6 @@ sub test_checksum
 
       close $cri_file or die "can't close $full_cri_file_name\n";
 
-
       $local_md5 = $md5->hexdigest();
     }
 
@@ -90,7 +90,7 @@ sub test_checksum
         or die "can't close $local_checksum_file: $!\n";
 
       if ((my $new_file_name = $full_cri_file_name) =~
-            s!/current_mirror/current/(.*)\.sequence\.txt\.gz$!/$1.fq.gz!) {
+            s!/current_mirror/current/(.*\.sequence\.txt\.gz)$!/$1!) {
         if (-e $new_file_name) {
           die "won't overwrite existing file: $new_file_name\n";
         } else {
@@ -105,7 +105,7 @@ sub test_checksum
       my $new_pipeline_file_name;
 
       if ((my $new_file_name = $full_cri_file_name) =~
-            s!.*/current_mirror/current/(.*)\.sequence\.txt\.gz$!$pipeline_data_dir/fastq/$1.archive.fq!) {
+            s!.*/current_mirror/current/(.*\.sequence\.txt)\.gz$!$pipeline_data_dir/fastq/$1.fq!) {
         $new_pipeline_file_name = "fastq/$1.archive.fq";
         if (-e $new_file_name) {
           die "won't overwrite existing file: $new_file_name\n";
@@ -126,6 +126,8 @@ sub test_checksum
     }
   }
 }
+
+my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
 
 while (1) {
 
@@ -169,18 +171,20 @@ COMM
 
   closedir $dir or warn "can't close $cri_mirror_dir: $!\n";
 
-  # find SequencingSamples that don't have a SequencingRun and check if we now have
-
-exit();
+  # Find SequencingRuns that don't have an initial_pipedata and check if we
+  # have a data file now
 
   eval {
-    my $samp_rs = $schema->resultset('SequencingSample')->
-      search_literal('sequencing_sample_id NOT IN (SELECT sequencing_sample
-                                                     FROM sequencing_run)');
+    print "querying ...\n";
 
-    while (my $samp = $samp_rs->next()) {
+    my $run_rs = $schema->resultset('SequencingRun')->
+      search({ initial_pipedata => undef },
+             { prefetch => 'sequencing_sample' });
+
+    while (my $run = $run_rs->next()) {
+      my $sequencing_sample = $run->sequencing_sample();
       my $sequencing_centre_identifier =
-        $samp->sequencing_centre_identifier();
+        $sequencing_sample->sequencing_centre_identifier();
 
       next unless defined $sequencing_centre_identifier;
 
@@ -189,6 +193,11 @@ exit();
       my @statuses = $service->call('getStatuses', $sequencing_centre_identifier);
 
       my $sample_info = $statuses[0][0];
+
+      if (!defined $sample_info) {
+        warn "no sample information for: $sequencing_centre_identifier\n";
+        next;
+      }
 
       print $sample_info->{sampleRequest}->{slxId}, "\n";
 
@@ -203,14 +212,31 @@ exit();
         }
       }
 
-      if (defined $sequence_file_name) {
-        print "found: $sequence_file_name\n";
+      next unless defined $sequence_file_name;
+
+      print "found file name in LIMS: $sequence_file_name\n";
+
+      $sequence_file_name =~ s<(.*)\.gz><fastq/$1.fq>;
+
+      my $biosample = ($sequencing_sample->libraries())[0]->biosample();
+      my $molecule_type = $biosample->molecule_type()->name();
+
+      if (grep { $_ eq $sequence_file_name } @new_file_names) {
+        $loader->add_sequencing_run_pipedata($config, $run, $sequence_file_name,
+                                             $molecule_type);
+        print "added $sequence_file_name to the database\n";
+      } else {
+        warn "didn't add $sequence_file_name to the database - no "
+          . "matching file downloaded\n";
       }
     }
-    print "end\n";
+    print "finished local database check\n";
   };
   if ($@) {
     warn "error during eval(): $@\n";
   }
-exit();
+
+  print "sleeping ...\n";
+
+  sleep 10;
 }
