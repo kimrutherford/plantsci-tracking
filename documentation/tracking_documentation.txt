@@ -1,0 +1,35 @@
+# -*- org -*-
+###+INFOJS_OPT: view:content toc:t ltoc:t mouse:#dddddd
+#+OPTIONS:     H:5
+#+STYLE: <style type="text/css">  html { font-family: Times, serif; font-size: 16pt; }</style>
+
+University of Cambridge Department of Plant Sciences NGS data tracking system
+
+* Introduction
+# <<Introduction>>
+* Installation
+# <<Installation>>
+* Configuration
+# <<Configuration>>
+** The configuration file
+# <<The configuration file>>
+   The configuration file for is created by the =pipeinit.pl= script and
+   containing global configuration.  Other configuration is [[Configuration%20in%20the%20database][stored in the database]].
+#+BEGIN_SRC sh
+  ./script/pipeinit.pl -f etc/example_deploy_params
+#+END_SRC
+  This will create a file named =pipeline-example-config.yaml=.
+*** Configuration options
+# <<Configuration options>>
+See also: [[./pipeline_documentation.html#Configuration==options][pipeline configuration options]]
+**** "Model::SmallRNAModel"
+# <<"Model::SmallRNAModel">>
+     This section configures the connection from =DBIx::Class= to the
+     database.  These options need to be set:
+  - =dbname= - the database name
+  - =host=
+  - 'some_user'
+  - 'user_password'
+
+* Implementation
+# <<Implementation>>
