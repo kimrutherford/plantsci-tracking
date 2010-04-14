@@ -3,7 +3,7 @@ $object
 </%args>
 
 <&| /view/object/object_top.mhtml, object => $object &>
-% if ($c->user_exists()) {
+% if ($c->user_exists() && !defined $object->sequencing_sample()) {
   <div>
     <a href="<% $c->uri_for('/new/object/sequencing_sample',
                             { 'library.id' => $object->library_id(),
