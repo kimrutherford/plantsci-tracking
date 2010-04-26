@@ -2,10 +2,16 @@
 $object
 </%args>
 
-<div>
-  <& /view/field_list.mhtml, object => $object, field_labels =>
-    [qw(type detail runable_name)] &>
-</div>
+<&| /view/object/object_top.mhtml, object => $object &>
+% if ($c->user_exists()) {
+  <div>
+    <a href="<% $c->uri_for('/new/object/process_conf_input',
+                            { 'process_conf.id' => $object->process_conf_id() }) %>">
+      Create a input configuration for this ProcessConf ...
+    </a>
+  </div>
+% }
+</&>
 
 <div id="collections">
   <& /view/collection.mhtml, object => $object, collection_name => 'process_conf_inputs',
