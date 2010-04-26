@@ -44,6 +44,8 @@ if($@) {
 my $cri_mirror_dir = "/data/archive_data/all_cri_data/current_mirror/current";
 my $pipeline_data_dir = "/data/pipeline/data";
 
+my $cri_fastq_file_suffix = '.sequence.txt';
+
 sub test_checksum
 {
   my $cri_checksum = shift;
@@ -63,7 +65,7 @@ sub test_checksum
 
     my $local_md5;
 
-    if ($full_cri_file_name =~ /\.srf/) {
+    if (0 && $full_cri_file_name =~ /\.srf/) {
       $local_md5 = $cri_checksum;
     } else {
       my $md5 = Digest::MD5->new;
@@ -90,7 +92,7 @@ sub test_checksum
         or die "can't close $local_checksum_file: $!\n";
 
       if ((my $new_file_name = $full_cri_file_name) =~
-            s!/current_mirror/current/(.*\.sequence\.txt\.gz)$!/$1!) {
+            s!/current_mirror/current/!/!) {
         if (-e $new_file_name) {
           die "won't overwrite existing file: $new_file_name\n";
         } else {
@@ -99,13 +101,14 @@ sub test_checksum
             or die "couldn't create link to $new_file_name: $!\n";
         }
       } else {
-        warn "not uncompressing: $full_cri_file_name\n";
+        warn "not linking: $full_cri_file_name\n";
       }
 
       my $new_pipeline_file_name;
 
       if ((my $new_file_name = $full_cri_file_name) =~
-            s!.*/current_mirror/current/(.*\.sequence\.txt)\.gz$!$pipeline_data_dir/fastq/$1.fq!) {
+            s{.*/current_mirror/current/(.*$cri_fastq_file_suffix)\.gz$}
+             {$pipeline_data_dir/fastq/$1.fq}) {
         $new_pipeline_file_name = "fastq/$1.archive.fq";
         if (-e $new_file_name) {
           die "won't overwrite existing file: $new_file_name\n";
@@ -131,12 +134,13 @@ my $loader = SmallRNA::DBLayer::Loader->new(schema => $schema);
 
 while (1) {
 
-  if (0) {
+  # mirror, then check the checksums of new files
+
   system <<"COMM";
-(cd $cri_mirror_dir
+(cd $cri_mirror_dir/..
  lftp -u $cri_username,$cri_password -e 'set ftp:ssl-protect-data true; mirror --only-missing current; quit' 193.60.92.203)
 COMM
-}
+
   my @new_file_names = ();
 
   warn "opening $cri_mirror_dir\n";
