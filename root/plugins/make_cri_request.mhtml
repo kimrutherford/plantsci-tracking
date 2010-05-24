@@ -3,7 +3,7 @@ $object
 </%args>
 
 <div id="criSubmitDialog" title="Confirmation Required">
-  Really submit this sequencing to CRI?
+  Really submit this sequencing sample to CRI?
 </div>
 
 
