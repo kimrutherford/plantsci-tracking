@@ -242,5 +242,5 @@ COMM
 
   print "sleeping ...\n";
 
-  sleep 10;
+  sleep 60*60;
 }
