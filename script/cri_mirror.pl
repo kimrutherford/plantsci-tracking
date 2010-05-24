@@ -29,7 +29,7 @@ my $cri_password = $config->{cri_api}{password};
 my $service;
 
 eval {
-  warn "connecting ...\n";
+  warn "connecting to $cri_username\@$host:$port ...\n";
   $service = CRI::SOAP->new('https', $host, $port,
                             '/services/genomics/solexa-ws/SolexaExternalBeanWS',
                             'http://solexa.webservice.melab.cruk.org/',
