@@ -49,31 +49,48 @@ use CRI::SOAP;
 sub _create_cri_request
 {
   my $config = shift;
-  my $sl_identifier = shift;
-  my $sample_creator = shift;
+  my $sequencing_sample = shift;
+  my $identifier = $sequencing_sample->identifier();
+  my $sample_creator = $sequencing_sample->sample_creator()->username();
 
-  my $host = '192.168.80.1';
+  my $sequencing_type =
+    ($sequencing_sample->libraries())[0]->biosample()->molecule_type()->name();
+
+  my $username = $config->{cri_api}{username};
+  my $password = $config->{cri_api}{password};
+  my $host = $config->{cri_api}{host};
+  my $port = $config->{cri_api}{port};
+
   my ($service);
-
-  my $port = 8080;
 
   eval {
 #    CRI::SOAP->debug();
-          $service = CRI::SOAP->new('http', $host, $port, '/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
+    $service = CRI::SOAP->new('http', $host, $port,
+                              '/solexa-ws/SolexaExternalBeanWS',
+                              'http://solexa.webservice.melab.cruk.org/',
+                              "$username:$password", 0);
   };
   if($@) {
     die $@;
   }
 
-  my $sample_info = $service->call('submitRequest', $sl_identifier,
+  my $sample_info = $service->call('submitRequest', $identifier,
                                    $sample_creator, 2, 45, 'Single End Single Sample',
-                                   {sequenceType=>'DNA'},{assayType=>'WHOLE_GENOME'},
+                                   {
+                                     sequenceType => $sequencing_type,
+                                   },
+                                   {
+                                     assayType=>'WHOLE_GENOME'
+                                   },
                                    '');
-
   my $slx_id = $sample_info->{slxId};
   my $request_id = $sample_info->{request_id};
 
   return ($slx_id, $request_id);
+
+  if (0) {
+  return ($identifier + int(rand(999999 + 10000)), int(rand(999999 + 10000)));
+  }
 }
 
 =head2 make_cri_request
@@ -102,8 +119,7 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
 
       eval {
          ($cri_slx_identifier, $cri_request_identifier) =
-           _create_cri_request($c->config(), $sequencing_sample->identifier(),
-                               $sequencing_sample->sample_creator()->username());
+           _create_cri_request($c->config(), $sequencing_sample);
       };
       if ($@) {
         warn "ERROR FROM CRI: $@\n";
