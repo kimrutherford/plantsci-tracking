@@ -55,7 +55,7 @@ sub test_checksum
     "$cri_mirror_dir/../local_checksums/$cri_file_name.LOCAL_CHECKSUM";
 
   if (-f $local_checksum_file_name) {
-    print "checksum ok\n";
+    print "checksum from previous run ok\n";
     # we checked the checksum when the file was created
     return 1;
   } else {
