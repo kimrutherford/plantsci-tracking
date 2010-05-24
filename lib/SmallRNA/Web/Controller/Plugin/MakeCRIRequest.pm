@@ -2,7 +2,7 @@ package SmallRNA::Web::Controller::Plugin::MakeCRIRequest;
 
 =head1 NAME
 
-SmallRNA::Web::Controller::Action - action for creating a sequencing_sample and
+SmallRNA::Web::Controller::Action - action for creating a SequencingRun and
   and a CRI request
 
 =head1 SYNOPSIS
