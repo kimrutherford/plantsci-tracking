@@ -7,9 +7,12 @@ $object
 
 <div id="collections">
   <& /view/collection.mhtml, object => $object, collection_title => 'Projects',
-    collection_name => 'pipeprojects', disclosed => 1 &>
+    collection_name => 'pipeprojects' &>
+  <& /view/collection.mhtml, object => $object, collection_title =>
+  'Biosamples created by this user',
+    collection_name => 'biosamples' &>
   <& /view/list.mhtml, type => 'Biosample', rs => $biosamples_rs,
-    list_title => "The biosample$biosample_plu from all projects" &>
+    list_title => "The biosample$biosample_plu from all projects of this user", disclosed => 0 &>
 </div>
   
 <%init>
