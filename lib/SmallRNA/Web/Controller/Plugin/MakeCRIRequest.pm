@@ -82,7 +82,8 @@ sub _create_cri_request
                                    {
                                      assayType=>'WHOLE_GENOME'
                                    },
-                                   '');
+                                   '',
+                                   0);
   my $slx_id = $sample_info->{slxId};
   my $request_id = $sample_info->{request_id};
 
