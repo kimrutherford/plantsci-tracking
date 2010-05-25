@@ -3,15 +3,14 @@ $object
 $type
 </%args>
 
-<div>
-<& /view/field_list.mhtml, object => $object &>
-</div>
+<&| /view/object/object_top.mhtml, object => $object &>
 
-<div>
-  <a href="<% $c->uri_for('/new/object/biosample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
-    Create a biosample for this project
-  </a>
-</div>
+  <div>
+    <a href="<% $c->uri_for('/new/object/biosample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
+      Create a biosample for this project
+    </a>
+  </div>
+</&>
 
 <div id="collections">
   <& /view/list.mhtml, type => 'biosample', rs => $biosamples_rs, disclosed => 1,
