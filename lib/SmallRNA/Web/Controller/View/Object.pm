@@ -56,21 +56,21 @@ sub set_template : Private {
   my $object = $c->schema()->resultset($class_name)->find($object_id);
 
   if ($type eq 'person') {
-    $c->stash()->{title} = 'User details for ' . $object->full_name();
+    $c->stash()->{title} = 'User details for: ' . $object->full_name();
   } elsif ($type eq 'pipeproject') {
-    $c->stash()->{title} = 'Details for project ' . $object->description();
+    $c->stash()->{title} = 'Details for project: ' . $object->description();
   } elsif ($type eq 'pipeprocess') {
-    $c->stash()->{title} = 'Details for process ' . $object->description();
+    $c->stash()->{title} = 'Details for process: ' . $object->description();
   } elsif ($type eq 'pipedata') {
-    $c->stash()->{title} = 'Details for data ' . $object->file_name();
+    $c->stash()->{title} = 'Details for data: ' . $object->file_name();
   } elsif ($type eq 'organism') {
-    $c->stash()->{title} = 'Details for organism ' . $object->full_name();
+    $c->stash()->{title} = 'Details for organism: ' . $object->full_name();
   } elsif ($type eq 'biosample') {
-    $c->stash()->{title} = 'Details for biosample ' . $object->name();
+    $c->stash()->{title} = 'Details for biosample: ' . $object->name();
   } elsif ($type eq 'sequencing_run') {
-    $c->stash()->{title} = 'Details for sequencing run ' . $object->identifier();
+    $c->stash()->{title} = 'Details for sequencing run: ' . $object->identifier();
   } elsif ($type eq 'ecotype') {
-    $c->stash()->{title} = 'Details for ecotype ' . $object->long_description();
+    $c->stash()->{title} = 'Details for ecotype: ' . $object->long_description();
   } elsif ($type eq 'organisation') {
     $c->stash()->{title} = 'Organisation details';
   } elsif ($type eq 'cv') {
@@ -84,7 +84,7 @@ sub set_template : Private {
     $c->stash()->{title} = 'Details for pipeline process configuration type: '
       . $object->type()->name();
   } elsif ($type eq 'process_conf_input') {
-    $c->stash()->{title} = 'Details for process input configuration type for : '
+    $c->stash()->{title} = 'Details for process input configuration type for: '
       . $object->process_conf()->type()->name();
   }
 }
