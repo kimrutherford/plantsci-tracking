@@ -107,6 +107,8 @@ class_info:
         editable: 1
       - name: description
         editable: 1
+      - name: biosample_creator
+        editable: 1
       - name: genotype
         editable: 1
       - name: protocol
