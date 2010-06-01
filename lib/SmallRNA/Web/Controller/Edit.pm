@@ -165,6 +165,9 @@ sub _get_default_ref_value
       my $table_pk_column = ($ref_default_obj->primary_columns())[0];
 
       return $ref_default_obj->$table_pk_column();
+    } else {
+      die "Default value ($default_value) not found in "
+        . "table $referenced_table.$ref_display_field\n";
     }
   }
 }
