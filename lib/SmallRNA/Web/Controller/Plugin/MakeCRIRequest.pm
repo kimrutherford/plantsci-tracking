@@ -46,6 +46,14 @@ use base 'Catalyst::Controller::HTML::FormFu';
 
 use CRI::SOAP;
 
+my %assay_type_map = (
+  chip_seq => 'CHIP_SEQ',
+  dna_seq => 'WHOLE_GENOME',
+  mrna_expression => 'RNA_SEQ',
+  sage_expression => 'OTHER',
+  small_rnas => SRNA
+);
+
 sub _create_cri_request
 {
   my $config = shift;
@@ -53,8 +61,8 @@ sub _create_cri_request
   my $identifier = $sequencing_sample->identifier();
   my $sample_creator = $sequencing_sample->sample_creator()->username();
 
-  my $sequencing_type =
-    ($sequencing_sample->libraries())[0]->biosample()->molecule_type()->name();
+  my $biosample = ($sequencing_sample->libraries())[0]->biosample();
+  my $sequencing_type = $biosample->molecule_type()->name();
 
   my $username = $config->{cri_api}{username};
   my $password = $config->{cri_api}{password};
@@ -74,13 +82,20 @@ sub _create_cri_request
     die $@;
   }
 
+  my $biosample_type = $biosample->biosample_type()->name();
+  my $assay_type = $assay_type_map{$biosample_type};
+
+  if (!defined $assay_type) {
+    die "Can't find CRI assayType for: $biosample_type\n";
+  }
+
   my $sample_info = $service->call('submitRequest', $identifier,
                                    $sample_creator, 2, 45, 'Single End Single Sample',
                                    {
                                      sequenceType => $sequencing_type,
                                    },
                                    {
-                                     assayType=>'WHOLE_GENOME'
+                                     assayType => $assayType,
                                    },
                                    '',
                                    0);
