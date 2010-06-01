@@ -5,11 +5,13 @@ $type
 
 <&| /view/object/object_top.mhtml, object => $object &>
 
+% if ($c->user_exists()) {
   <div>
     <a href="<% $c->uri_for('/new/object/biosample', { 'pipeproject.id' => $object->pipeproject_id() }) %>">
       Create a biosample for this project
     </a>
   </div>
+% }
 </&>
 
 <div id="collections">
