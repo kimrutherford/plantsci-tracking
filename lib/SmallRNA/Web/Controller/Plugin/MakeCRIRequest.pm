@@ -138,7 +138,7 @@ sub make_cri_request : Path('/plugin/make_cri_request') {
            _create_cri_request($c->config(), $sequencing_sample);
       };
       if ($@) {
-        warn "ERROR FROM CRI: $@\n";
+        warn "error while making request: $@\n";
         $submit_request_error =
           qq(Failed to create sequencing run - request to CRI failed with error: $@);
         return;
