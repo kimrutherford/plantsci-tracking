@@ -108,6 +108,7 @@ class_info:
       - name: description
         editable: 1
       - name: biosample_creator
+        default_value: '$c->user() ? $c->user()->full_name() : undef'
         editable: 1
       - name: genotype
         editable: 1
