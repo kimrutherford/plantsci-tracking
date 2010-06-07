@@ -95,7 +95,7 @@ sub _create_cri_request
                                      sequenceType => $sequencing_type,
                                    },
                                    {
-                                     assayType => $assayType,
+                                     assayType => $assay_type,
                                    },
                                    '',
                                    0);
