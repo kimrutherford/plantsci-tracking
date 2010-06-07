@@ -51,7 +51,7 @@ my %assay_type_map = (
   dna_seq => 'WHOLE_GENOME',
   mrna_expression => 'RNA_SEQ',
   sage_expression => 'OTHER',
-  small_rnas => SRNA
+  small_rnas => 'SRNA'
 );
 
 sub _create_cri_request
