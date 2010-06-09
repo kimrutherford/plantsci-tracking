@@ -224,12 +224,12 @@ COMM
 
       $sequence_file_name =~ s<(.*)\.gz><fastq/$1.fq>;
 
-      my $biosample = ($sequencing_sample->libraries())[0]->biosample();
-      my $molecule_type = $biosample->molecule_type()->name();
+      my @biosamples = map { $_->biosample() } $sequencing_sample->libraries();
+      my $molecule_type = $biosamples[0]->molecule_type()->name();
 
       if (grep { $_ eq $sequence_file_name } @new_file_names) {
-        $loader->add_sequencing_run_pipedata($config, $run, $sequence_file_name,
-                                             $molecule_type);
+        $loader->create_initial_pipedata($config, $run, $sequence_file_name,
+                                         $molecule_type, [@biosamples]);
         print "added $sequence_file_name to the database\n";
       } else {
         warn "didn't add $sequence_file_name to the database - no "
