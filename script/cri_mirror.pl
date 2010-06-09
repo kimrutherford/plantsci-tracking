@@ -42,7 +42,7 @@ if($@) {
 }
 
 my $cri_mirror_dir = "/data/archive_data/all_cri_data/current_mirror/current";
-my $pipeline_data_dir = "/data/pipeline/data";
+my $pipeline_data_dir = "/data/pipeline/prod";
 
 my $cri_fastq_file_suffix = '.sequence.txt';
 
