@@ -205,7 +205,9 @@ COMM
 
       print $sample_info->{sampleRequest}->{slxId}, "\n";
 
-      my @file_locations = $sample_info->{fileLocations};
+      next unless defined $sample_info->{fileLocations};
+
+      my @file_locations = @{$sample_info->{fileLocations}};
 
       my $sequence_file_name;
 
