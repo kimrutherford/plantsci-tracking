@@ -109,7 +109,7 @@ sub test_checksum
       if ((my $new_file_name = $full_cri_file_name) =~
             s{.*/current_mirror/current/(.*$cri_fastq_file_suffix)\.gz$}
              {$pipeline_data_dir/fastq/$1.fq}) {
-        $new_pipeline_file_name = "fastq/$1.archive.fq";
+        $new_pipeline_file_name = "fastq/$1.fq";
         if (-e $new_file_name) {
           die "won't overwrite existing file: $new_file_name\n";
         } else {
