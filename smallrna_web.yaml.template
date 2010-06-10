@@ -263,7 +263,7 @@ class_info:
       - name: identifier
         editable: 1
       - name: sequencing_centre_identifier
-        editable: 1
+        editable: 0
       - name: description
         editable: 1
       - name: run type
