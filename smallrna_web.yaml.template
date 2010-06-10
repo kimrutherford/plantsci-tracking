@@ -90,10 +90,14 @@ class_info:
         editable: 1
       - name: last_name
         editable: 1
+      - name: password
+        editable: 1
+        admin_only: 1
       - name: role
         default_value: "'local'"
         values_constraint: 'cv->name = "tracking users types"'
         editable: 1
+        admin_only: 1
   biosample:
     editable: 1
     display_field: name
