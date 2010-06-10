@@ -7,7 +7,8 @@ $object
   <div>
     <a href="<% $c->uri_for('/new/object/sequencing_sample',
                             { 'library.id' => $object->library_id(),
-                              'object.identifier' => $new_seq_sample_name }) %>">
+                              'object.identifier' => $new_seq_sample_name,
+                              'sample_creator.id' => $biosample_creator }) %>">
       Create a new sequencing sample for this library
     </a>
   </div>
@@ -20,4 +21,7 @@ use SmallRNA::DBLayer::Loader;
 my $new_seq_sample_name =
   SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'SequencingSample', 'identifier',
                                                    $object->identifier() . '_SQ');
+
+my $biosample_creator = $object->biosample()->biosample_creator()->person_id();
+
 </%init>
