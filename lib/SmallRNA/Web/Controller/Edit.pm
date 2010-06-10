@@ -228,7 +228,7 @@ sub _init_form_field
 
       $current_value = $other_object->$table_pk_column();
     } else {
-      $current_value = $c->req->param("$referenced_table.id");
+      $current_value = $c->req->param("$field_db_column.id");
 
       if (!defined $current_value) {
         $current_value = _get_default_ref_value($c, $field_info, $referenced_class_name);
