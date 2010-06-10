@@ -6,7 +6,7 @@ $type
 <&| /view/object/object_top.mhtml, object => $object &>
 % if ($c->user_exists()) {
   <div>
-    <a href="<% $c->uri_for('/new/object/library', { 'object.name' => $new_library_name,
+    <a href="<% $c->uri_for('/new/object/library', { 'object.identifier' => $new_library_name,
                                                      'biosample.id' => $object->biosample_id() }) %>">
       Create a library from this biosample
     </a>
