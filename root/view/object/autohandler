@@ -3,7 +3,7 @@ $type
 $object
 </%args>
 
-% if ($c->user_exists()) {
+% if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
 <div id="deleteDialog" title="Confirmation Required">
   Delete this <% SmallRNA::DB::display_name($type) %>?
 </div>
