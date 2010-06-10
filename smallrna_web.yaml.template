@@ -157,9 +157,6 @@ class_info:
     display_field: identifier
     field_info_list:
       - name: identifier
-        default_value: |
-           use SmallRNA::DBLayer::Loader;
-           SmallRNA::DBLayer::Loader::get_unique_identifier($c->schema(), 'Pipeproject', 'identifier', 'PROJ');
         editable: 1
       - name: description
         editable: 1
