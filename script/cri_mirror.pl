@@ -232,8 +232,16 @@ COMM
                                          $molecule_type, [@biosamples]);
         print "added $sequence_file_name to the database\n";
       } else {
-        warn "didn't add $sequence_file_name to the database - no "
-          . "matching file downloaded\n";
+        warn "no matching file downloaded for $sequence_file_name\n";
+        # we might have downloaded it but failed to add it to the database,
+        # so try again if there isn't a pipedata for the file
+        if (-f $pipeline_data_dir . '/' . $sequence_file_name) {
+          if ($schema->resultset('Pipedata')->
+                search({file_name => $sequence_file_name})->count() == 0) {
+            $loader->create_initial_pipedata($config, $run, $sequence_file_name,
+                                             $molecule_type, [@biosamples]);
+          }
+        }
       }
     }
     print "finished local database check\n";
