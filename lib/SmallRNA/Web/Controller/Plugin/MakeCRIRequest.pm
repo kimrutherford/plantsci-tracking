@@ -90,7 +90,7 @@ sub _create_cri_request
   }
 
   my $sample_info = $service->call('submitRequest', $identifier,
-                                   $sample_creator, 2, 45, 'Single End Single Sample',
+                                   $sample_creator, 1, 36, 'Single End Single Sample',
                                    {
                                      sequenceType => $sequencing_type,
                                    },
