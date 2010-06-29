@@ -88,6 +88,12 @@
               <a href="<% $c->uri_for('/new/object/person') %>">Person</a>
             </li>
             <li>
+              <a href="<% $c->uri_for('/new/object/organism') %>">Organism</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/ecotype') %>">Ecotype</a>
+            </li>
+            <li>
               <a href="<% $c->uri_for('/new/object/pub') %>">Publication</a>
             </li>
 %   if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
@@ -99,6 +105,16 @@
             <li>
               <a href="<% $c->uri_for('/new/object/process_conf_input') %>">
                 Pipeline process input configuration
+              </a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/cv')%>">
+                Controlled vocabulary
+              </a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/new/object/cvterm')%>">
+                Controlled vocabulary term
               </a>
             </li>
 %   }
