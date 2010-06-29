@@ -64,7 +64,7 @@ class_info:
         editable: 1
       - name: definition
         editable: 1
-      - name: cv
+      - name: cv_id
         referenced_class: Cv
         editable: 1
   dbxref:
