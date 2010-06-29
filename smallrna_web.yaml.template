@@ -55,14 +55,14 @@ class_info:
     field_info_list:
       - name: name
         editable: 1
-      - name: description
+      - name: definition
         editable: 1
   cvterm:
     display_field: name
     field_info_list:
       - name: name
         editable: 1
-      - name: description
+      - name: definition
         editable: 1
       - name: cv
         referenced_class: Cv
