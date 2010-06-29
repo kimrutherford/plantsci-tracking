@@ -66,6 +66,7 @@ sub _create_cri_request
 
   my $username = $config->{cri_api}{username};
   my $password = $config->{cri_api}{password};
+  my $protocol = $config->{cri_api}{protocol};
   my $host = $config->{cri_api}{host};
   my $port = $config->{cri_api}{port};
 
@@ -73,7 +74,7 @@ sub _create_cri_request
 
   eval {
 #    CRI::SOAP->debug();
-    $service = CRI::SOAP->new('http', $host, $port,
+    $service = CRI::SOAP->new($protocol, $host, $port,
                               '/solexa-ws/SolexaExternalBeanWS',
                               'http://solexa.webservice.melab.cruk.org/',
                               "$username:$password", 0);

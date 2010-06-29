@@ -24,6 +24,7 @@ authentication:
 cri_api:
   username: ${cri-api-username}
   password: ${cri-api-password}
+  protocol: ${cri-api-protocol}
   host: ${cri-api-host}
   port: ${cri-api-port}
 # There needs to be a class_info entry for each class that will be displayed.
