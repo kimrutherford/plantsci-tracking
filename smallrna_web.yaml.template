@@ -52,8 +52,21 @@ cri_api:
 class_info:
   cv:
     display_field: name
+    field_info_list:
+      - name: name:
+        editable: 1
+      - name: description
+        editable: 1
   cvterm:
     display_field: name
+    field_info_list:
+      - name: name:
+        editable: 1
+      - name: description
+        editable: 1
+      - name: cv
+        referenced_class: Cv
+        editable: 1
   dbxref:
     display_field: accession
   db:
@@ -153,6 +166,12 @@ class_info:
   ecotype:
     display_field: long_description
     order_by: description
+    field_info_list:
+      - name: description
+        editable: 1
+      - name: organism
+        referenced_class: Organism
+        editable: 1
   genotype:
     display_field: description
   tissue:
