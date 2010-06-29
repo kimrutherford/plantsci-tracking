@@ -53,14 +53,14 @@ class_info:
   cv:
     display_field: name
     field_info_list:
-      - name: name:
+      - name: name
         editable: 1
       - name: description
         editable: 1
   cvterm:
     display_field: name
     field_info_list:
-      - name: name:
+      - name: name
         editable: 1
       - name: description
         editable: 1
