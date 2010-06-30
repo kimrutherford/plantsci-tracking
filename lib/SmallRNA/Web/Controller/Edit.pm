@@ -389,6 +389,15 @@ sub _create_object {
 
     my $value = $form_params{$name};
 
+    if ($field_db_column =~ /(.*)_id$/) {
+      # hack to cope with references ending in "_id", we need to remove the
+      # suffix and use the object as the value
+      $field_db_column = $1;
+      my $referenced_class_name = $field_info{referenced_class};
+
+      $value = $schema->resultset($referenced_class_name)->find($value);
+    }
+
     my $info_ref = $class_name->relationship_info($field_db_column);
 
     if (defined $info_ref && $value == 0) {
