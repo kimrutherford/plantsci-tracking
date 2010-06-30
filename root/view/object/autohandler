@@ -22,7 +22,7 @@ $object
       </li>
 %  }
 
-%  if ($c->user_exists() && $c->user()->role()->name() eq 'admin') {
+%  if (0 && $c->user_exists() && $c->user()->role()->name() eq 'admin') {
       <li>
 <a id="confirmDelete" href="<% $c->uri_for('/delete/object/' . $type . '/' . $object_id) %>">Delete</a>
 
