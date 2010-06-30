@@ -404,11 +404,11 @@ sub _create_object {
       # special case for undefined references which are represented in the form
       # as a 0
       $value = undef;
-    }
-
-    if ($value =~ /^\s*$/) {
-      # if the user doesn't enter anything, use undef
-      $value = undef;
+    } else {
+      if ($value =~ /^\s*$/) {
+        # if the user doesn't enter anything, use undef
+        $value = undef;
+      }
     }
 
     $object_params{$field_db_column} = $value;
