@@ -39,6 +39,7 @@ $disclosed => 1  # true will make the list default to visible
 
 <%init>
 use SmallRNA::Web::Util;
+use SmallRNA::DB;
 
 my @column_headings = ();
 my @rows = ();
@@ -67,7 +68,9 @@ while (my $obj = $rs->next()) {
       my $column_name = $col_conf->{name};
       next if $column_name eq 'created_stamp' or $column_name eq "${type}_id";
 
-      next if $col_conf->{is_collection};
+      my $column_type = SmallRNA::DB::column_type($col_conf, $type, $column_name);
+
+      next if $column_type eq 'collection';
 
       my $column_heading = $column_name;
       $column_heading =~ s/_/ /g;
