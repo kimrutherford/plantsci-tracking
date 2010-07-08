@@ -152,27 +152,39 @@ sub get_field_value
 
 =head2
 
- Usage   : my @column_confs = 
-             SmallRNA::Web::Util::get_column_confs_from_object($config, $object)
+ Usage   : my @column_confs =
+             SmallRNA::Web::Util::get_column_confs_from_object($config, $user_role, $object)
  Function: Return the column configuration for displaying the given object, from
            the configuration file (if columns are configured for this type) or
            by creating a default configuration
  Args    : $c - the Catalyst context
+           $user_role - the role of the current user
            $object - the object
- Return  : column configurations in the same format as described in 
+ Return  : column configurations in the same format as described in
            get_field_value() above
 
 =cut
 sub get_column_confs_from_object
 {
   my $config = shift;
+  my $user_role = shift;
   my $object = shift;
 
   my $table = $object->table();
 
-  my @column_confs = grep {
-                         !$_->{is_collection}
-                     } @{$config->{class_info}->{$table}->{field_info_list}};
+  my @column_confs = ();
+
+  for my $conf (@{$config->{class_info}->{$table}->{field_info_list}}) {
+    my $field_db_column = $conf->{source} || $conf->{name};
+
+    next unless $object->has_column($field_db_column);
+
+    if ($conf->{admin_only}) {
+      next unless defined $user_role && $user_role eq 'admin';
+    }
+
+    push @column_confs, $conf;
+  }
 
   if (!@column_confs) {
     for my $column_name ($object->columns()) {
