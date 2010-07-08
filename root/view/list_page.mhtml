@@ -103,19 +103,11 @@ Number of rows to display
 
 </%perl>
   <& /view/list.mhtml, type => $type, rs => $page_rs, list_title => '',
-    numrows => $numrows, page => $page, column_confs => [@field_info_list] &>
+    numrows => $numrows, page => $page &>
 </div>
 
 <%init>
 use List::MoreUtils qw(minmax);
-
-my @field_info_list = ();
-
-my $field_info_list_ref = 
-  $c->config()->{class_info}->{$type}->{field_info_list};
-if (defined $field_info_list_ref) {
-  @field_info_list = grep { !$_->{is_collection} } @{$field_info_list_ref};
-}
 
 my $page_rs = $rs->search({}, { 
                                 page => $page,
