@@ -62,7 +62,7 @@ use SmallRNA::DB;
                               conf => { perl => '$object->count() + 100' },
                               format => integer   # format as integer and right align
                             }
-                       
+
  Return  : $field_value - the value of the field or display or use.  If it is a
                           foreign key the whole object that is returned
            $field_type - can be:
