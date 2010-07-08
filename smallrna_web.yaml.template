@@ -51,6 +51,7 @@ cri_api:
 #          column that holds the value for this field
 class_info:
   cv:
+    editable: 1
     display_field: name
     field_info_list:
       - name: name
@@ -58,6 +59,7 @@ class_info:
       - name: definition
         editable: 1
   cvterm:
+    editable: 1
     display_field: name
     field_info_list:
       - name: name
@@ -65,11 +67,12 @@ class_info:
       - name: definition
         editable: 1
       - name: cv_id
-        referenced_class: Cv
         editable: 1
   dbxref:
+    editable: 1
     display_field: accession
   db:
+    editable: 1
     display_field: name
   organisation:
     display_field: name
@@ -79,6 +82,7 @@ class_info:
       - name: description
         editable: 1
   organism:
+    editable: 1
     display_field: full_name
     order_by:
       - genus
@@ -159,13 +163,13 @@ class_info:
         editable: 1
         is_collection: 1
   ecotype:
+    editable: 1
     display_field: long_description
     order_by: description
     field_info_list:
       - name: description
         editable: 1
       - name: organism
-        referenced_class: Organism
         editable: 1
   genotype:
     display_field: description
