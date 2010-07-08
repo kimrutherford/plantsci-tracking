@@ -92,6 +92,8 @@ class_info:
         editable: 1
       - name: species
         editable: 1
+      - name: ecotypes
+        editable: 1
   person:
     editable: 1
     display_field: full_name
