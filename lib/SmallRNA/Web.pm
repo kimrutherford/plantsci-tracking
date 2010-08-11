@@ -35,7 +35,11 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
                       driver => 'Cairo',
                       driver_args => { format => 'pdf' },
                       content_type => 'application/pdf'
-                    }
+                    },
+		    'Plugin::Session' => {
+                         expires => 3600,
+			 storage => '/tmp/small_session_' . $$ . '_' . getlogin()
+		    }
                    );
 
 # Start the application
