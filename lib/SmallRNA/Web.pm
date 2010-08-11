@@ -38,7 +38,7 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
                     },
 		    'Plugin::Session' => {
                          expires => 3600,
-			 storage => '/tmp/small_session_' . $$ . '_' . getlogin()
+			 storage => '/tmp/small_session_' . getlogin()
 		    }
                    );
 
