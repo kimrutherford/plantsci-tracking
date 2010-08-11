@@ -70,6 +70,12 @@ sub _create_cri_request
   my $host = $config->{cri_api}{host};
   my $port = $config->{cri_api}{port};
 
+  my $end_type = 'Single End Single Sample' ;
+  if( $sequencing_sample->end_type() =~ "paired end" )
+  {
+  	$end_type = 'Paired End Single Sample' ;
+  }
+  
   my ($service);
 
   eval {
@@ -91,7 +97,9 @@ sub _create_cri_request
   }
 
   my $sample_info = $service->call('submitRequest', $identifier,
-                                   $sample_creator, 1, 36, 'Single End Single Sample',
+                                   $sample_creator, 1,
+                                   $sequencing_sample->read_length(),
+                                   $end_type,
                                    {
                                      sequenceType => $sequencing_type,
                                    },

@@ -275,6 +275,13 @@ class_info:
       - name: sample_creator
         editable: 1
         referenced_class: Person
+      - name: read_length
+        editable: 1
+        default_value: '36'
+      - name: end_type
+        editable: 1
+        values_constraint: 'cv->name = "end type"'
+        default: "'single end'"
       - name: libraries
         referenced_class: Library
         editable: 1
