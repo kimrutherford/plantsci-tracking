@@ -97,7 +97,8 @@ sub _create_cri_request
   }
 
   my $sample_info = $service->call('submitRequest', $identifier,
-                                   $sample_creator, 1,
+                                   $sample_creator,
+                                   $sequencing_sample->number_of_lanes(),
                                    $sequencing_sample->read_length(),
                                    $end_type,
                                    {
