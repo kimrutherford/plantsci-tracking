@@ -17,13 +17,9 @@ use Catalyst qw/ConfigLoader
                 Static::Simple/;
 our $VERSION = '0.01';
 
-my $login = getlogin() || $ENV{USER};
-my ($host) = Sys::Hostname::hostname() =~ m/^([^\.]+)/;
+my $login = getlogin() || getpwuid($<) || $ENV{USER} ||  'unknown';
 
-if (!defined $login) {
-  # probably running in apache
-  $login = 'apache';
-}
+my ($host) = Sys::Hostname::hostname() =~ m/^([^\.]+)/;
 
 __PACKAGE__->config(name => 'SmallRNA::Web',
                     'Plugin::ConfigLoader' => {
@@ -38,7 +34,7 @@ __PACKAGE__->config(name => 'SmallRNA::Web',
                     },
 		    'Plugin::Session' => {
                          expires => 3600,
-			 storage => '/tmp/small_session_' . getlogin()
+			 storage => "/tmp/small_session_$login"
 		    }
                    );
 
