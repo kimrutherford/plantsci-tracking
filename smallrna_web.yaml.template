@@ -275,7 +275,6 @@ class_info:
       - name: sample_creator
         editable: 1
         default_value: '$c->user() ? $c->user()->full_name() : undef'
-        referenced_class: Person
       - name: read_length
         editable: 1
         default_value: '36'
