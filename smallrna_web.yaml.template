@@ -284,8 +284,8 @@ class_info:
         default: "'single end'"
       - name: number_of_lanes
         editable: 1
-        default_value: '1' 
-     - name: libraries
+        default_value: '1'
+      - name: libraries
         referenced_class: Library
         editable: 1
         is_collection: 1
