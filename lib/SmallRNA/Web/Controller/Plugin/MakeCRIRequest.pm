@@ -70,7 +70,7 @@ sub _create_cri_request
   my $host = $config->{cri_api}{host};
   my $port = $config->{cri_api}{port};
 
-  my $end_type = $sequencing_sample->end_type();
+  my $end_type = $sequencing_sample->end_type()->name();
   my $cri_end_type;
 
   if ($end_type eq "paired end") {
@@ -120,10 +120,6 @@ sub _create_cri_request
   my $request_id = $sample_info->{request_id};
 
   return ($slx_id, $request_id);
-
-  if (0) {
-  return ($identifier + int(rand(999999 + 10000)), int(rand(999999 + 10000)));
-  }
 }
 
 =head2 make_cri_request
