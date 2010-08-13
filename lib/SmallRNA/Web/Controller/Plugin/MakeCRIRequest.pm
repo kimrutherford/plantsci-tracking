@@ -70,10 +70,17 @@ sub _create_cri_request
   my $host = $config->{cri_api}{host};
   my $port = $config->{cri_api}{port};
 
-  my $end_type = 'Single End Single Sample' ;
-  if( $sequencing_sample->end_type() =~ "paired end" )
-  {
-  	$end_type = 'Paired End Single Sample' ;
+  my $end_type = $sequencing_sample->end_type();
+  my $cri_end_type;
+
+  if ($end_type eq "paired end") {
+    $cri_end_type = 'Paired End Single Sample';
+  } else {
+    if ($end_type eq "single end") {
+      $cri_end_type = 'Single End Single Sample';
+    } else {
+      die "unknown end type: $end_type\n";
+    }
   }
 
   my ($service);
@@ -100,7 +107,7 @@ sub _create_cri_request
                                    $sample_creator,
                                    $sequencing_sample->number_of_lanes(),
                                    $sequencing_sample->read_length(),
-                                   $end_type,
+                                   $cri_end_type,
                                    {
                                      sequenceType => $sequencing_type,
                                    },
