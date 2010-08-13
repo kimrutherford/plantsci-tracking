@@ -75,13 +75,13 @@ sub _create_cri_request
   {
   	$end_type = 'Paired End Single Sample' ;
   }
-  
+
   my ($service);
 
   eval {
 #    CRI::SOAP->debug();
     $service = CRI::SOAP->new($protocol, $host, $port,
-                              '/solexa-ws/SolexaExternalBeanWS',
+                              '/services/genomics/solexa-ws/SolexaExternalBeanWS',
                               'http://solexa.webservice.melab.cruk.org/',
                               "$username:$password", 0);
   };

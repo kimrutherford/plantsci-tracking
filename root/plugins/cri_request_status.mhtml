@@ -32,7 +32,7 @@ use CRI::SOAP;
 if ($object->identifier() =~ /^\d+$/) {
   # probably a CRI identifier
   eval {
-    my $service = CRI::SOAP->new('http', $host, $port, '/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
+    my $service = CRI::SOAP->new('http', $host, $port, '/services/genomics/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
     $status = $service->call('getStatus', $object->identifier());
   };
   if($@) {
