@@ -20,19 +20,26 @@ $object
 </div>
 <%init>
 
-my $host = '192.168.80.1';
-
-my $port = 8080;
-
 my $status = undef;
 my $message = undef;
 
 use CRI::SOAP;
 
+my $config = $c->config();
+
+my $username = $config->{cri_api}{username};
+my $password = $config->{cri_api}{password};
+my $protocol = $config->{cri_api}{protocol};
+my $host = $config->{cri_api}{host};
+my $port = $config->{cri_api}{port};
+
 if ($object->identifier() =~ /^\d+$/) {
   # probably a CRI identifier
   eval {
-    my $service = CRI::SOAP->new('http', $host, $port, '/services/genomics/solexa-ws/SolexaExternalBeanWS', 'http://solexa.webservice.melab.cruk.org/','kr1:kr1', 0);
+    my $service = CRI::SOAP->new($protocol, $host, $port,
+                                 '/services/genomics/solexa-ws/SolexaExternalBeanWS',
+                                 'http://solexa.webservice.melab.cruk.org/',
+                                 "$username:$password", 0);
     $status = $service->call('getStatus', $object->identifier());
   };
   if($@) {
