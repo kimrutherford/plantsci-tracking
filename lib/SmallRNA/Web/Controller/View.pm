@@ -340,11 +340,12 @@ sub seqread : Local {
         my @biosamples = $pipedata->biosamples();
         my $biosample = $biosamples[0];
 
-
-        push @processed_results, { pipedata => $pipedata,
-                                   redundant_count => $redundant_count,
-                                   matches => \@processed_matches,
-                                   biosample => $biosample };
+        if (defined $biosample) {
+          push @processed_results, { pipedata => $pipedata,
+                                     redundant_count => $redundant_count,
+                                     matches => \@processed_matches,
+                                     biosample => $biosample };
+        }
       }
     }
 

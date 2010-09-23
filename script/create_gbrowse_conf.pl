@@ -106,6 +106,7 @@ my $track_config = "";
 while (defined (my $pipedata = $pipedata_rs->next())) {
   my @samples = $pipedata->biosamples();
   my $sample = $samples[0];
+  next unless defined $sample;
   my $sample_name = $sample->name();
   my $sample_description = $sample->description();
 
