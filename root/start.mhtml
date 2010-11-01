@@ -8,25 +8,16 @@
           </div>
           <ul>
             <li>
-              <a href="<% $c->uri_for('/view/list/person') %>">People</a>
-            </li>
-            <li>
-              <a href="<% $c->uri_for('/view/list/organisation') %>">Organisations</a>
+              <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/view/list/biosample') %>">Biosamples</a>
             </li>
             <li>
-              <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
-            </li>
-            <li>
-              <a href="<% $c->uri_for('/view/list/pipeproject') %>">Pipeline projects</a>
+              <a href="<% $c->uri_for('/view/list/library') %>">Libraries</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/view/list/sequencing_sample') %>">Sequencing samples</a>
-            </li>
-            <li>
-              <a href="<% $c->uri_for('/view/list/library') %>">Libraries</a>
             </li>
             <li>
               <a href="<% $c->uri_for('/view/list/sequencing_run') %>">Sequencing runs</a>
@@ -37,6 +28,19 @@
             <li>
               <a href="<% $c->uri_for('/view/list/pub') %>">Publications</a>
             </li>
+          </ul>
+          <ul>
+            <li>
+              <a href="<% $c->uri_for('/view/list/person') %>">People</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/organisation') %>">Organisations</a>
+            </li>
+            <li>
+              <a href="<% $c->uri_for('/view/list/organism') %>">Organisms</a>
+            </li>
+          </ul>
+          <ul>
             <li>
               <a href="<% $c->uri_for('/view/list/pipeprocess') %>">Processes/jobs</a>
             </li>
