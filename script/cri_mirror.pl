@@ -196,14 +196,16 @@ COMM
 
       my @statuses = $service->call('getStatuses', $sequencing_centre_identifier);
 
-      my $sample_info = $statuses[0][0];
+      my @sample_infos = @{$statuses[0]};
+
+      for my $sample_info (@sample_infos) {
 
       if (!defined $sample_info) {
         warn "no sample information for: $sequencing_centre_identifier\n";
         next;
       }
 
-      print $sample_info->{sampleRequest}->{slxId}, "\n";
+      print "Found sample via CRI API: ", $sample_info->{sampleRequest}->{slxId}, "\n";
 
       next unless defined $sample_info->{fileLocations};
 
@@ -243,6 +245,7 @@ COMM
           }
         }
       }
+    }
     }
     print "finished local database check\n";
   };
